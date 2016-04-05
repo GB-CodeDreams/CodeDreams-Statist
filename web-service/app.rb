@@ -3,7 +3,7 @@ require "sinatra/activerecord"
 require 'json'
 require './environments'
 require './models/person'
-require './models/keywords'
+require './models/keyword'
 require './models/person_page_rank'
 
 get '/' do

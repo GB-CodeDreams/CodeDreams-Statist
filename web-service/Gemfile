@@ -4,5 +4,5 @@ gem 'sinatra', '1.4.7'
 gem 'activerecord'
 gem "sinatra-activerecord"
 gem 'foreman'
-gem 'pg'
+# gem 'pg'
 gem 'sqlite3'

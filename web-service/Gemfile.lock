@@ -21,8 +21,6 @@ GEM
     i18n (0.7.0)
     json (1.8.3)
     minitest (5.8.4)
-    pg (0.18.4)
-    pg (0.18.4-x86-mingw32)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -48,7 +46,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   foreman
-  pg
   rake
   sinatra (= 1.4.7)
   sinatra-activerecord
