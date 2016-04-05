@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace Statist
 {
-    public partial class Form1 : Form
+    public partial class frmStatist : Form
     {
-        public Form1()
+        public frmStatist()
         {
             InitializeComponent();
         }
