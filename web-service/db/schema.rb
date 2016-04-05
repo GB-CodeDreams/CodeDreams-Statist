@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160405181459) do
+ActiveRecord::Schema.define(version: 20160405182912) do
 
   create_table "keywords", force: :cascade do |t|
     t.string   "name"
@@ -21,6 +21,19 @@ ActiveRecord::Schema.define(version: 20160405181459) do
   end
 
   add_index "keywords", ["person_id"], name: "index_keywords_on_person_id"
+
+  create_table "pages", force: :cascade do |t|
+    t.string   "url"
+    t.datetime "found_date_time"
+    t.datetime "last_scan_date"
+    t.integer  "site_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "pages", ["found_date_time"], name: "index_pages_on_found_date_time"
+  add_index "pages", ["last_scan_date"], name: "index_pages_on_last_scan_date"
+  add_index "pages", ["site_id"], name: "index_pages_on_site_id"
 
   create_table "person_page_ranks", force: :cascade do |t|
     t.integer  "rank"
