@@ -15,6 +15,7 @@ namespace Statist
     {
         List<Sites> sites = new List<Sites>();
         List<Persons> persons = new List<Persons>();
+        List<Pages> pages = new List<Pages>();
 
         public frmStatist()
         {
@@ -22,6 +23,7 @@ namespace Statist
 
             persons = DBInitializer.FillPersons();
             sites = DBInitializer.FillSites();
+            pages = DBInitializer.FillPages();
 
             foreach (var site in sites)
             {
@@ -32,6 +34,7 @@ namespace Statist
         private void btnApply_Click(object sender, EventArgs e)
         {
             //var item = cmbSite.SelectedItem;
+
         }
     }
 }
