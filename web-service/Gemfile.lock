@@ -54,6 +54,3 @@ DEPENDENCIES
   sinatra (= 1.4.7)
   sinatra-activerecord
   sqlite3
-
-BUNDLED WITH
-   1.11.2
