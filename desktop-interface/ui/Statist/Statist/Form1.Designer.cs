@@ -35,7 +35,7 @@
             this.cmbSite = new System.Windows.Forms.ComboBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtUpdateDate = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,7 +59,7 @@
             // 
             this.tbGeneralStatistics.BackColor = System.Drawing.Color.Transparent;
             this.tbGeneralStatistics.Controls.Add(this.label1);
-            this.tbGeneralStatistics.Controls.Add(this.textBox1);
+            this.tbGeneralStatistics.Controls.Add(this.txtUpdateDate);
             this.tbGeneralStatistics.Controls.Add(this.dataGridView1);
             this.tbGeneralStatistics.Controls.Add(this.btnApply);
             this.tbGeneralStatistics.Controls.Add(this.cmbSite);
@@ -122,13 +122,13 @@
             this.dataGridView1.Size = new System.Drawing.Size(296, 283);
             this.dataGridView1.TabIndex = 3;
             // 
-            // textBox1
+            // txtUpdateDate
             // 
-            this.textBox1.Location = new System.Drawing.Point(413, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(135, 24);
-            this.textBox1.TabIndex = 4;
+            this.txtUpdateDate.Location = new System.Drawing.Point(413, 25);
+            this.txtUpdateDate.Name = "txtUpdateDate";
+            this.txtUpdateDate.ReadOnly = true;
+            this.txtUpdateDate.Size = new System.Drawing.Size(135, 24);
+            this.txtUpdateDate.TabIndex = 4;
             // 
             // label1
             // 
@@ -181,7 +181,7 @@
         private System.Windows.Forms.Label lblSite;
         private System.Windows.Forms.ComboBox cmbSite;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtUpdateDate;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
