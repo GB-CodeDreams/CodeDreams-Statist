@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Statist.Model;
+using Statist.DAL;
 
 namespace Statist
 {
@@ -13,7 +15,12 @@ namespace Statist
     {
         public frmStatist()
         {
-            InitializeComponent();            
+            InitializeComponent();
+        }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            //var item = cmbSite.SelectedItem;
         }
     }
 }

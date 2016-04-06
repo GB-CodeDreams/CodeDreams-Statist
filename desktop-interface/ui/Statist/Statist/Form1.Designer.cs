@@ -95,6 +95,7 @@
             // 
             // cmbSite
             // 
+            this.cmbSite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSite.FormattingEnabled = true;
             this.cmbSite.Location = new System.Drawing.Point(62, 25);
             this.cmbSite.Name = "cmbSite";
@@ -109,6 +110,7 @@
             this.btnApply.TabIndex = 2;
             this.btnApply.Text = "Применить";
             this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // dataGridView1
             // 
