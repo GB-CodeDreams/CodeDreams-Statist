@@ -13,7 +13,7 @@ namespace Statist
     {
         public frmStatist()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
     }
 }
