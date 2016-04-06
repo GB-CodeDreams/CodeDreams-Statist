@@ -13,9 +13,20 @@ namespace Statist
 {
     public partial class frmStatist : Form
     {
+        List<Sites> sites = new List<Sites>();
+        List<Persons> persons = new List<Persons>();
+
         public frmStatist()
         {
             InitializeComponent();
+
+            persons = DBInitializer.FillPersons();
+            sites = DBInitializer.FillSites();
+
+            foreach (var site in sites)
+            {
+                cmbSite.Items.Add(site.Name);
+            }
         }
 
         private void btnApply_Click(object sender, EventArgs e)
