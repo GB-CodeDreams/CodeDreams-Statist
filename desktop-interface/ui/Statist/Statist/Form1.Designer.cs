@@ -132,7 +132,7 @@
             this.txtUpdateDate.Location = new System.Drawing.Point(413, 25);
             this.txtUpdateDate.Name = "txtUpdateDate";
             this.txtUpdateDate.ReadOnly = true;
-            this.txtUpdateDate.Size = new System.Drawing.Size(135, 24);
+            this.txtUpdateDate.Size = new System.Drawing.Size(162, 24);
             this.txtUpdateDate.TabIndex = 4;
             // 
             // label1
