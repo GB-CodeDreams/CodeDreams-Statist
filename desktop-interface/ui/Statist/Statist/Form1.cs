@@ -31,7 +31,7 @@ namespace Statist
         private void btnApply_Click(object sender, EventArgs e)
         {
             var item = cmbSite.SelectedItem;
-            Pages page = pages.Where(i => i.Id == (item as Sites).Id).FirstOrDefault();
+            Pages page = Pages.GetPageById(pages, (item as Sites).Id);
             txtUpdateDate.Text = page.LastScanDate.ToString();
         }
     }

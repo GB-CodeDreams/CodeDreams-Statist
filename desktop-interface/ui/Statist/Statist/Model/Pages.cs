@@ -13,5 +13,10 @@ namespace Statist.Model
         public DateTime FoundDateTime { get; set; }
         public DateTime LastScanDate { get; set; }
         public ICollection<PersonPageRanks> PersonPageRanks { get; set; } = new List<PersonPageRanks>();
+
+        public static Pages GetPageById(List<Pages> pages, int id)
+        {
+            return pages.Where(i => i.Id == id).FirstOrDefault();
+        }
     }
 }
