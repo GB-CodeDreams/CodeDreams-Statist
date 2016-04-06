@@ -114,6 +114,8 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -143,7 +145,7 @@
             // 
             // Column1
             // 
-            this.Column1.DataPropertyName = "name";
+            this.Column1.DataPropertyName = "Name";
             this.Column1.HeaderText = "Имя";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
@@ -151,7 +153,7 @@
             // 
             // Column2
             // 
-            this.Column2.DataPropertyName = "rank";
+            this.Column2.DataPropertyName = "Rank";
             this.Column2.HeaderText = "Количество упоминаний";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
