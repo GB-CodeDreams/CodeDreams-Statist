@@ -11,10 +11,23 @@ namespace Statist.DAL
         public static List<Persons> FillPersons()
         {
             List<Persons> persons = new List<Persons>();
-            Persons personPutin = new Persons() { Id = 1, Name = "Путин" };
-            Persons personMed = new Persons() { Id = 2, Name = "Медведев" };
+
+            Persons personPutin = new Persons()
+            {
+                Id = 1,
+                Name = "Путин"
+            };
+            Persons personMed = new Persons()
+            {
+                Id = 2,
+                Name = "Медведев"
+            };
+
             persons.Add(personPutin);
             persons.Add(personMed);
+
+            FillPersonPageRanks(persons);
+
             return persons;
         }
         public static List<Sites> FillSites()
@@ -49,7 +62,33 @@ namespace Statist.DAL
 
             pages.Add(pageLenta);
             pages.Add(pageRia);
+
+            FillPersonPageRanks(pages);
+
             return pages;
+        }
+
+        static void FillPersonPageRanks<T>(List<T> list)
+        {
+            PersonPageRanks personPageRank1 = new PersonPageRanks() { PersonId = 1, PageId = 1, Rank = 80000 };
+            PersonPageRanks personPageRank2 = new PersonPageRanks() { PersonId = 1, PageId = 2, Rank = 70000 };
+            PersonPageRanks personPageRank3 = new PersonPageRanks() { PersonId = 2, PageId = 1, Rank = 60000 };
+            PersonPageRanks personPageRank4 = new PersonPageRanks() { PersonId = 2, PageId = 2, Rank = 50000 };
+
+            if (list is List<Persons>)
+            {
+                (list[0] as Persons).PersonPageRanks.Add(personPageRank1);
+                (list[0] as Persons).PersonPageRanks.Add(personPageRank2);
+                (list[1] as Persons).PersonPageRanks.Add(personPageRank3);
+                (list[1] as Persons).PersonPageRanks.Add(personPageRank4);
+            }
+            else if(list is List<Pages>)
+            {
+                (list[0] as Pages).PersonPageRanks.Add(personPageRank1);
+                (list[0] as Pages).PersonPageRanks.Add(personPageRank2);
+                (list[1] as Pages).PersonPageRanks.Add(personPageRank3);
+                (list[1] as Pages).PersonPageRanks.Add(personPageRank4);
+            }
         }
     }
 }
