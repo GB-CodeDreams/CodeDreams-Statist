@@ -11,51 +11,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406091931) do
+ActiveRecord::Schema.define(version: 20160406134137) do
 
   create_table "keywords", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "person_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 255
+    t.integer  "person_id",  limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
-  add_index "keywords", ["person_id"], name: "index_keywords_on_person_id"
+  add_index "keywords", ["person_id"], name: "index_keywords_on_person_id", using: :btree
 
   create_table "pages", force: :cascade do |t|
-    t.string   "url"
+    t.string   "url",             limit: 255
     t.datetime "found_date_time"
     t.datetime "last_scan_date"
-    t.integer  "site_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "site_id",         limit: 4
   end
 
-  add_index "pages", ["found_date_time"], name: "index_pages_on_found_date_time"
-  add_index "pages", ["last_scan_date"], name: "index_pages_on_last_scan_date"
-  add_index "pages", ["site_id"], name: "index_pages_on_site_id"
+  add_index "pages", ["found_date_time"], name: "index_pages_on_found_date_time", using: :btree
+  add_index "pages", ["last_scan_date"], name: "index_pages_on_last_scan_date", using: :btree
+  add_index "pages", ["site_id"], name: "index_pages_on_site_id", using: :btree
 
   create_table "person_page_ranks", force: :cascade do |t|
-    t.integer  "rank"
-    t.integer  "person_id"
-    t.integer  "page_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "rank",       limit: 4
+    t.integer  "person_id",  limit: 4
+    t.integer  "page_id",    limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
-  add_index "person_page_ranks", ["page_id"], name: "index_person_page_ranks_on_page_id"
-  add_index "person_page_ranks", ["person_id"], name: "index_person_page_ranks_on_person_id"
+  add_index "person_page_ranks", ["page_id"], name: "index_person_page_ranks_on_page_id", using: :btree
+  add_index "person_page_ranks", ["person_id"], name: "index_person_page_ranks_on_person_id", using: :btree
 
   create_table "persons", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "sites", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
+  add_foreign_key "keywords", "persons"
+  add_foreign_key "pages", "sites"
+  add_foreign_key "person_page_ranks", "pages"
+  add_foreign_key "person_page_ranks", "persons"
 end

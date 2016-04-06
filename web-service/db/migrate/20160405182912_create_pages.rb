@@ -4,10 +4,8 @@ class CreatePages < ActiveRecord::Migration
       t.string     :url
       t.datetime   :found_date_time,   index:true
       t.datetime   :last_scan_date,    index:true
-      t.references :site,              index:true
 
       t.timestamps null: false
     end
-    add_foreign_key :pages, :sites
   end
 end

@@ -1,11 +1,11 @@
-# production:
-#   adapter: postgresql
-#   database: development
-#   username: <%= ENV['PG_USER'] %>
-#   password: <%= ENV['PG_PASS'] %>
-#   host: localhost
+# development:
+#   adapter: sqlite3
+#   database: db/development.sqlite3
+#   pool: 5
+#   timeout: 5000
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: mysql2
+  encoding: utf8
+  database: c9
+  username: <%=ENV['C9_USER']%>
+  host: <%=ENV['IP']%>
