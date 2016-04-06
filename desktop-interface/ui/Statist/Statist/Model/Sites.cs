@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Statist.Model
 {
-    class Sites
+    public class Sites
     {
         public int Id { get; set; }
         public string Name { get; set; }

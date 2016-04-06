@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Statist.Model
 {
-    class PersonPageRanks
+    public class PersonPageRanks
     {
         public int PersonId { get; set; }
         public int PageId { get; set; }
