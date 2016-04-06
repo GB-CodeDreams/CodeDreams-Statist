@@ -95,6 +95,7 @@
             // 
             // cmbSite
             // 
+            this.cmbSite.DisplayMember = "Name";
             this.cmbSite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSite.FormattingEnabled = true;
             this.cmbSite.Location = new System.Drawing.Point(62, 25);

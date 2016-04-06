@@ -25,10 +25,7 @@ namespace Statist
             sites = DBInitializer.FillSites();
             pages = DBInitializer.FillPages();
 
-            foreach (var site in sites)
-            {
-                cmbSite.Items.Add(site.Name);
-            }
+            cmbSite.DataSource = sites;
         }
 
         private void btnApply_Click(object sender, EventArgs e)
