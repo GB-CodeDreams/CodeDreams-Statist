@@ -5,6 +5,8 @@ require './environments'
 require './models/person'
 require './models/keyword'
 require './models/person_page_rank'
+require './models/page'
+require './models/site'
 
 get '/' do
  a = {a: "c", b: "b"}
