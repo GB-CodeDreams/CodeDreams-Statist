@@ -67,7 +67,7 @@
             this.tbStatistics.Location = new System.Drawing.Point(12, 12);
             this.tbStatistics.Name = "tbStatistics";
             this.tbStatistics.SelectedIndex = 0;
-            this.tbStatistics.Size = new System.Drawing.Size(689, 399);
+            this.tbStatistics.Size = new System.Drawing.Size(634, 399);
             this.tbStatistics.TabIndex = 0;
             // 
             // tbGeneralStatistics
@@ -83,7 +83,7 @@
             this.tbGeneralStatistics.Location = new System.Drawing.Point(4, 25);
             this.tbGeneralStatistics.Name = "tbGeneralStatistics";
             this.tbGeneralStatistics.Padding = new System.Windows.Forms.Padding(3);
-            this.tbGeneralStatistics.Size = new System.Drawing.Size(1203, 370);
+            this.tbGeneralStatistics.Size = new System.Drawing.Size(681, 370);
             this.tbGeneralStatistics.TabIndex = 0;
             this.tbGeneralStatistics.Text = "Общая статистика";
             // 
@@ -179,7 +179,7 @@
             this.tbDailyStatistics.Location = new System.Drawing.Point(4, 25);
             this.tbDailyStatistics.Name = "tbDailyStatistics";
             this.tbDailyStatistics.Padding = new System.Windows.Forms.Padding(3);
-            this.tbDailyStatistics.Size = new System.Drawing.Size(681, 370);
+            this.tbDailyStatistics.Size = new System.Drawing.Size(626, 370);
             this.tbDailyStatistics.TabIndex = 1;
             this.tbDailyStatistics.Text = "Ежедневная статистика";
             // 
@@ -200,7 +200,7 @@
             this.cmbSiteDaily.FormattingEnabled = true;
             this.cmbSiteDaily.Location = new System.Drawing.Point(109, 16);
             this.cmbSiteDaily.Name = "cmbSiteDaily";
-            this.cmbSiteDaily.Size = new System.Drawing.Size(186, 26);
+            this.cmbSiteDaily.Size = new System.Drawing.Size(127, 26);
             this.cmbSiteDaily.TabIndex = 4;
             // 
             // label2
@@ -230,28 +230,30 @@
             this.cmbPersonDaily.FormattingEnabled = true;
             this.cmbPersonDaily.Location = new System.Drawing.Point(109, 64);
             this.cmbPersonDaily.Name = "cmbPersonDaily";
-            this.cmbPersonDaily.Size = new System.Drawing.Size(186, 26);
+            this.cmbPersonDaily.Size = new System.Drawing.Size(128, 26);
             this.cmbPersonDaily.TabIndex = 7;
             // 
             // dtpPeriodFrom
             // 
-            this.dtpPeriodFrom.Location = new System.Drawing.Point(109, 118);
+            this.dtpPeriodFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpPeriodFrom.Location = new System.Drawing.Point(110, 118);
             this.dtpPeriodFrom.Name = "dtpPeriodFrom";
-            this.dtpPeriodFrom.Size = new System.Drawing.Size(182, 24);
+            this.dtpPeriodFrom.Size = new System.Drawing.Size(127, 24);
             this.dtpPeriodFrom.TabIndex = 8;
             // 
             // dtpPeriodBefore
             // 
-            this.dtpPeriodBefore.Location = new System.Drawing.Point(109, 161);
+            this.dtpPeriodBefore.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpPeriodBefore.Location = new System.Drawing.Point(110, 161);
             this.dtpPeriodBefore.Name = "dtpPeriodBefore";
-            this.dtpPeriodBefore.Size = new System.Drawing.Size(182, 24);
+            this.dtpPeriodBefore.Size = new System.Drawing.Size(127, 24);
             this.dtpPeriodBefore.TabIndex = 9;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(6, 123);
+            this.label4.Location = new System.Drawing.Point(7, 123);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 18);
             this.label4.TabIndex = 10;
@@ -261,7 +263,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(75, 123);
+            this.label5.Location = new System.Drawing.Point(76, 123);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(16, 18);
             this.label5.TabIndex = 11;
@@ -271,7 +273,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(65, 166);
+            this.label6.Location = new System.Drawing.Point(66, 166);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 18);
             this.label6.TabIndex = 12;
@@ -283,7 +285,7 @@
             this.dgvDailyStatistics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column3,
             this.Column4});
-            this.dgvDailyStatistics.Location = new System.Drawing.Point(314, 16);
+            this.dgvDailyStatistics.Location = new System.Drawing.Point(258, 16);
             this.dgvDailyStatistics.Name = "dgvDailyStatistics";
             this.dgvDailyStatistics.ReadOnly = true;
             this.dgvDailyStatistics.Size = new System.Drawing.Size(347, 336);
@@ -308,7 +310,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(713, 423);
+            this.ClientSize = new System.Drawing.Size(659, 423);
             this.Controls.Add(this.tbStatistics);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;

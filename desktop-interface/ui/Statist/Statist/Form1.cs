@@ -27,6 +27,8 @@ namespace Statist
             pages = DBInitializer.FillPages();
 
             cmbSiteGeneral.DataSource = sites;
+            cmbSiteDaily.DataSource = sites;
+            cmbPersonDaily.DataSource = persons;
         }
 
         private void btnApply_Click(object sender, EventArgs e)
