@@ -1,0 +1,48 @@
+CREATE DATABASE IF NOT EXISTS statist_db;
+
+USE statist_db;
+
+CREATE TABLE IF NOT EXISTS persons (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(2048) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS keywords (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(2048) NOT NULL,
+  person_id INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (person_id) 
+    REFERENCES persons(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS sites (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(256) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS pages (
+  id INT NOT NULL AUTO_INCREMENT,
+  url VARCHAR(2048) NOT NULL,
+  site_id INT NOT NULL,
+  found_date_time DATETIME,
+  last_scan_date DATETIME, 
+  PRIMARY KEY (id),
+  FOREIGN KEY (site_id) 
+    REFERENCES sites(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS person_page_ranks (
+  person_id INT NOT NULL,
+  page_id INT NOT NULL,
+  FOREIGN KEY (person_id) 
+    REFERENCES persons(id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (page_id) 
+    REFERENCES pages(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
