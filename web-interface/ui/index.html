@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+	<script>
+	(function($) {
+		$(function() {
+			$('ul.tabs').each(function() {
+				$(this).find('li').each(function(i) {
+					$(this).click(function(){
+						$(this).addClass('current').siblings().removeClass('current')
+					          .parents('div.section').find('div.box').hide().end().find('div.box:eq('+i+')').fadeIn(150);
+					});
+				});
+			});
+		})
+	})(jQuery)
+	</script>
+	<script>
+		$(document).ready(function(){
+			$("#click_for_result").click(function(){
+				// if($("#result").is(":hidden") && $("#result1").is(":hidden") && $("#result2").is(":hidden")){
+					$("#result").show().html("100500");
+					$("#result1").show().html("50000");
+					$("#result2").show().html("10000");
+				// } else {
+				// 	$("#result").hide();
+				// 	$("#result1").hide();
+				// 	$("#result2").hide();
+				// }
+				return false;
+			});
+		});
+	</script>
+	<script>
+		$(document).ready(function(){
+			$("#hide_result").click(function(){
+				$("#result").hide();
+				$("#result1").hide();
+				$("#result2").hide();
+				return false;
+			});
+		});
+	</script>
+	<div class="section">
+		  <ul class="tabs">
+			    <li class="current">Общая статистика</li>
+			    <li>Ежендневная статистика</li>
+		  </ul>
+		  <div class="box visible">
+		    	<form action="">
+				<label for="site" >Сайт:
+					<select id="site" class="site">
+						<option value="">lenta.ru</option>
+						<option value="">lenta.ru</option>
+						<option value="">lenta.ru</option>
+					</select>
+					<button id="click_for_result">Применить</button>
+				</label>
+			</form>
+			<table>
+				<tr>
+					<th>Имя</th>
+					<th>Количество упоминаний</th>
+				</tr>
+				<tr>
+					<td>Фамилия 1</td>
+					<td><div id="result"></div></td>
+				</tr>
+				<tr>
+					<td>Фамилия2</td>
+					<td><div id="result1"></div></td>
+				</tr>
+				<tr>
+					<td>Фамилия3</td>
+					<td><div id="result2"></div></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+			<button class="hide_result" id="hide_result">Сброс</button>
+
+		  </div>
+		  <div class="box">
+		    	<form action="">
+				<table class="every_day">
+					<tr>
+						<td><label for="site">Cайт:</td>
+							<td><select id="site" class="every_day_select">
+								<option value="">lenta.ru</option>
+								<option value="">lenta.ru</option>
+								<option value="">lenta.ru</option>
+							</select>
+						</label></td>
+					</tr>
+					<tr>
+						<td><label for="person">Личность:</td>
+						<td>
+							<select id="person" class="every_day_select">
+								<option value="">Фамилия1</option>
+								<option value="">Фамилия2</option>
+								<option value="">Фамилия3</option>
+							</select>
+						
+						    </label>
+						</td>
+					</tr>
+					<tr>
+						<td><label for="date">Период с:</td>
+							<td>
+								<input type="date">
+								по:<input type="date">
+														</label>
+														
+							</td>
+					</tr>
+					<tr>
+						<td><button>Применить</button></td>
+						<td></td>
+					</tr>
+				</table>
+			</form>
+			<table>
+				<tr>
+					<th>Дата</th>
+					<th>Количество упоминаний</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		  </div>
+	</div>
+
+</body>
+</html>
