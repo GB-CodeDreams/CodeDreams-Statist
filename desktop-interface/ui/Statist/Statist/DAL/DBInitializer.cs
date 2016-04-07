@@ -77,8 +77,8 @@ namespace Statist.DAL
             };
 
             pages.Add(pageLenta);
-            pages.Add(pageLenta1);
             pages.Add(pageRia);
+            pages.Add(pageLenta1);            
             pages.Add(pageRia1);
 
             FillPersonPageRanks(pages);
@@ -111,13 +111,13 @@ namespace Statist.DAL
             else if(list is List<Pages>)
             {
                 (list[0] as Pages).PersonPageRanks.Add(personPageRank1);
-                (list[0] as Pages).PersonPageRanks.Add(personPageRank2);
-                (list[0] as Pages).PersonPageRanks.Add(personPageRank5);
-                (list[0] as Pages).PersonPageRanks.Add(personPageRank7);
-                (list[1] as Pages).PersonPageRanks.Add(personPageRank3);
+                (list[0] as Pages).PersonPageRanks.Add(personPageRank3);
+                (list[1] as Pages).PersonPageRanks.Add(personPageRank2);
                 (list[1] as Pages).PersonPageRanks.Add(personPageRank4);
-                (list[1] as Pages).PersonPageRanks.Add(personPageRank6);
-                (list[1] as Pages).PersonPageRanks.Add(personPageRank8);
+                (list[2] as Pages).PersonPageRanks.Add(personPageRank5);
+                (list[2] as Pages).PersonPageRanks.Add(personPageRank6);
+                (list[3] as Pages).PersonPageRanks.Add(personPageRank7);
+                (list[3] as Pages).PersonPageRanks.Add(personPageRank8);
             }
         }
     }
