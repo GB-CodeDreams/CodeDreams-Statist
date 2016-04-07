@@ -28,3 +28,12 @@ get '/total_statistic' do
     PersonPageRank.hash_result_without_id(result).to_json
   end
 end
+
+get '/day_statistic' do
+  query = [params["site"], params["query_word"], params["start_date"], params["end_date"]].compact
+  puts query
+  if query.length == 4
+    result = PersonPageRank.day_statistic(*query)
+    PersonPageRank.hash_result_without_id(result).to_json
+  end
+end
