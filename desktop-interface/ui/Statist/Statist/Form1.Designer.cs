@@ -35,13 +35,28 @@
             this.dgvGeneralStatistics = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnApply = new System.Windows.Forms.Button();
-            this.cmbSite = new System.Windows.Forms.ComboBox();
+            this.btnApplyGeneral = new System.Windows.Forms.Button();
+            this.cmbSiteGeneral = new System.Windows.Forms.ComboBox();
             this.lblSite = new System.Windows.Forms.Label();
             this.tbDailyStatistics = new System.Windows.Forms.TabPage();
+            this.btnApplyDaily = new System.Windows.Forms.Button();
+            this.cmbSiteDaily = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbPersonDaily = new System.Windows.Forms.ComboBox();
+            this.dtpPeriodFrom = new System.Windows.Forms.DateTimePicker();
+            this.dtpPeriodBefore = new System.Windows.Forms.DateTimePicker();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.dgvDailyStatistics = new System.Windows.Forms.DataGridView();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbStatistics.SuspendLayout();
             this.tbGeneralStatistics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGeneralStatistics)).BeginInit();
+            this.tbDailyStatistics.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDailyStatistics)).BeginInit();
             this.SuspendLayout();
             // 
             // tbStatistics
@@ -52,7 +67,7 @@
             this.tbStatistics.Location = new System.Drawing.Point(12, 12);
             this.tbStatistics.Name = "tbStatistics";
             this.tbStatistics.SelectedIndex = 0;
-            this.tbStatistics.Size = new System.Drawing.Size(1211, 399);
+            this.tbStatistics.Size = new System.Drawing.Size(689, 399);
             this.tbStatistics.TabIndex = 0;
             // 
             // tbGeneralStatistics
@@ -61,8 +76,8 @@
             this.tbGeneralStatistics.Controls.Add(this.label1);
             this.tbGeneralStatistics.Controls.Add(this.txtUpdateDate);
             this.tbGeneralStatistics.Controls.Add(this.dgvGeneralStatistics);
-            this.tbGeneralStatistics.Controls.Add(this.btnApply);
-            this.tbGeneralStatistics.Controls.Add(this.cmbSite);
+            this.tbGeneralStatistics.Controls.Add(this.btnApplyGeneral);
+            this.tbGeneralStatistics.Controls.Add(this.cmbSiteGeneral);
             this.tbGeneralStatistics.Controls.Add(this.lblSite);
             this.tbGeneralStatistics.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbGeneralStatistics.Location = new System.Drawing.Point(4, 25);
@@ -116,25 +131,25 @@
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             // 
-            // btnApply
+            // btnApplyGeneral
             // 
-            this.btnApply.Location = new System.Drawing.Point(102, 71);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(100, 32);
-            this.btnApply.TabIndex = 2;
-            this.btnApply.Text = "Применить";
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            this.btnApplyGeneral.Location = new System.Drawing.Point(102, 71);
+            this.btnApplyGeneral.Name = "btnApplyGeneral";
+            this.btnApplyGeneral.Size = new System.Drawing.Size(100, 32);
+            this.btnApplyGeneral.TabIndex = 2;
+            this.btnApplyGeneral.Text = "Применить";
+            this.btnApplyGeneral.UseVisualStyleBackColor = true;
+            this.btnApplyGeneral.Click += new System.EventHandler(this.btnApply_Click);
             // 
-            // cmbSite
+            // cmbSiteGeneral
             // 
-            this.cmbSite.DisplayMember = "Name";
-            this.cmbSite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSite.FormattingEnabled = true;
-            this.cmbSite.Location = new System.Drawing.Point(62, 25);
-            this.cmbSite.Name = "cmbSite";
-            this.cmbSite.Size = new System.Drawing.Size(186, 26);
-            this.cmbSite.TabIndex = 1;
+            this.cmbSiteGeneral.DisplayMember = "Name";
+            this.cmbSiteGeneral.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSiteGeneral.FormattingEnabled = true;
+            this.cmbSiteGeneral.Location = new System.Drawing.Point(62, 25);
+            this.cmbSiteGeneral.Name = "cmbSiteGeneral";
+            this.cmbSiteGeneral.Size = new System.Drawing.Size(186, 26);
+            this.cmbSiteGeneral.TabIndex = 1;
             // 
             // lblSite
             // 
@@ -148,20 +163,152 @@
             // tbDailyStatistics
             // 
             this.tbDailyStatistics.BackColor = System.Drawing.Color.Transparent;
+            this.tbDailyStatistics.Controls.Add(this.dgvDailyStatistics);
+            this.tbDailyStatistics.Controls.Add(this.label6);
+            this.tbDailyStatistics.Controls.Add(this.label5);
+            this.tbDailyStatistics.Controls.Add(this.label4);
+            this.tbDailyStatistics.Controls.Add(this.dtpPeriodBefore);
+            this.tbDailyStatistics.Controls.Add(this.dtpPeriodFrom);
+            this.tbDailyStatistics.Controls.Add(this.cmbPersonDaily);
+            this.tbDailyStatistics.Controls.Add(this.label3);
+            this.tbDailyStatistics.Controls.Add(this.btnApplyDaily);
+            this.tbDailyStatistics.Controls.Add(this.cmbSiteDaily);
+            this.tbDailyStatistics.Controls.Add(this.label2);
             this.tbDailyStatistics.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbDailyStatistics.ForeColor = System.Drawing.Color.Transparent;
             this.tbDailyStatistics.Location = new System.Drawing.Point(4, 25);
             this.tbDailyStatistics.Name = "tbDailyStatistics";
             this.tbDailyStatistics.Padding = new System.Windows.Forms.Padding(3);
-            this.tbDailyStatistics.Size = new System.Drawing.Size(1203, 370);
+            this.tbDailyStatistics.Size = new System.Drawing.Size(681, 370);
             this.tbDailyStatistics.TabIndex = 1;
             this.tbDailyStatistics.Text = "Ежедневная статистика";
+            // 
+            // btnApplyDaily
+            // 
+            this.btnApplyDaily.ForeColor = System.Drawing.Color.Black;
+            this.btnApplyDaily.Location = new System.Drawing.Point(136, 204);
+            this.btnApplyDaily.Name = "btnApplyDaily";
+            this.btnApplyDaily.Size = new System.Drawing.Size(100, 32);
+            this.btnApplyDaily.TabIndex = 5;
+            this.btnApplyDaily.Text = "Применить";
+            this.btnApplyDaily.UseVisualStyleBackColor = true;
+            // 
+            // cmbSiteDaily
+            // 
+            this.cmbSiteDaily.DisplayMember = "Name";
+            this.cmbSiteDaily.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSiteDaily.FormattingEnabled = true;
+            this.cmbSiteDaily.Location = new System.Drawing.Point(109, 16);
+            this.cmbSiteDaily.Name = "cmbSiteDaily";
+            this.cmbSiteDaily.Size = new System.Drawing.Size(186, 26);
+            this.cmbSiteDaily.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.Location = new System.Drawing.Point(47, 19);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(42, 18);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Сайт";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(14, 67);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(75, 18);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Личность";
+            // 
+            // cmbPersonDaily
+            // 
+            this.cmbPersonDaily.DisplayMember = "Name";
+            this.cmbPersonDaily.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPersonDaily.FormattingEnabled = true;
+            this.cmbPersonDaily.Location = new System.Drawing.Point(109, 64);
+            this.cmbPersonDaily.Name = "cmbPersonDaily";
+            this.cmbPersonDaily.Size = new System.Drawing.Size(186, 26);
+            this.cmbPersonDaily.TabIndex = 7;
+            // 
+            // dtpPeriodFrom
+            // 
+            this.dtpPeriodFrom.Location = new System.Drawing.Point(109, 118);
+            this.dtpPeriodFrom.Name = "dtpPeriodFrom";
+            this.dtpPeriodFrom.Size = new System.Drawing.Size(182, 24);
+            this.dtpPeriodFrom.TabIndex = 8;
+            // 
+            // dtpPeriodBefore
+            // 
+            this.dtpPeriodBefore.Location = new System.Drawing.Point(109, 161);
+            this.dtpPeriodBefore.Name = "dtpPeriodBefore";
+            this.dtpPeriodBefore.Size = new System.Drawing.Size(182, 24);
+            this.dtpPeriodBefore.TabIndex = 9;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(6, 123);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 18);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Период:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(75, 123);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(16, 18);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "с";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Black;
+            this.label6.Location = new System.Drawing.Point(65, 166);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(26, 18);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "до";
+            // 
+            // dgvDailyStatistics
+            // 
+            this.dgvDailyStatistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDailyStatistics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column3,
+            this.Column4});
+            this.dgvDailyStatistics.Location = new System.Drawing.Point(314, 16);
+            this.dgvDailyStatistics.Name = "dgvDailyStatistics";
+            this.dgvDailyStatistics.ReadOnly = true;
+            this.dgvDailyStatistics.Size = new System.Drawing.Size(347, 336);
+            this.dgvDailyStatistics.TabIndex = 13;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "LastScanDate";
+            this.Column3.HeaderText = "Дата";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 200;
+            // 
+            // Column4
+            // 
+            this.Column4.DataPropertyName = "Rank";
+            this.Column4.HeaderText = "Количество упоминаний";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             // 
             // frmStatist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1249, 423);
+            this.ClientSize = new System.Drawing.Size(713, 423);
             this.Controls.Add(this.tbStatistics);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -172,6 +319,9 @@
             this.tbGeneralStatistics.ResumeLayout(false);
             this.tbGeneralStatistics.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGeneralStatistics)).EndInit();
+            this.tbDailyStatistics.ResumeLayout(false);
+            this.tbDailyStatistics.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDailyStatistics)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -182,13 +332,26 @@
         private System.Windows.Forms.TabPage tbGeneralStatistics;
         private System.Windows.Forms.TabPage tbDailyStatistics;
         private System.Windows.Forms.Label lblSite;
-        private System.Windows.Forms.ComboBox cmbSite;
+        private System.Windows.Forms.ComboBox cmbSiteGeneral;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtUpdateDate;
         private System.Windows.Forms.DataGridView dgvGeneralStatistics;
-        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Button btnApplyGeneral;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DateTimePicker dtpPeriodFrom;
+        private System.Windows.Forms.ComboBox cmbPersonDaily;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnApplyDaily;
+        private System.Windows.Forms.ComboBox cmbSiteDaily;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DateTimePicker dtpPeriodBefore;
+        private System.Windows.Forms.DataGridView dgvDailyStatistics;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
     }
 }
 

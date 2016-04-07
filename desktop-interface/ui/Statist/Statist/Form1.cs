@@ -26,13 +26,13 @@ namespace Statist
             sites = DBInitializer.FillSites();
             pages = DBInitializer.FillPages();
 
-            cmbSite.DataSource = sites;
+            cmbSiteGeneral.DataSource = sites;
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
             generalStatistics.Clear();
-            var selectedSite = cmbSite.SelectedItem;
+            var selectedSite = cmbSiteGeneral.SelectedItem;
             Pages page = Pages.GetPageById(pages, (selectedSite as Sites).Id);
 
             if(page != null)
