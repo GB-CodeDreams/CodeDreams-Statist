@@ -48,20 +48,38 @@ namespace Statist.DAL
                 Id = 1,
                 Url = "lenta.ru",
                 SiteId = 1,
-                FoundDateTime = new DateTime(2016, 04, 06, 18, 05, 30),
-                LastScanDate = new DateTime(2016, 04, 06, 18, 13, 30)
+                FoundDateTime = new DateTime(2016, 04, 01, 18, 05, 30),
+                LastScanDate = new DateTime(2016, 04, 01, 18, 13, 30)
+            };
+            Pages pageLenta1 = new Pages()
+            {
+                Id = 3,
+                Url = "lenta.ru/1",
+                SiteId = 1,
+                FoundDateTime = new DateTime(2016, 04, 02, 16, 05, 30),
+                LastScanDate = new DateTime(2016, 04, 02, 16, 13, 30)
             };
             Pages pageRia = new Pages()
             {
                 Id = 2,
                 Url = "ria.ru",
                 SiteId = 2,
-                FoundDateTime = new DateTime(2016, 04, 06, 18, 10, 30),
-                LastScanDate = new DateTime(2016, 04, 06, 18, 23, 30)
+                FoundDateTime = new DateTime(2016, 04, 01, 18, 10, 30),
+                LastScanDate = new DateTime(2016, 04, 01, 18, 23, 30)
+            };
+            Pages pageRia1 = new Pages()
+            {
+                Id = 4,
+                Url = "ria.ru/1",
+                SiteId = 2,
+                FoundDateTime = new DateTime(2016, 04, 03, 10, 05, 30),
+                LastScanDate = new DateTime(2016, 04, 03, 10, 13, 30)
             };
 
             pages.Add(pageLenta);
+            pages.Add(pageLenta1);
             pages.Add(pageRia);
+            pages.Add(pageRia1);
 
             FillPersonPageRanks(pages);
 
@@ -70,24 +88,36 @@ namespace Statist.DAL
 
         static void FillPersonPageRanks<T>(List<T> list)
         {
-            PersonPageRanks personPageRank1 = new PersonPageRanks() { PersonId = 1, PageId = 1, Rank = 80000 };
-            PersonPageRanks personPageRank2 = new PersonPageRanks() { PersonId = 1, PageId = 2, Rank = 70000 };
-            PersonPageRanks personPageRank3 = new PersonPageRanks() { PersonId = 2, PageId = 1, Rank = 60000 };
-            PersonPageRanks personPageRank4 = new PersonPageRanks() { PersonId = 2, PageId = 2, Rank = 50000 };
+            PersonPageRanks personPageRank1 = new PersonPageRanks() { PersonId = 1, PageId = 1, Rank = 8 };
+            PersonPageRanks personPageRank2 = new PersonPageRanks() { PersonId = 1, PageId = 2, Rank = 7 };
+            PersonPageRanks personPageRank3 = new PersonPageRanks() { PersonId = 2, PageId = 1, Rank = 6 };
+            PersonPageRanks personPageRank4 = new PersonPageRanks() { PersonId = 2, PageId = 2, Rank = 5 };
+            PersonPageRanks personPageRank5 = new PersonPageRanks() { PersonId = 1, PageId = 3, Rank = 4 };
+            PersonPageRanks personPageRank6 = new PersonPageRanks() { PersonId = 2, PageId = 3, Rank = 3 };
+            PersonPageRanks personPageRank7 = new PersonPageRanks() { PersonId = 1, PageId = 4, Rank = 2 };
+            PersonPageRanks personPageRank8 = new PersonPageRanks() { PersonId = 2, PageId = 4, Rank = 1 };
 
             if (list is List<Persons>)
             {
                 (list[0] as Persons).PersonPageRanks.Add(personPageRank1);
                 (list[0] as Persons).PersonPageRanks.Add(personPageRank2);
+                (list[0] as Persons).PersonPageRanks.Add(personPageRank5);
+                (list[0] as Persons).PersonPageRanks.Add(personPageRank7);
                 (list[1] as Persons).PersonPageRanks.Add(personPageRank3);
                 (list[1] as Persons).PersonPageRanks.Add(personPageRank4);
+                (list[1] as Persons).PersonPageRanks.Add(personPageRank6);
+                (list[1] as Persons).PersonPageRanks.Add(personPageRank8);
             }
             else if(list is List<Pages>)
             {
                 (list[0] as Pages).PersonPageRanks.Add(personPageRank1);
                 (list[0] as Pages).PersonPageRanks.Add(personPageRank2);
+                (list[0] as Pages).PersonPageRanks.Add(personPageRank5);
+                (list[0] as Pages).PersonPageRanks.Add(personPageRank7);
                 (list[1] as Pages).PersonPageRanks.Add(personPageRank3);
                 (list[1] as Pages).PersonPageRanks.Add(personPageRank4);
+                (list[1] as Pages).PersonPageRanks.Add(personPageRank6);
+                (list[1] as Pages).PersonPageRanks.Add(personPageRank8);
             }
         }
     }
