@@ -20,3 +20,11 @@ end
 get '/users' do
 	@persons = Persons.all.to_json
 end
+
+get '/total_statistic' do
+  site = params[:site]
+  if site
+    result = PersonPageRank.site_persons_rank(site)
+    PersonPageRank.hash_result_without_id(result).to_json
+  end
+end
