@@ -18,5 +18,9 @@ namespace Statist.Model
         {
             return pages.Where(i => i.Id == id).FirstOrDefault();
         }
+        public static List<Pages> GetPagesBySiteId(List<Pages> pages, int id)
+        {
+            return pages.Where(si => si.SiteId == id).ToList();
+        }
     }
 }

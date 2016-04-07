@@ -38,14 +38,13 @@ namespace Statist
             if(page != null)
                 txtUpdateDate.Text = page.LastScanDate.ToString();
 
-            List<Pages> newPages = pages.Where(si => si.SiteId == (selectedSite as Sites).Id).ToList();
+            List<Pages> newPages = Pages.GetPagesBySiteId(pages, (selectedSite as Sites).Id);
 
             foreach (var person in persons)
             {
                 GeneralStatistics generalStatist = new GeneralStatistics();
                 generalStatist.Name = person.Name;
                 generalStatist.Rank = newPages.Where(si => si.SiteId == (selectedSite as Sites).Id).SelectMany(p => p.PersonPageRanks).Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
-                //generalStatist.Rank = person.PersonPageRanks.Where(s => s.PersonId == person.Id).Sum(r => r.Rank);
                 generalStatistics.Add(generalStatist);
             }
             dgvGeneralStatistics.DataSource = generalStatistics;
