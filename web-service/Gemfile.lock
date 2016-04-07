@@ -23,6 +23,7 @@ GEM
     minitest (5.8.4)
     mysql2 (0.4.3)
     mysql2 (0.4.3-x86-mingw32)
+    puma (3.3.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -50,7 +51,11 @@ DEPENDENCIES
   activerecord
   foreman
   mysql2
+  puma
   rake
   sinatra (= 1.4.7)
   sinatra-activerecord
   sqlite3
+
+BUNDLED WITH
+   1.11.2
