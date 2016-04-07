@@ -30,18 +30,18 @@
         {
             this.tbStatistics = new System.Windows.Forms.TabControl();
             this.tbGeneralStatistics = new System.Windows.Forms.TabPage();
-            this.tbDailyStatistics = new System.Windows.Forms.TabPage();
-            this.lblSite = new System.Windows.Forms.Label();
-            this.cmbSite = new System.Windows.Forms.ComboBox();
-            this.btnApply = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.txtUpdateDate = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtUpdateDate = new System.Windows.Forms.TextBox();
+            this.dgvGeneralStatistics = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.cmbSite = new System.Windows.Forms.ComboBox();
+            this.lblSite = new System.Windows.Forms.Label();
+            this.tbDailyStatistics = new System.Windows.Forms.TabPage();
             this.tbStatistics.SuspendLayout();
             this.tbGeneralStatistics.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGeneralStatistics)).BeginInit();
             this.SuspendLayout();
             // 
             // tbStatistics
@@ -60,7 +60,7 @@
             this.tbGeneralStatistics.BackColor = System.Drawing.Color.Transparent;
             this.tbGeneralStatistics.Controls.Add(this.label1);
             this.tbGeneralStatistics.Controls.Add(this.txtUpdateDate);
-            this.tbGeneralStatistics.Controls.Add(this.dataGridView1);
+            this.tbGeneralStatistics.Controls.Add(this.dgvGeneralStatistics);
             this.tbGeneralStatistics.Controls.Add(this.btnApply);
             this.tbGeneralStatistics.Controls.Add(this.cmbSite);
             this.tbGeneralStatistics.Controls.Add(this.lblSite);
@@ -72,60 +72,14 @@
             this.tbGeneralStatistics.TabIndex = 0;
             this.tbGeneralStatistics.Text = "Общая статистика";
             // 
-            // tbDailyStatistics
+            // label1
             // 
-            this.tbDailyStatistics.BackColor = System.Drawing.Color.Transparent;
-            this.tbDailyStatistics.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbDailyStatistics.ForeColor = System.Drawing.Color.Transparent;
-            this.tbDailyStatistics.Location = new System.Drawing.Point(4, 25);
-            this.tbDailyStatistics.Name = "tbDailyStatistics";
-            this.tbDailyStatistics.Padding = new System.Windows.Forms.Padding(3);
-            this.tbDailyStatistics.Size = new System.Drawing.Size(888, 407);
-            this.tbDailyStatistics.TabIndex = 1;
-            this.tbDailyStatistics.Text = "Ежедневная статистика";
-            // 
-            // lblSite
-            // 
-            this.lblSite.AutoSize = true;
-            this.lblSite.Location = new System.Drawing.Point(14, 25);
-            this.lblSite.Name = "lblSite";
-            this.lblSite.Size = new System.Drawing.Size(42, 18);
-            this.lblSite.TabIndex = 0;
-            this.lblSite.Text = "Сайт";
-            // 
-            // cmbSite
-            // 
-            this.cmbSite.DisplayMember = "Name";
-            this.cmbSite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSite.FormattingEnabled = true;
-            this.cmbSite.Location = new System.Drawing.Point(62, 25);
-            this.cmbSite.Name = "cmbSite";
-            this.cmbSite.Size = new System.Drawing.Size(186, 26);
-            this.cmbSite.TabIndex = 1;
-            // 
-            // btnApply
-            // 
-            this.btnApply.Location = new System.Drawing.Point(102, 71);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(100, 32);
-            this.btnApply.TabIndex = 2;
-            this.btnApply.Text = "Применить";
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2});
-            this.dataGridView1.Location = new System.Drawing.Point(279, 71);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(296, 283);
-            this.dataGridView1.TabIndex = 3;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(276, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(131, 18);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Дата обновления";
             // 
             // txtUpdateDate
             // 
@@ -135,14 +89,17 @@
             this.txtUpdateDate.Size = new System.Drawing.Size(162, 24);
             this.txtUpdateDate.TabIndex = 4;
             // 
-            // label1
+            // dgvGeneralStatistics
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(276, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(131, 18);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Дата обновления";
+            this.dgvGeneralStatistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvGeneralStatistics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
+            this.dgvGeneralStatistics.Location = new System.Drawing.Point(279, 71);
+            this.dgvGeneralStatistics.Name = "dgvGeneralStatistics";
+            this.dgvGeneralStatistics.ReadOnly = true;
+            this.dgvGeneralStatistics.Size = new System.Drawing.Size(296, 283);
+            this.dgvGeneralStatistics.TabIndex = 3;
             // 
             // Column1
             // 
@@ -159,6 +116,47 @@
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             // 
+            // btnApply
+            // 
+            this.btnApply.Location = new System.Drawing.Point(102, 71);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(100, 32);
+            this.btnApply.TabIndex = 2;
+            this.btnApply.Text = "Применить";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // cmbSite
+            // 
+            this.cmbSite.DisplayMember = "Name";
+            this.cmbSite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSite.FormattingEnabled = true;
+            this.cmbSite.Location = new System.Drawing.Point(62, 25);
+            this.cmbSite.Name = "cmbSite";
+            this.cmbSite.Size = new System.Drawing.Size(186, 26);
+            this.cmbSite.TabIndex = 1;
+            // 
+            // lblSite
+            // 
+            this.lblSite.AutoSize = true;
+            this.lblSite.Location = new System.Drawing.Point(14, 25);
+            this.lblSite.Name = "lblSite";
+            this.lblSite.Size = new System.Drawing.Size(42, 18);
+            this.lblSite.TabIndex = 0;
+            this.lblSite.Text = "Сайт";
+            // 
+            // tbDailyStatistics
+            // 
+            this.tbDailyStatistics.BackColor = System.Drawing.Color.Transparent;
+            this.tbDailyStatistics.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbDailyStatistics.ForeColor = System.Drawing.Color.Transparent;
+            this.tbDailyStatistics.Location = new System.Drawing.Point(4, 25);
+            this.tbDailyStatistics.Name = "tbDailyStatistics";
+            this.tbDailyStatistics.Padding = new System.Windows.Forms.Padding(3);
+            this.tbDailyStatistics.Size = new System.Drawing.Size(1203, 370);
+            this.tbDailyStatistics.TabIndex = 1;
+            this.tbDailyStatistics.Text = "Ежедневная статистика";
+            // 
             // frmStatist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -173,7 +171,7 @@
             this.tbStatistics.ResumeLayout(false);
             this.tbGeneralStatistics.ResumeLayout(false);
             this.tbGeneralStatistics.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGeneralStatistics)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -187,7 +185,7 @@
         private System.Windows.Forms.ComboBox cmbSite;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtUpdateDate;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvGeneralStatistics;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;

@@ -16,6 +16,7 @@ namespace Statist
         List<Sites> sites = new List<Sites>();
         List<Persons> persons = new List<Persons>();
         List<Pages> pages = new List<Pages>();
+        List<GeneralStatistics> generalStatistics = new List<GeneralStatistics>();
 
         public frmStatist()
         {
@@ -30,9 +31,25 @@ namespace Statist
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            var item = cmbSite.SelectedItem;
-            Pages page = Pages.GetPageById(pages, (item as Sites).Id);
-            txtUpdateDate.Text = page.LastScanDate.ToString();
+            generalStatistics.Clear();
+            var selectedSite = cmbSite.SelectedItem;
+            Pages page = Pages.GetPageById(pages, (selectedSite as Sites).Id);
+
+            if(page != null)
+                txtUpdateDate.Text = page.LastScanDate.ToString();
+
+            List<Pages> newPages = pages.Where(si => si.SiteId == (selectedSite as Sites).Id).ToList();
+
+            foreach (var person in persons)
+            {
+                GeneralStatistics generalStatist = new GeneralStatistics();
+                generalStatist.Name = person.Name;
+                generalStatist.Rank = newPages.Where(si => si.SiteId == (selectedSite as Sites).Id).SelectMany(p => p.PersonPageRanks).Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
+                //generalStatist.Rank = person.PersonPageRanks.Where(s => s.PersonId == person.Id).Sum(r => r.Rank);
+                generalStatistics.Add(generalStatist);
+            }
+            dgvGeneralStatistics.DataSource = generalStatistics;
+            dgvGeneralStatistics.Refresh();         
         }
     }
 }
