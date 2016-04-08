@@ -15,7 +15,7 @@ class PersonPageRank < ActiveRecord::Base
       WHERE (s.name = '#{site}')
     }.gsub(/\s+/, ' ').strip
 
-    find_by_sql("#{person_rank} JOIN (#{site_pages}) as s_p ON s_p.id = r.page_id GROUP BY query_word")
+    find_by_sql("#{person_rank} JOIN (#{site_pages}) as s_p ON s_p.id = r.page_id GROUP BY query_word ORDER BY rank DESC")
   }
 
   scope :day_statistic, ->(site, person, start_date, end_date) {
