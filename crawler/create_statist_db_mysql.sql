@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS keywords (
   name VARCHAR(2048) NOT NULL UNIQUE,
   person_id INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (person_id) 
+  CONSTRAINT fk_keywords_persons FOREIGN KEY (person_id) 
     REFERENCES persons(id)
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS pages (
   found_date_time DATETIME,
   last_scan_date DATETIME, 
   PRIMARY KEY (id),
-  FOREIGN KEY (site_id) 
+  CONSTRAINT fk_pages_sites FOREIGN KEY (site_id) 
     REFERENCES sites(id)
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS pages (
 CREATE TABLE IF NOT EXISTS person_page_ranks (
   person_id INT NOT NULL,
   page_id INT NOT NULL,
-  FOREIGN KEY (person_id) 
+  CONSTRAINT fk_ranks_persons FOREIGN KEY (person_id) 
     REFERENCES persons(id)
     ON DELETE CASCADE,
-  FOREIGN KEY (page_id) 
+  CONSTRAINT fk_ranks_pages FOREIGN KEY (page_id) 
     REFERENCES pages(id)
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
