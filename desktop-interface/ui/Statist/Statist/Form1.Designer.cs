@@ -106,6 +106,7 @@
             // 
             // dgvGeneralStatistics
             // 
+            this.dgvGeneralStatistics.AllowUserToAddRows = false;
             this.dgvGeneralStatistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvGeneralStatistics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -185,6 +186,7 @@
             // 
             // dgvDailyStatistics
             // 
+            this.dgvDailyStatistics.AllowUserToAddRows = false;
             this.dgvDailyStatistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDailyStatistics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column3,
