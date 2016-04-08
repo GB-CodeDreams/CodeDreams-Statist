@@ -43,16 +43,22 @@ namespace Statist
 
             List<Pages> selectedPages = Pages.GetPagesBySiteId(pages, (selectedSiteGeneral as Sites).Id);
 
-            foreach (var person in persons)
+            if (selectedPages.Count != 0)
             {
-                GeneralStatistics generalStatist = new GeneralStatistics();
-                generalStatist.Name = person.Name;
-                generalStatist.Rank = selectedPages.Where(si => si.SiteId == (selectedSiteGeneral as Sites).Id).SelectMany(p => p.PersonPageRanks).
-                    Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
-                generalStatistics.Add(generalStatist);
+                foreach (var person in persons)
+                {
+                    GeneralStatistics generalStatist = new GeneralStatistics();
+                    generalStatist.Name = person.Name;
+                    generalStatist.Rank = selectedPages.Where(si => si.SiteId == (selectedSiteGeneral as Sites).Id).SelectMany(p => p.PersonPageRanks).
+                        Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
+                    generalStatistics.Add(generalStatist);
+                }
+                BindingSource bindGeneral = new BindingSource { DataSource = generalStatistics };
+                dgvGeneralStatistics.DataSource = bindGeneral;
+
             }
-            BindingSource bindGeneral = new BindingSource { DataSource = generalStatistics };
-            dgvGeneralStatistics.DataSource = bindGeneral;
+            else
+                MessageBox.Show("Данных не найдено.");
         }
 
         private void btnApplyDaily_Click(object sender, EventArgs e)
