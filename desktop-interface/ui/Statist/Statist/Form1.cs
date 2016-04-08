@@ -17,6 +17,7 @@ namespace Statist
         List<Persons> persons = new List<Persons>();
         List<Pages> pages = new List<Pages>();
         List<GeneralStatistics> generalStatistics = new List<GeneralStatistics>();
+        List<DailyStatistics> dailyStatistics = new List<DailyStatistics>();
 
         public frmStatist()
         {
@@ -26,30 +27,63 @@ namespace Statist
             sites = DBInitializer.FillSites();
             pages = DBInitializer.FillPages();
 
-            cmbSite.DataSource = sites;
+            cmbSiteGeneral.DataSource = sites;
+            cmbSiteDaily.DataSource = sites;
+            cmbPersonDaily.DataSource = persons;
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
             generalStatistics.Clear();
-            var selectedSite = cmbSite.SelectedItem;
-            Pages page = Pages.GetPageById(pages, (selectedSite as Sites).Id);
+            var selectedSiteGeneral = cmbSiteGeneral.SelectedItem;
+            Pages page = Pages.GetPageById(pages, (selectedSiteGeneral as Sites).Id);
 
             if(page != null)
                 txtUpdateDate.Text = page.LastScanDate.ToString();
 
-            List<Pages> newPages = pages.Where(si => si.SiteId == (selectedSite as Sites).Id).ToList();
+            List<Pages> selectedPages = Pages.GetPagesBySiteId(pages, (selectedSiteGeneral as Sites).Id);
 
             foreach (var person in persons)
             {
                 GeneralStatistics generalStatist = new GeneralStatistics();
                 generalStatist.Name = person.Name;
-                generalStatist.Rank = newPages.Where(si => si.SiteId == (selectedSite as Sites).Id).SelectMany(p => p.PersonPageRanks).Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
-                //generalStatist.Rank = person.PersonPageRanks.Where(s => s.PersonId == person.Id).Sum(r => r.Rank);
+                generalStatist.Rank = selectedPages.Where(si => si.SiteId == (selectedSiteGeneral as Sites).Id).SelectMany(p => p.PersonPageRanks).
+                    Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
                 generalStatistics.Add(generalStatist);
             }
-            dgvGeneralStatistics.DataSource = generalStatistics;
-            dgvGeneralStatistics.Refresh();         
+            BindingSource bindGeneral = new BindingSource { DataSource = generalStatistics };
+            dgvGeneralStatistics.DataSource = bindGeneral;
+        }
+
+        private void btnApplyDaily_Click(object sender, EventArgs e)
+        {
+            dailyStatistics.Clear();
+
+            var selectedSiteDaily = cmbSiteDaily.SelectedItem;
+            var selectedPersonDaily = cmbPersonDaily.SelectedItem;            
+            var periodFrom = dtpPeriodFrom.Value.Date;
+            var periodBefore = dtpPeriodBefore.Value.Date;
+            periodBefore = periodBefore.AddDays(1);
+
+            List<Pages> selectedPages = pages.Where(d => d.LastScanDate > periodFrom).Where(dt => dt.LastScanDate < periodBefore).
+                Where(si => si.SiteId == (selectedSiteDaily as Sites).Id).ToList();
+
+            if (selectedPages.Count != 0)
+            {
+                foreach (var page in selectedPages)
+                {
+                    DailyStatistics dailyStatist = new DailyStatistics();
+                    dailyStatist.LastScanDate = page.LastScanDate;
+                    dailyStatist.Rank = page.PersonPageRanks.Where(p => p.PersonId == (selectedPersonDaily as Persons).Id).Select(r => r.Rank).FirstOrDefault();
+                    dailyStatistics.Add(dailyStatist);
+                }
+                BindingSource bindDaily = new BindingSource { DataSource = dailyStatistics };
+                dgvDailyStatistics.DataSource = bindDaily;
+            }
+            else
+            {
+                MessageBox.Show("За указанный период поиск не производился.");
+            }
         }
     }
 }
