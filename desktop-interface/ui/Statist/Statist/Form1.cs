@@ -51,8 +51,8 @@ namespace Statist
                     Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
                 generalStatistics.Add(generalStatist);
             }
-            dgvGeneralStatistics.DataSource = generalStatistics;
-            dgvGeneralStatistics.Refresh();         
+            BindingSource bindGeneral = new BindingSource { DataSource = generalStatistics };
+            dgvGeneralStatistics.DataSource = bindGeneral;
         }
 
         private void btnApplyDaily_Click(object sender, EventArgs e)
@@ -68,8 +68,8 @@ namespace Statist
             List<Pages> selectedPages = pages.Where(d => d.LastScanDate > periodFrom).Where(dt => dt.LastScanDate < periodBefore).
                 Where(si => si.SiteId == (selectedSiteDaily as Sites).Id).ToList();
 
-            //if (selectedPages.Count != 0)
-            //{
+            if (selectedPages.Count != 0)
+            {
                 foreach (var page in selectedPages)
                 {
                     DailyStatistics dailyStatist = new DailyStatistics();
@@ -77,14 +77,13 @@ namespace Statist
                     dailyStatist.Rank = page.PersonPageRanks.Where(p => p.PersonId == (selectedPersonDaily as Persons).Id).Select(r => r.Rank).FirstOrDefault();
                     dailyStatistics.Add(dailyStatist);
                 }
-
-                dgvDailyStatistics.DataSource = dailyStatistics;
-                dgvDailyStatistics.Refresh();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("За указанный период поиск не производился.");
-            //}
+                BindingSource bindDaily = new BindingSource { DataSource = dailyStatistics };
+                dgvDailyStatistics.DataSource = bindDaily;
+            }
+            else
+            {
+                MessageBox.Show("За указанный период поиск не производился.");
+            }
         }
     }
 }
