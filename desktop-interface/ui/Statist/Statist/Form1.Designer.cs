@@ -39,19 +39,19 @@
             this.cmbSiteGeneral = new System.Windows.Forms.ComboBox();
             this.lblSite = new System.Windows.Forms.Label();
             this.tbDailyStatistics = new System.Windows.Forms.TabPage();
-            this.btnApplyDaily = new System.Windows.Forms.Button();
-            this.cmbSiteDaily = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmbPersonDaily = new System.Windows.Forms.ComboBox();
-            this.dtpPeriodFrom = new System.Windows.Forms.DateTimePicker();
-            this.dtpPeriodBefore = new System.Windows.Forms.DateTimePicker();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.dgvDailyStatistics = new System.Windows.Forms.DataGridView();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dtpPeriodBefore = new System.Windows.Forms.DateTimePicker();
+            this.dtpPeriodFrom = new System.Windows.Forms.DateTimePicker();
+            this.cmbPersonDaily = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnApplyDaily = new System.Windows.Forms.Button();
+            this.cmbSiteDaily = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.tbStatistics.SuspendLayout();
             this.tbGeneralStatistics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGeneralStatistics)).BeginInit();
@@ -83,7 +83,7 @@
             this.tbGeneralStatistics.Location = new System.Drawing.Point(4, 25);
             this.tbGeneralStatistics.Name = "tbGeneralStatistics";
             this.tbGeneralStatistics.Padding = new System.Windows.Forms.Padding(3);
-            this.tbGeneralStatistics.Size = new System.Drawing.Size(681, 370);
+            this.tbGeneralStatistics.Size = new System.Drawing.Size(626, 370);
             this.tbGeneralStatistics.TabIndex = 0;
             this.tbGeneralStatistics.Text = "Общая статистика";
             // 
@@ -175,109 +175,13 @@
             this.tbDailyStatistics.Controls.Add(this.cmbSiteDaily);
             this.tbDailyStatistics.Controls.Add(this.label2);
             this.tbDailyStatistics.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbDailyStatistics.ForeColor = System.Drawing.Color.Transparent;
+            this.tbDailyStatistics.ForeColor = System.Drawing.Color.Black;
             this.tbDailyStatistics.Location = new System.Drawing.Point(4, 25);
             this.tbDailyStatistics.Name = "tbDailyStatistics";
             this.tbDailyStatistics.Padding = new System.Windows.Forms.Padding(3);
             this.tbDailyStatistics.Size = new System.Drawing.Size(626, 370);
             this.tbDailyStatistics.TabIndex = 1;
             this.tbDailyStatistics.Text = "Ежедневная статистика";
-            // 
-            // btnApplyDaily
-            // 
-            this.btnApplyDaily.ForeColor = System.Drawing.Color.Black;
-            this.btnApplyDaily.Location = new System.Drawing.Point(136, 204);
-            this.btnApplyDaily.Name = "btnApplyDaily";
-            this.btnApplyDaily.Size = new System.Drawing.Size(100, 32);
-            this.btnApplyDaily.TabIndex = 5;
-            this.btnApplyDaily.Text = "Применить";
-            this.btnApplyDaily.UseVisualStyleBackColor = true;
-            // 
-            // cmbSiteDaily
-            // 
-            this.cmbSiteDaily.DisplayMember = "Name";
-            this.cmbSiteDaily.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSiteDaily.FormattingEnabled = true;
-            this.cmbSiteDaily.Location = new System.Drawing.Point(109, 16);
-            this.cmbSiteDaily.Name = "cmbSiteDaily";
-            this.cmbSiteDaily.Size = new System.Drawing.Size(127, 26);
-            this.cmbSiteDaily.TabIndex = 4;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(47, 19);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(42, 18);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Сайт";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(14, 67);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(75, 18);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Личность";
-            // 
-            // cmbPersonDaily
-            // 
-            this.cmbPersonDaily.DisplayMember = "Name";
-            this.cmbPersonDaily.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPersonDaily.FormattingEnabled = true;
-            this.cmbPersonDaily.Location = new System.Drawing.Point(109, 64);
-            this.cmbPersonDaily.Name = "cmbPersonDaily";
-            this.cmbPersonDaily.Size = new System.Drawing.Size(128, 26);
-            this.cmbPersonDaily.TabIndex = 7;
-            // 
-            // dtpPeriodFrom
-            // 
-            this.dtpPeriodFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpPeriodFrom.Location = new System.Drawing.Point(110, 118);
-            this.dtpPeriodFrom.Name = "dtpPeriodFrom";
-            this.dtpPeriodFrom.Size = new System.Drawing.Size(127, 24);
-            this.dtpPeriodFrom.TabIndex = 8;
-            // 
-            // dtpPeriodBefore
-            // 
-            this.dtpPeriodBefore.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpPeriodBefore.Location = new System.Drawing.Point(110, 161);
-            this.dtpPeriodBefore.Name = "dtpPeriodBefore";
-            this.dtpPeriodBefore.Size = new System.Drawing.Size(127, 24);
-            this.dtpPeriodBefore.TabIndex = 9;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(7, 123);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 18);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Период:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(76, 123);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(16, 18);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "с";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(66, 166);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(26, 18);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "до";
             // 
             // dgvDailyStatistics
             // 
@@ -305,6 +209,104 @@
             this.Column4.HeaderText = "Количество упоминаний";
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Black;
+            this.label6.Location = new System.Drawing.Point(66, 166);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(26, 18);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "до";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(76, 123);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(16, 18);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "с";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(7, 123);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 18);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Период:";
+            // 
+            // dtpPeriodBefore
+            // 
+            this.dtpPeriodBefore.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpPeriodBefore.Location = new System.Drawing.Point(110, 161);
+            this.dtpPeriodBefore.Name = "dtpPeriodBefore";
+            this.dtpPeriodBefore.Size = new System.Drawing.Size(127, 24);
+            this.dtpPeriodBefore.TabIndex = 9;
+            // 
+            // dtpPeriodFrom
+            // 
+            this.dtpPeriodFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpPeriodFrom.Location = new System.Drawing.Point(110, 118);
+            this.dtpPeriodFrom.Name = "dtpPeriodFrom";
+            this.dtpPeriodFrom.Size = new System.Drawing.Size(127, 24);
+            this.dtpPeriodFrom.TabIndex = 8;
+            this.dtpPeriodFrom.Value = new System.DateTime(2016, 4, 1, 0, 0, 0, 0);
+            // 
+            // cmbPersonDaily
+            // 
+            this.cmbPersonDaily.DisplayMember = "Name";
+            this.cmbPersonDaily.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPersonDaily.FormattingEnabled = true;
+            this.cmbPersonDaily.Location = new System.Drawing.Point(109, 64);
+            this.cmbPersonDaily.Name = "cmbPersonDaily";
+            this.cmbPersonDaily.Size = new System.Drawing.Size(128, 26);
+            this.cmbPersonDaily.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(14, 67);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(75, 18);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Личность";
+            // 
+            // btnApplyDaily
+            // 
+            this.btnApplyDaily.ForeColor = System.Drawing.Color.Black;
+            this.btnApplyDaily.Location = new System.Drawing.Point(136, 204);
+            this.btnApplyDaily.Name = "btnApplyDaily";
+            this.btnApplyDaily.Size = new System.Drawing.Size(100, 32);
+            this.btnApplyDaily.TabIndex = 5;
+            this.btnApplyDaily.Text = "Применить";
+            this.btnApplyDaily.UseVisualStyleBackColor = true;
+            this.btnApplyDaily.Click += new System.EventHandler(this.btnApplyDaily_Click);
+            // 
+            // cmbSiteDaily
+            // 
+            this.cmbSiteDaily.DisplayMember = "Name";
+            this.cmbSiteDaily.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSiteDaily.FormattingEnabled = true;
+            this.cmbSiteDaily.Location = new System.Drawing.Point(109, 16);
+            this.cmbSiteDaily.Name = "cmbSiteDaily";
+            this.cmbSiteDaily.Size = new System.Drawing.Size(127, 26);
+            this.cmbSiteDaily.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.Location = new System.Drawing.Point(47, 19);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(42, 18);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Сайт";
             // 
             // frmStatist
             // 
