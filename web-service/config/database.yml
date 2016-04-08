@@ -7,8 +7,9 @@ development:
   adapter: mysql2
   encoding: utf8
   database: c9
-  username: <%= ENV['C9_USER'] %>
-  host: <%= ENV['IP'] %>
+  username: root
+  host: localhost
+  password: kerz911
 production:
   adapter: mysql2
   encoding: utf8
