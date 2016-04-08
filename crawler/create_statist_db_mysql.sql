@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS pages (
 CREATE TABLE IF NOT EXISTS person_page_ranks (
   person_id INT UNSIGNED NOT NULL,
   page_id INT UNSIGNED NOT NULL,
+  rank INT UNSIGNED NOT NULL,
   CONSTRAINT fk_ranks_persons FOREIGN KEY (person_id) 
     REFERENCES persons(id)
     ON DELETE CASCADE,
