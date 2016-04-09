@@ -73,7 +73,7 @@ select {
 	margin-left: 75px;
 }
 
-input[type="submit"], button {
+button {
 	margin-left: 24px;
 	width: 115px;
 	color: #000080;
@@ -83,7 +83,7 @@ input[type="submit"], button {
 	cursor: pointer;
 }
 
-td > input[type="submit"], td > button {
+td > button {
 	margin-left: 0;
 }
 .hide_result {

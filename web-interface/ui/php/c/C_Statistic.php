@@ -5,7 +5,7 @@ class C_Statistic extends C_Base {
 	const  ONE_WEEK = 7*24*60*60;
 
 	public function action_index() {
-		$this->title .= '::Главная страница';
+		header( 'Location: index.php?c=statistic&act=general_statistics' );
 	}
 
 	public function action_general_statistics(){
@@ -95,4 +95,7 @@ class C_Statistic extends C_Base {
 		$this->content = $this->Template('v/v_daily_stats.php', $vars);
 	}
 
+	public function action_admin_panel() {
+		header( 'Location: index.php' );
+	}
 }
