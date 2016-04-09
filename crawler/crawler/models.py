@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from sqlalchemy import Column, ForeignKeyConstraint
-from sqlalchemy.dialects.mysql import INT, DATETIME, VARCHAR
+from sqlalchemy.dialects.mysql import INTEGER, DATETIME, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -13,7 +13,7 @@ class Persons(Base):
     """ Persons entity class """
     __tablename__ = 'persons'
 
-    id = Column('id', INT(unsigned=True), nullable=False, primary_key=True)
+    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
     name = Column(VARCHAR(2048), nullable=False)
 
     __table_args__ = {
@@ -28,9 +28,9 @@ class Persons(Base):
 class Keywords(Base):
     __tablename__ = 'keywords'
 
-    id = Column('id', INT(unsigned=True), nullable=False, primary_key=True)
+    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
     name = Column('name', VARCHAR(2048), nullable=False)
-    person_id = Column('person_id', INT(unsigned=True), nullable=False)
+    person_id = Column('person_id', INTEGER(unsigned=True), nullable=False)
 
     __table_args__ = (ForeignKeyConstraint([person_id], [Persons.id],
                                            name='fk_keywords_persons',
@@ -48,7 +48,7 @@ class Sites(Base):
     """ Sites entity class """
     __tablename__ = 'sites'
 
-    id = Column('id', INT(unsigned=True), nullable=False, primary_key=True)
+    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
     name = Column('name', VARCHAR(256), nullable=False)
 
     __table_args__ = {
@@ -64,9 +64,9 @@ class Pages(Base):
     """ Pages entity class """
     __tablename__ = 'pages'
 
-    id = Column('id', INT(unsigned=True), nullable=False, primary_key=True)
+    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
     url = Column('url', VARCHAR(2048), nullable=False)
-    site_id = Column('site_id', INT(unsigned=True), nullable=False)
+    site_id = Column('site_id', INTEGER(unsigned=True), nullable=False)
     found_date_time = Column(DATETIME, default=datetime.utcnow)
     last_scan_date = Column(DATETIME)
 
@@ -86,9 +86,10 @@ class Person_page_ranks(Base):
     """ Person_page_ranks entity class """
     __tablename__ = 'person_page_ranks'
 
-    person_id = Column('person_id', INT(unsigned=True), nullable=False)
-    page_id = Column('page_id', INT(unsigned=True), nullable=False)
-    rank = Column('rank', INT(unsigned=True), nullable=False)
+    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
+    person_id = Column('person_id', INTEGER(unsigned=True), nullable=False)
+    page_id = Column('page_id', INTEGER(unsigned=True), nullable=False)
+    rank = Column('rank', INTEGER(unsigned=True), nullable=False)
 
     __table_args__ = (ForeignKeyConstraint([person_id], [Persons.id],
                                            name='fk_ranks_persons',
