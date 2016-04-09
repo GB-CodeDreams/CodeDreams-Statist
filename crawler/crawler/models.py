@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy import Column, ForeignKeyConstraint
 from sqlalchemy.dialects.mysql import INTEGER, DATETIME, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 
 Base = declarative_base()
@@ -15,6 +16,10 @@ class Persons(Base):
 
     id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
     name = Column(VARCHAR(2048), nullable=False)
+
+    keywords = relationship('Keywords', backref='person')
+
+    ranks = relationship('PersonPageRanks', backref='person')
 
     __table_args__ = {
         'mysql_engine': 'InnoDB',
@@ -51,6 +56,8 @@ class Sites(Base):
     id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
     name = Column('name', VARCHAR(256), nullable=False)
 
+    pages = relationship('Pages', backref='site')
+
     __table_args__ = {
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
@@ -69,6 +76,8 @@ class Pages(Base):
     site_id = Column('site_id', INTEGER(unsigned=True), nullable=False)
     found_date_time = Column(DATETIME, default=datetime.utcnow)
     last_scan_date = Column(DATETIME)
+
+    ranks = relationship('PersonPageRanks', backref='page')
 
     __table_args__ = (ForeignKeyConstraint([site_id], [Sites.id],
                                            name='fk_pages_sites',
