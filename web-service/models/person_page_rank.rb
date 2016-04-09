@@ -18,7 +18,7 @@ class PersonPageRank < ActiveRecord::Base
     find_by_sql("#{person_rank} JOIN (#{site_pages}) as s_p ON s_p.id = r.page_id GROUP BY query_word ORDER BY rank DESC")
   }
 
-  scope :day_statistic, ->(site, person, start_date, end_date) {
+  scope :day_statistic, ->(site, query_word, start_date, end_date) {
     result = ''
     clear_error
     validate_date(start_date, end_date)
@@ -38,7 +38,7 @@ class PersonPageRank < ActiveRecord::Base
           AND STR_TO_DATE('#{end_date}', '%Y-%m-%d %H:%i:%s'))
       }.gsub(/\s+/, ' ').strip
 
-      result = find_by_sql("#{person_rank} JOIN (#{site_pages}) as s_p ON s_p.id = r.page_id WHERE (per.name = '#{person}') GROUP BY s_p.date ORDER BY s_p.date DESC")
+      result = find_by_sql("#{person_rank} JOIN (#{site_pages}) as s_p ON s_p.id = r.page_id WHERE (per.name = '#{query_word}') GROUP BY s_p.date ORDER BY s_p.date DESC")
       sum = result.inject(0){|start, next_item| start + next_item.rank}
       result << {total_rank: sum}
     else

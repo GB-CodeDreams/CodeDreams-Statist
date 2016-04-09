@@ -39,17 +39,82 @@ end
 
 get "/persons/:id/keywords" do
   person = Person.find_by(id: params[:id])
-  person.keywords.to_json if person
+  if person
+    person.keywords.to_json if person
+  else
+    [{error: "person not found"}].to_json if person.nil?
+  end
 end
 
 post "/persons/:id/keywords" do
+  body = JSON.parse(request.body.read)
   person = Person.find_by(id: params[:id])
-  if person && params[:name]
-    person.keywords.create(name: params[:name])
-    person.keywords.to_json
+  return [{error: {person: "person not found"}}].to_json  unless person
+  keyword = Keyword.new(body)
+  if keyword.save
+    keyword.to_json
   else
-    [{error: "person not found"}].to_json if person.nil?
-    [{error: "keyword name not must be empty"}].to_json if params[:name].nil?
+    [{error: keyword.errors.messages}].to_json
+  end
+end
+
+patch "/persons/:person_id/keyword/:id" do
+
+end
+
+delete "/persons/:person_id/keyword/:id" do
+  person = Person.find_by(id: params[:person_id])
+  return [{error: {person: "person not found"}}].to_json  unless person
+  keyword = Site.find_by(id: params[:id])
+  if keyword
+    keyword.destroy
+  else
+    [{error: {keyword: "keyword not found"}}].to_json
+  end
+end
+
+post "/sites" do
+  body = JSON.parse(request.body.read)
+  site = Site.new(body["name"])
+  if site.save
+    site.to_json
+  else
+    [{error: site.errors.messages}].to_json
+  end
+end
+
+patch "/sites/:id" do
+
+end
+
+delete "/sites/:id" do
+  site = Site.find_by(id: params[:id])
+  if site
+    site.destroy
+  else
+    [{error: {site: "site not found"}}].to_json
+  end
+end
+
+post "/persons" do
+  person = Person.new(body["name"])
+  if person.save
+    person.to_json
+  else
+    [{error: person.errors.messages}].to_json
+  end
+end
+
+patch "/persons/:id" do
+
+end
+
+delete "/persons/:id" do
+  person = Person.find_by(id: params[:id])
+  if person
+    person.destroy
+  else
+    [{error: {person: "person not found"}}].to_json
   end
 end
 
