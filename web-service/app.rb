@@ -42,14 +42,14 @@ get "/persons/:id/keywords" do
   if person
     person.keywords.to_json if person
   else
-    [{error: "person not found"}].to_json if person.nil?
+    [{error: {persons: "person not found"}}].to_json if person.nil?
   end
 end
 
 post "/persons/:id/keywords" do
   body = JSON.parse(request.body.read)
   person = Person.find_by(id: params[:id])
-  return [{error: {person: "person not found"}}].to_json  unless person
+  return [{error: {persons: "person not found"}}].to_json  unless person
   keyword = Keyword.new(body)
   if keyword.save
     keyword.to_json
@@ -64,12 +64,12 @@ end
 
 delete "/persons/:person_id/keyword/:id" do
   person = Person.find_by(id: params[:person_id])
-  return [{error: {person: "person not found"}}].to_json  unless person
+  return [{error: {persons: "person not found"}}].to_json  unless person
   keyword = Site.find_by(id: params[:id])
   if keyword
     keyword.destroy
   else
-    [{error: {keyword: "keyword not found"}}].to_json
+    [{error: {keywords: "keyword not found"}}].to_json
   end
 end
 
@@ -92,7 +92,7 @@ delete "/sites/:id" do
   if site
     site.destroy
   else
-    [{error: {site: "site not found"}}].to_json
+    [{error: {sites: "site not found"}}].to_json
   end
 end
 
@@ -114,7 +114,7 @@ delete "/persons/:id" do
   if person
     person.destroy
   else
-    [{error: {person: "person not found"}}].to_json
+    [{error: {persons: "person not found"}}].to_json
   end
 end
 
