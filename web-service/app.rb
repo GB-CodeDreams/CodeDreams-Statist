@@ -13,10 +13,6 @@ get '/' do
  a.to_json
 end
 
-get '/hi' do
-	"prived!"
-end
-
 get '/total_statistic' do
   site = params[:site]
   if site
@@ -47,10 +43,10 @@ get "/persons/:id/keywords" do
 end
 
 post "/persons/:id/keywords" do
-  body = JSON.parse(request.body.read)
+  body = request.POST
   person = Person.find_by(id: params[:id])
   return [{error: {persons: "person not found"}}].to_json  unless person
-  keyword = Keyword.new(body)
+  keyword = Keyword.new(name: body["name"], person_id: params[:person_id])
   if keyword.save
     keyword.to_json
   else
@@ -74,8 +70,8 @@ delete "/persons/:person_id/keyword/:id" do
 end
 
 post "/sites" do
-  body = JSON.parse(request.body.read)
-  site = Site.new(body["name"])
+  body = request.POST
+  site = Site.new(name: body["name"])
   if site.save
     site.to_json
   else
@@ -97,7 +93,8 @@ delete "/sites/:id" do
 end
 
 post "/persons" do
-  person = Person.new(body["name"])
+  body = request.POST
+  person = Person.new(name: body["name"])
   if person.save
     person.to_json
   else
@@ -122,3 +119,8 @@ get "/:key" do |k|
   classes = ["persons", "sites"]
   k.singularize.capitalize.constantize.all.to_json if classes.include? k
 end
+
+# post "/test" do
+#   p request.POST
+#   # p JSON.parse(request.body.read)
+# end
