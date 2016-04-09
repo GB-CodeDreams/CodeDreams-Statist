@@ -82,8 +82,8 @@ class Pages(Base):
         self.site_id = site_id
 
 
-class Person_page_ranks(Base):
-    """ Person_page_ranks entity class """
+class PersonPageRanks(Base):
+    """ PersonPageRanks entity class """
     __tablename__ = 'person_page_ranks'
 
     id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
