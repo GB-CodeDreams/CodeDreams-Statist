@@ -47,8 +47,9 @@ class M_Stats {
 		return $persons;
 	}
 
-	public function get_general_statistics($selected_site) {
-		$site_id = self::get_site_ID_by_name($selected_site);
+	//TODO: Слишком много запросов к БД
+	private function get_all_persons_and_ranks_by_site($site) {
+		$site_id = self::get_site_ID_by_name($site);
 		$pages = self::get_pages_ID_by_site_ID($site_id);
 		$persons = self::get_all_persons();
 		
@@ -63,12 +64,15 @@ class M_Stats {
 				unset($person);	
 			}
 		}
-		
+		return $persons;
+	}
+
+	public function get_general_statistics($selected_site) {
 		$general_statistics = array();
+		$persons = self::get_all_persons_and_ranks_by_site($selected_site);
 		foreach ($persons as $person) {
 			$general_statistics[] = array('person' => $person['name'], 'rank' => $person['rank']);
 		}
-		
 		return $general_statistics;
 	}
 
