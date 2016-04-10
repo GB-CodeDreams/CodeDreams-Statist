@@ -38,10 +38,10 @@ $sites - массив сайтов, доступных для просмотра
 				<th>Имя</th>
 				<th>Количество упоминаний</th>
 			</tr>
-			<?php foreach ($general_statistics as $name => $count): ?>
+			<?php foreach ($general_statistics as $data): ?>
 				<tr>
-					<td><?=$name?></td>
-					<td><?=$count?></td>
+					<td><?=$data['person']?></td>
+					<td><?=$data['rank']?></td>
 				</tr>
 			<?php endforeach ?>
 		</table>

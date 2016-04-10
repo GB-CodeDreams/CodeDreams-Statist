@@ -17,6 +17,7 @@ class M_Stats {
 	}
 
 	public function get_all_sites() {
+		$sites = array();
 		$row = M_MSQL::Instance()->Select("Sites");
 		foreach ($row as $value) {
 			$sites[] = $value['name'];
@@ -24,12 +25,51 @@ class M_Stats {
 		return $sites;
 	}
 
-	public function get_general_statistics($selected_site) {
-		return array("putin" => 179, "medvedev" => 146);
+	private function get_site_ID_by_name($site){
+		$row = M_MSQL::Instance()->Select("Sites", array("name = " => $site));
+		return (int)$row[0]['id'];
 	}
 
-	public function get_all_persons() {
-		return array("putin", "medvedev");
+	private function get_pages_ID_by_site_ID($site_id) {
+		$pages = array();
+		$row = M_MSQL::Instance()->Select("Pages", array("site_id = " => $site_id));
+		foreach ($row as $value) {
+			$pages[] = $value['id'];
+ 		}
+		return $pages;
+	}
+
+	private function get_all_persons() {
+		$persons = M_MSQL::Instance()->Select("Persons");
+		foreach ($persons as &$person) {
+			$person['rank'] = 0;
+		}
+		return $persons;
+	}
+
+	public function get_general_statistics($selected_site) {
+		$site_id = self::get_site_ID_by_name($selected_site);
+		$pages = self::get_pages_ID_by_site_ID($site_id);
+		$persons = self::get_all_persons();
+		
+		foreach ($pages as $page) {
+			$row = M_MSQL::Instance()->Select("Person_page_ranks", array("page_id = " => $page));
+			foreach ($row as $value) {
+				foreach ($persons as &$person) {
+					if($person['id'] == $value['person_id']) {
+						$person['rank'] += $value['rank'];
+					}
+				}	
+				unset($person);	
+			}
+		}
+		
+		$general_statistics = array();
+		foreach ($persons as $person) {
+			$general_statistics[] = array('person' => $person['name'], 'rank' => $person['rank']);
+		}
+		
+		return $general_statistics;
 	}
 
 	public function get_daily_stats($selected_site, $selected_person, $start_date, $end_date) {
