@@ -14,23 +14,23 @@ class Keywords
         return $this->db->DBQuery("SELECT * FROM persons");
     }
 
-    public function Persons_getOne($ID)
+    public function Persons_getOne($id)
     {
-        return $this->db->DBQueryOne("SELECT *  FROM persons WHERE id =" . $ID);
+        return $this->db->DBQueryOne("SELECT *  FROM persons WHERE id =" . $id);
     }
 
-    public function Keywords_getAll($PresonID = null)
+    public function Keywords_getAll($person_id = null)
     {
-        return $this->db->DBQuery("SELECT * FROM keywords WHERE PersonID = " .$PresonID);
+        return $this->db->DBQuery("SELECT * FROM keywords WHERE person_id = " .$person_id);
     }
 
-    public function Keywords_setOne($Name, $PersonID)
+    public function Keywords_setOne($name, $person_id)
     {
-        $this->db->DBQueryExecut("INSERT INTO keywords (Name, PersonID) VALUE ('$Name', '$PersonID')");
+        $this->db->DBQueryExecut("INSERT INTO keywords (Name, person_id) VALUE ('$name', '$person_id')");
     }
 
-    public function Keywords_deleteOne($ID)
+    public function Keywords_deleteOne($id)
     {
-        $this->db->DBQueryExecut("DELETE FROM keywords WHERE ID = " . $ID);
+        $this->db->DBQueryExecut("DELETE FROM keywords WHERE id = " . $id);
     }
 }

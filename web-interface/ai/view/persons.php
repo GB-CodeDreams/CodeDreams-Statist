@@ -15,7 +15,7 @@
         <br>
         Введите имя:
         <br/>
-        <input type="text" name="Name" value="" autofocus/>
+        <input type="text" name="name" value="" autofocus/>
         <br/>
         <input type="submit" name="insert" value="Добавить" />
         <br>
@@ -25,8 +25,8 @@
                     <td width="200">
                         <article>
                             <h3 class="artitle">
-                                <?=$person['Name'];?>
-                                <input type="hidden" name="ID" value="<?=$person['ID']?>" />
+                                <?=$person['name'];?>
+                                <input type="hidden" name="id" value="<?=$person['id']?>" />
                             </h3>
                         </article>
                     </td>
@@ -34,7 +34,7 @@
                         <input type="submit" name="del" value="Удалить" />
                     </td>
                     <td>
-                        <a href="index.php?r=admin/keywords&PersonID=<?=$person['ID']?>">Задать набор искомых слов</a>
+                        <a href="index.php?r=admin/keywords&person_id=<?=$person['id']?>">Задать набор искомых слов</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

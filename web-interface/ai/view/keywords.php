@@ -14,13 +14,13 @@
         <br>
             <article>
                 <h1>
-                    <?=$person['Name'];?>
+                    <?=$person['name'];?>
                 </h1>
             </article>
         <br>
         Введите искомые слова:
         <br/>
-        <input type="text" size="10" name="Name" value="" autofocus/>
+        <input type="text" size="10" name="name" value="" autofocus/>
         <br/>
         <input type="submit" name="insert" value="Добавить" />
         <br>
@@ -30,8 +30,8 @@
                     <td width="250">
                         <article>
                             <h3 class="artitle">
-                                <?=$keyword['Name'];?>
-                                <input type="hidden" name="ID" value="<?=$keyword['ID']?>" />
+                                <?=$keyword['name'];?>
+                                <input type="hidden" name="id" value="<?=$keyword['id']?>" />
                             </h3>
                         </article>
                     </td>

@@ -15,7 +15,7 @@
         <br>
         Введите название сайта:
         <br/>
-        <input width="2000"  name="Name" value="" autofocus/>
+        <input width="2000"  name="name" value="" autofocus/>
         <br/>
         <input type="submit" name="insert" value="Добавить" />
         <br>
@@ -25,8 +25,8 @@
                 <td width="250">
                     <article>
                         <h3 class="artitle">
-                            <div><?=$site['Name'];?></div>
-                            <input type="hidden" name="ID" value="<?=$site['ID']?>" />
+                            <div><?=$site['name'];?></div>
+                            <input type="hidden" name="id" value="<?=$site['id']?>" />
                         </h3>
                     </article>
                 </td>
