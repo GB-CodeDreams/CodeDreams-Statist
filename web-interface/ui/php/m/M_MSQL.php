@@ -1,10 +1,10 @@
 <?php
 
 // Настройки подключения к БД.
-define('MYSQL_SERVER', 'localhost');
-define('MYSQL_USER', 'root');
-define('MYSQL_PASSWORD', '');
-define('MYSQL_DB', 'statist_db');
+define('MYSQL_SERVER', 'us-cdbr-iron-east-03.cleardb.net');
+define('MYSQL_USER', 'bd941bf360b590');
+define('MYSQL_PASSWORD', '4a3b98d8');
+define('MYSQL_DB', 'heroku_e87588648c44590');
 
 class M_MSQL extends mysqli {
 

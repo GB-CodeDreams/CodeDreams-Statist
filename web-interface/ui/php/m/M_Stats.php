@@ -18,7 +18,7 @@ class M_Stats {
 
 	public function get_all_sites() {
 		$sites = array();
-		$row = M_MSQL::Instance()->Select("Sites");
+		$row = M_MSQL::Instance()->Select("sites");
 		foreach ($row as $value) {
 			$sites[] = $value['name'];
 		}
@@ -26,13 +26,13 @@ class M_Stats {
 	}
 
 	private function get_site_ID_by_name($site){
-		$row = M_MSQL::Instance()->Select("Sites", array("name = " => $site));
+		$row = M_MSQL::Instance()->Select("sites", array("name = " => $site));
 		return (int)$row[0]['id'];
 	}
 
 	private function get_pages_ID_by_site_ID($site_id) {
 		$pages = array();
-		$row = M_MSQL::Instance()->Select("Pages", array("site_id = " => $site_id));
+		$row = M_MSQL::Instance()->Select("pages", array("site_id = " => $site_id));
 		foreach ($row as $value) {
 			$pages[] = $value['id'];
  		}
@@ -44,7 +44,7 @@ class M_Stats {
 
 		$where = array("site_id = " => $site_id, "found_date_time >= " => $start_date, "found_date_time <= " => $end_date);
 		$order = "found_date_time";
-		$row = M_MSQL::Instance()->Select("Pages", $where, $order);
+		$row = M_MSQL::Instance()->Select("pages", $where, $order);
 		
 		foreach ($row as $value) {
 			$pages[] = array("page_id" =>$value['id'], "date" => $value['found_date_time'], "rank" => 0);
@@ -53,7 +53,7 @@ class M_Stats {
 	}
 
 	private function get_all_persons_with_id() {
-		$persons = M_MSQL::Instance()->Select("Persons");
+		$persons = M_MSQL::Instance()->Select("persons");
 		foreach ($persons as &$person) {
 			$person['rank'] = 0;
 		}
@@ -63,7 +63,7 @@ class M_Stats {
 
 	public function get_all_persons() {
 		$persons = array();
-		$row = M_MSQL::Instance()->Select("Persons");
+		$row = M_MSQL::Instance()->Select("persons");
 		foreach ($row as $value) {
 			$persons[] = $value['name'];
 		}
@@ -71,7 +71,7 @@ class M_Stats {
 	}
 
 	public function get_person_id_by_name($name) {
-		$row = M_MSQL::Instance()->Select("Persons", array("name = " => $name));
+		$row = M_MSQL::Instance()->Select("persons", array("name = " => $name));
 		return (int)$row[0]['id'];
 	}
 
@@ -82,7 +82,7 @@ class M_Stats {
 		$persons = self::get_all_persons_with_id();
 		
 		foreach ($pages as $page) {
-			$row = M_MSQL::Instance()->Select("Person_page_ranks", array("page_id = " => $page));
+			$row = M_MSQL::Instance()->Select("person_page_ranks", array("page_id = " => $page));
 			foreach ($row as $value) {
 				foreach ($persons as &$person) {
 					if($person['id'] == $value['person_id']) {
@@ -112,7 +112,7 @@ class M_Stats {
 
 		foreach ($pages as &$page) {
 			$where = array("person_id = " => $person_id, "page_id = " => $page['page_id']);
-			$row = M_MSQL::Instance()->Select("Person_page_ranks", $where);
+			$row = M_MSQL::Instance()->Select("person_page_ranks", $where);
 			foreach ($row as $value) {
 				$page['rank'] += $value['rank']; 
 			}
