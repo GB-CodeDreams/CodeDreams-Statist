@@ -9,22 +9,23 @@ class AdminController
         $view = new View();
         $model = new Sites();
         $view->sites = $model->Sites_getAll();
+        global $link;
 
         if(isset($_POST['del']))
         {
-            $ID = $_POST['ID'];
+            $id = $_POST['id'];
             $model = new Sites();
-            $model->Sites_deleteOne($ID);
+            $model->Sites_deleteOne($id);
             $view->sites = $model->Sites_getAll();
         }
 
-        if(isset($_POST['insert']) and $_POST['Name'] == ""){
+        if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = true;
         }
         else{
-            if(isset($_POST['insert']) and isset($_POST['Name'])){
-                $Name = $_POST['Name'];
-                $model->Sites_setOne($Name);
+            if(isset($_POST['insert']) and isset($_POST['name'])){
+                $name = mysqli_real_escape_string($link, $_POST['name']);
+                $model->Sites_setOne($name);
                 $view->sites = $model->Sites_getAll();
             }
         }
@@ -38,22 +39,23 @@ class AdminController
         $view = new View();
         $model = new Persons();
         $view->persons = $model->Persons_getAll();
+        global $link;
 
         if(isset($_POST['del']))
         {
-            $ID = $_POST['ID'];
+            $id = $_POST['id'];
             $model = new Persons();
-            $model->Persons_deleteOne($ID);
+            $model->Persons_deleteOne($id);
             $view->persons = $model->Persons_getAll();
         }
 
-        if(isset($_POST['insert']) and $_POST['Name'] == ""){
+        if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = true;
         }
         else{
-            if(isset($_POST['insert']) and isset($_POST['Name'])){
-                $Name = $_POST['Name'];
-                $model->Persons_setOne($Name);
+            if(isset($_POST['insert']) and isset($_POST['name'])){
+                $name = mysqli_real_escape_string($link, $_POST['name']);
+                $model->Persons_setOne($name);
                 $view->persons = $model->Persons_getAll();
             }
         }
@@ -66,30 +68,27 @@ class AdminController
     {
         $view = new View();
         $model = new Keywords();
-
-        //$PersonID = $_POST['ID'];
-
-        $view->keywords = $model->Keywords_getAll();
-        $view->persons = $model->Persons_getAll();
+        global $link;
+        $person_id = mysqli_real_escape_string($link, $_GET['person_id']);
+        $view->person = $model->Persons_getOne($person_id);
+        $view->keywords = $model->Keywords_getAll($person_id);
 
         if(isset($_POST['del']))
         {
-            $ID = $_POST['ID'];
+            $id = $_POST['id'];
             $model = new Keywords();
-            $model->Keywords_deleteOne($ID);
-            $view->keywords = $model->Keywords_getAll();
-            $view->persons = $model->Persons_getAll();
+            $model->Keywords_deleteOne($id);
+            $view->keywords = $model->Keywords_getAll($person_id);
         }
 
-        if(isset($_POST['insert']) and $_POST['Name'] == ""){
+        if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = true;
         }
         else {
-            if (isset($_POST['insert']) and isset($_POST['Name'])) {
-                $Name = $_POST['Name'];
-                $model->Keywords_setOne($Name);
-                $view->keywords = $model->Keywords_getAll();
-                $view->persons = $model->Persons_getAll();
+            if (isset($_POST['insert']) and isset($_POST['name'])) {
+                $name = mysqli_real_escape_string($link, $_POST['name']);
+                $model->Keywords_setOne($name, $person_id);
+                $view->keywords = $model->Keywords_getAll($person_id);
             }
         }
 

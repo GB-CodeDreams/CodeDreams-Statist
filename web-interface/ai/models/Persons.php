@@ -14,13 +14,13 @@ class Persons
         return $this->db->DBQuery("SELECT * FROM persons");
     }
 
-    public function Persons_setOne($Name)
+    public function Persons_setOne($name)
     {
-        $this->db->DBQueryExecut("INSERT INTO persons (Name) VALUE ('$Name')");
+        $this->db->DBQueryExecut("INSERT INTO persons (name) VALUE ('$name')");
     }
 
-    public function Persons_deleteOne($ID)
+    public function Persons_deleteOne($id)
     {
-        $this->db->DBQueryExecut("DELETE FROM persons WHERE ID = " . $ID);
+        $this->db->DBQueryExecut("DELETE FROM persons WHERE id = " . $id);
     }
 }
