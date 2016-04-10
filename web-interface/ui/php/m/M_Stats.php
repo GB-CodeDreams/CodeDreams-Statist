@@ -39,6 +39,19 @@ class M_Stats {
 		return $pages;
 	}
 
+	private function get_pages_ID_and_dates_by_site_ID($site_id, $start_date, $end_date) {
+		$pages = array();
+
+		$where = array("site_id = " => $site_id, "found_date_time >= " => $start_date, "found_date_time <= " => $end_date);
+		$order = "found_date_time";
+		$row = M_MSQL::Instance()->Select("Pages", $where, $order);
+		
+		foreach ($row as $value) {
+			$pages[] = array("page_id" =>$value['id'], "date" => $value['found_date_time'], "rank" => 0);
+ 		}
+		return $pages;
+	}
+
 	private function get_all_persons_with_id() {
 		$persons = M_MSQL::Instance()->Select("Persons");
 		foreach ($persons as &$person) {
@@ -55,6 +68,11 @@ class M_Stats {
 			$persons[] = $value['name'];
 		}
 		return $persons;
+	}
+
+	public function get_person_id_by_name($name) {
+		$row = M_MSQL::Instance()->Select("Persons", array("name = " => $name));
+		return (int)$row[0]['id'];
 	}
 
 	//TODO: Слишком много запросов к БД
@@ -87,7 +105,25 @@ class M_Stats {
 	}
 
 	public function get_daily_stats($selected_site, $selected_person, $start_date, $end_date) {
-		return array("05.05.2016" => "7", "06.05.2016" => "3", "07.05.2016" => "5", "08.05.2016" => "5");
+		$daily_stats = array();
+		$site_id = self::get_site_ID_by_name($selected_site);
+		$pages = self::get_pages_ID_and_dates_by_site_ID($site_id, $start_date, $end_date);
+		$person_id = self::get_person_id_by_name($selected_person);
+
+		foreach ($pages as &$page) {
+			$where = array("person_id = " => $person_id, "page_id = " => $page['page_id']);
+			$row = M_MSQL::Instance()->Select("Person_page_ranks", $where);
+			foreach ($row as $value) {
+				$page['rank'] += $value['rank']; 
+			}
+		}
+		unset($page);
+
+		foreach ($pages as $page) {
+			@$daily_stats[$page['date']] += $page['rank']; 
+		}
+
+		return $daily_stats;
 	}
 
 	public function get_total_person_count($daily_stats) {
