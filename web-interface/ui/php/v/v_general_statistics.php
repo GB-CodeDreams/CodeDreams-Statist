@@ -12,7 +12,7 @@ $sites - массив сайтов, доступных для просмотра
 <ul class="tabs">
     <li class="current"><a href="index.php?c=statistic&act=general_statistics">Общая статистика</a></li>
     <li><a href="index.php?c=statistic&act=daily_stats">Ежедневная статистика</a></li>
-    <li><a href="index.php?c=admin&act=admin_panel">Панель администратора</a></li>
+    <li><a href="../../ai/index.php?r=admin/sites">Панель администратора</a></li>
 </ul>
 
 <div class="box visible">
