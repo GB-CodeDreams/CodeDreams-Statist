@@ -12,17 +12,14 @@ class C_Statistic extends C_Base {
 		$general_statistics = array();
 		$isSelectSite = false;
 
-		//temporal data
-		$sites = array("lenta.ru", "kp.ru", "any_other_site.com");
-
+		$sites = M_Stats::Instance()->get_all_sites();
 		$selected_site = $sites[0];
 
 		if ($this->IsPost()) {
 			$isSelectSite = true;
 			$selected_site = $_POST['site'];
 			
-			//temporal data
-			$general_statistics = array("Pytin" => "146", "Medved" => "79");
+			$general_statistics = M_Stats::Instance()->get_general_statistics($selected_site);
 		} 	
 
 		$vars = array(
@@ -42,9 +39,8 @@ class C_Statistic extends C_Base {
 		$start_date = date('Y-m-d', time() - self::ONE_WEEK);
 		$end_date = date('Y-m-d', time());
 		
-		//temporal data
-		$sites = array("lenta.ru", "kp.ru", "any_other_site.com");
-		$persons = array("Pytin", "Medvedev", "Noval'ny");
+		$sites = M_Stats::Instance()->get_all_sites();
+		$persons = M_Stats::Instance()->get_all_persons();
 
 		$selected_site = $sites[0];
 		$selected_person = $persons[0];
@@ -70,11 +66,16 @@ class C_Statistic extends C_Base {
 			$end_date = $_POST['end_date'];
 			$start_date = $_POST['start_date'];
 
+			if ($end_date < $start_date) {
+				$tmp_date = $end_date;
+				$end_date = $start_date;
+				$start_date = $tmp_date;
+			}
 			
 			if(!$isError) {
-				//temporal data
-				$daily_stats = array("01.04.2016" => "146", "02.04.2016" => "79", "03.04.2016" => "15");
-				$total_count = 100500;
+				
+				$daily_stats = M_Stats::Instance()->get_daily_stats($selected_site, $selected_person, $start_date, $end_date);
+				$total_count = M_Stats::Instance()->get_total_person_count($daily_stats);
 			}
 		} else {
 			$isError = true;
