@@ -38,7 +38,7 @@ class Keywords(Base):
     person_id = Column('person_id', INTEGER(unsigned=True), nullable=False)
 
     __table_args__ = (ForeignKeyConstraint([person_id], [Persons.id],
-                                           name='fk_keywords_persons',
+                                           name='fk_rails_019c8c7266',
                                            ondelete='CASCADE'),
                       {'mysql_engine': 'InnoDB',
                        'mysql_charset': 'utf8'}
@@ -80,7 +80,7 @@ class Pages(Base):
     ranks = relationship('PersonPageRanks', backref='page')
 
     __table_args__ = (ForeignKeyConstraint([site_id], [Sites.id],
-                                           name='fk_pages_sites',
+                                           name='fk_rails_a8ad97ecff',
                                            ondelete='CASCADE'),
                       {'mysql_engine': 'InnoDB',
                        'mysql_charset': 'utf8'}
@@ -101,10 +101,10 @@ class PersonPageRanks(Base):
     rank = Column('rank', INTEGER(unsigned=True), nullable=False)
 
     __table_args__ = (ForeignKeyConstraint([person_id], [Persons.id],
-                                           name='fk_ranks_persons',
+                                           name='fk_rails_c1e71ae48d',
                                            ondelete='CASCADE'),
                       ForeignKeyConstraint([page_id], [Pages.id],
-                                           name='fk_ranks_pages',
+                                           name='fk_rails_4986e37e79',
                                            ondelete='CASCADE'),
                       {'mysql_engine': 'InnoDB',
                        'mysql_charset': 'utf8'}

@@ -12,7 +12,7 @@ from reppy.cache import RobotsCache
 
 def create_mysql_session(db_settings_dict):
     DB = db_settings_dict
-    engine_db = '{dialect}+{driver}://{user}:{password}@{host}:{port}/{database}'\
+    engine_db = '{dialect}+{driver}://{user}:{password}@{host}/{database}'\
                 .format(dialect=DB['dialect'], driver=DB['driver'],
                         user=DB['user'], password=DB['password'],
                         host=DB['host'], port=DB['port'],

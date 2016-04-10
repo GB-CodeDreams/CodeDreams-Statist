@@ -3,10 +3,10 @@
 DB_settings = {
         'dialect': 'mysql',
         'driver': 'pymysql',
-        'user': 'root',
-        'password': 'statistpass',
-        'host': '127.0.0.1',
-        'port': '3306',
-        'database': 'statist_db'
+        'user': 'bd941bf360b590',
+        'password': '4a3b98d8',
+        'host': 'us-cdbr-iron-east-03.cleardb.net',
+        'port': ':3306',
+        'database': 'heroku_e87588648c44590'
     }
-# Database engine: '{dialect}+{driver}://{user}:{password}@{host}:{port}/{database}'
+# Database engine: '{dialect}+{driver}://{user}:{password}@{host}{port}/{database}'
