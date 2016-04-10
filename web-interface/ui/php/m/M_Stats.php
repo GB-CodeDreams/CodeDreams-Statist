@@ -39,10 +39,20 @@ class M_Stats {
 		return $pages;
 	}
 
-	private function get_all_persons() {
+	private function get_all_persons_with_id() {
 		$persons = M_MSQL::Instance()->Select("Persons");
 		foreach ($persons as &$person) {
 			$person['rank'] = 0;
+		}
+		unset($person);
+		return $persons;
+	}
+
+	public function get_all_persons() {
+		$persons = array();
+		$row = M_MSQL::Instance()->Select("Persons");
+		foreach ($row as $value) {
+			$persons[] = $value['name'];
 		}
 		return $persons;
 	}
@@ -51,7 +61,7 @@ class M_Stats {
 	private function get_all_persons_and_ranks_by_site($site) {
 		$site_id = self::get_site_ID_by_name($site);
 		$pages = self::get_pages_ID_by_site_ID($site_id);
-		$persons = self::get_all_persons();
+		$persons = self::get_all_persons_with_id();
 		
 		foreach ($pages as $page) {
 			$row = M_MSQL::Instance()->Select("Person_page_ranks", array("page_id = " => $page));
