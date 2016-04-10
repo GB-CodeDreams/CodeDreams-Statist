@@ -1,1 +1,3 @@
-[Ww]iki/
+wiki/
+__pycache__/
+crawler/crawler/pages
