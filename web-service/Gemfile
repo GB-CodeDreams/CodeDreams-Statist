@@ -7,6 +7,6 @@ gem 'activesupport'
 gem "sinatra-activerecord"
 gem 'foreman'
 # gem 'pg'
-gem 'sqlite3'
+# gem 'sqlite3'
 gem 'mysql2'
 gem 'puma'
