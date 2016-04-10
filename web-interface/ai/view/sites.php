@@ -10,25 +10,32 @@
 <br/>
 <a href="index.php?r=admin/sites">Справочник сайтов</a> |
 <a href="index.php?r=admin/persons">Справочник личностей</a> |
-<a href="index.php?r=admin/keywords">Справочник keywords</a> |
     <form method="post">
         <br>
         <br>
         Введите название сайта:
         <br/>
-        <input type="text" name="Name" value="" />
+        <input width="2000"  name="Name" value="" autofocus/>
         <br/>
         <input type="submit" name="insert" value="Добавить" />
         <br>
+        <table width="300">
         <?php foreach ($sites as $site): ?>
-            <article>
-                <h3 class="artitle">
-                    <div><?=$site['Name'];?></div>
-                    <input type="hidden" name="ID" value="<?=$site['ID']?>" />
+            <tr>
+                <td width="250">
+                    <article>
+                        <h3 class="artitle">
+                            <div><?=$site['Name'];?></div>
+                            <input type="hidden" name="ID" value="<?=$site['ID']?>" />
+                        </h3>
+                    </article>
+                </td>
+                <td>
                     <input type="submit" name="del" value="Удалить" />
-                </h3>
-            </article>
-        <?php endforeach; ?>
+                </td>
+                <?php endforeach; ?>
+            </tr>
+        </table>
     </form>
 </body>
 </html>

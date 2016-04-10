@@ -9,6 +9,7 @@ class AdminController
         $view = new View();
         $model = new Sites();
         $view->sites = $model->Sites_getAll();
+        global $link;
 
         if(isset($_POST['del']))
         {
@@ -23,7 +24,7 @@ class AdminController
         }
         else{
             if(isset($_POST['insert']) and isset($_POST['Name'])){
-                $Name = $_POST['Name'];
+                $Name = mysqli_real_escape_string($link, $_POST['Name']);
                 $model->Sites_setOne($Name);
                 $view->sites = $model->Sites_getAll();
             }
@@ -38,6 +39,7 @@ class AdminController
         $view = new View();
         $model = new Persons();
         $view->persons = $model->Persons_getAll();
+        global $link;
 
         if(isset($_POST['del']))
         {
@@ -52,7 +54,7 @@ class AdminController
         }
         else{
             if(isset($_POST['insert']) and isset($_POST['Name'])){
-                $Name = $_POST['Name'];
+                $Name = mysqli_real_escape_string($link, $_POST['Name']);
                 $model->Persons_setOne($Name);
                 $view->persons = $model->Persons_getAll();
             }
@@ -66,19 +68,17 @@ class AdminController
     {
         $view = new View();
         $model = new Keywords();
-
-        //$PersonID = $_POST['ID'];
-
-        $view->keywords = $model->Keywords_getAll();
-        $view->persons = $model->Persons_getAll();
+        global $link;
+        $PersonID = mysqli_real_escape_string($link, $_GET['PersonID']);
+        $view->person = $model->Persons_getOne($PersonID);
+        $view->keywords = $model->Keywords_getAll($PersonID);
 
         if(isset($_POST['del']))
         {
             $ID = $_POST['ID'];
             $model = new Keywords();
             $model->Keywords_deleteOne($ID);
-            $view->keywords = $model->Keywords_getAll();
-            $view->persons = $model->Persons_getAll();
+            $view->keywords = $model->Keywords_getAll($PersonID);
         }
 
         if(isset($_POST['insert']) and $_POST['Name'] == ""){
@@ -86,10 +86,9 @@ class AdminController
         }
         else {
             if (isset($_POST['insert']) and isset($_POST['Name'])) {
-                $Name = $_POST['Name'];
-                $model->Keywords_setOne($Name);
-                $view->keywords = $model->Keywords_getAll();
-                $view->persons = $model->Persons_getAll();
+                $Name = mysqli_real_escape_string($link, $_POST['Name']);
+                $model->Keywords_setOne($Name, $PersonID);
+                $view->keywords = $model->Keywords_getAll($PersonID);
             }
         }
 
