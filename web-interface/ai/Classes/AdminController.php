@@ -75,7 +75,7 @@ class AdminController
 
         if(isset($_POST['del']))
         {
-            $id = mysqli_real_escape_string($_POST['id']);
+            $id = $_POST['id'];
             $model = new Keywords();
             $model->Keywords_deleteOne($id);
             $view->keywords = $model->Keywords_getAll($person_id);
