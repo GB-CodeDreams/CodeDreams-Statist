@@ -2,7 +2,7 @@
 
 class C_Statistic extends C_Base {
 
-	const  ONE_WEEK = 7*24*60*60;
+	const  ONE_WEEK = 604800;
 
 	public function action_index() {
 		header( 'Location: index.php?c=statistic&act=general_statistics' );
