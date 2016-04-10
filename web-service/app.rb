@@ -55,7 +55,15 @@ post "/persons/:id/keywords" do
 end
 
 patch "/persons/:person_id/keyword/:id" do
-
+  body = request.POST
+  person = Person.find_by(id: params[:person_id])
+  return [{error: {persons: ["person not found"]}}].to_json  unless person
+  keyword = Keyword.find_by(id: params[:id])
+  if keyword.update_attributes(body)
+    keyword.to_json
+  else
+    [{error: keyword.errors.messages}].to_json
+  end
 end
 
 delete "/persons/:person_id/keyword/:id" do
@@ -80,7 +88,14 @@ post "/sites" do
 end
 
 patch "/sites/:id" do
-
+  body = request.POST
+  site = Site.find_by(id: params[:id])
+  return [{error: {sites: ["site not found"]}}].to_json unless site
+  if site.update_attributes(body)
+    site.to_json
+  else
+    [{error: site.errors.messages}].to_json
+  end
 end
 
 delete "/sites/:id" do
@@ -103,7 +118,14 @@ post "/persons" do
 end
 
 patch "/persons/:id" do
-
+  body = request.POST
+  person = Person.find_by(id: params[:id])
+  return [{error: {persons: ["person not found"]}}].to_json unless person
+  if person.update_attributes(body)
+    person.to_json
+  else
+    [{error: person.errors.messages}].to_json
+  end
 end
 
 delete "/persons/:id" do
@@ -122,5 +144,10 @@ end
 
 # post "/test" do
 #   p request.POST
+#   # p JSON.parse(request.body.read)
+# end
+
+# get "/test" do
+#   p params
 #   # p JSON.parse(request.body.read)
 # end
