@@ -17,7 +17,11 @@ class M_Stats {
 	}
 
 	public function get_all_sites() {
-		return array("lenta", "kp", "ather_site");
+		$row = M_MSQL::Instance()->Select("Sites");
+		foreach ($row as $value) {
+			$sites[] = $value['name'];
+		}
+		return $sites;
 	}
 
 	public function get_general_statistics($selected_site) {
