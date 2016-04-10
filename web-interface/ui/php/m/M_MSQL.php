@@ -4,7 +4,7 @@
 define('MYSQL_SERVER', 'localhost');
 define('MYSQL_USER', 'root');
 define('MYSQL_PASSWORD', '');
-define('MYSQL_DB', 'blog_l2');
+define('MYSQL_DB', 'statist_db');
 
 class M_MSQL extends mysqli {
 
@@ -28,7 +28,7 @@ class M_MSQL extends mysqli {
 	    }
 	}
 
-	public function Select($table, $where, $order=null) {
+	public function Select($table, $where=null, $order=null) {
 		// SELECT
 		$query = "SELECT * FROM $table";
 		// WHERE
