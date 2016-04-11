@@ -14,8 +14,8 @@ class Persons(Base):
     """ Persons entity class """
     __tablename__ = 'persons'
 
-    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
-    name = Column(VARCHAR(2048), nullable=False)
+    id = Column('id', INTEGER(display_width=11, unsigned=True), nullable=False, primary_key=True)
+    name = Column(VARCHAR(255), nullable=False)
 
     keywords = relationship('Keywords', backref='person')
 
@@ -33,9 +33,9 @@ class Persons(Base):
 class Keywords(Base):
     __tablename__ = 'keywords'
 
-    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
-    name = Column('name', VARCHAR(2048), nullable=False)
-    person_id = Column('person_id', INTEGER(unsigned=True), nullable=False)
+    id = Column('id', INTEGER(display_width=11, unsigned=True), nullable=False, primary_key=True)
+    name = Column('name', VARCHAR(255), nullable=False)
+    person_id = Column('person_id', INTEGER(display_width=11, unsigned=True), nullable=False)
 
     __table_args__ = (ForeignKeyConstraint([person_id], [Persons.id],
                                            name='fk_rails_019c8c7266',
@@ -53,8 +53,8 @@ class Sites(Base):
     """ Sites entity class """
     __tablename__ = 'sites'
 
-    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
-    name = Column('name', VARCHAR(256), nullable=False)
+    id = Column('id', INTEGER(display_width=11, unsigned=True), nullable=False, primary_key=True)
+    name = Column('name', VARCHAR(255), nullable=False)
 
     pages = relationship('Pages', backref='site')
 
@@ -71,9 +71,9 @@ class Pages(Base):
     """ Pages entity class """
     __tablename__ = 'pages'
 
-    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
-    url = Column('url', VARCHAR(2048), nullable=False)
-    site_id = Column('site_id', INTEGER(unsigned=True), nullable=False)
+    id = Column('id', INTEGER(display_width=11, unsigned=True), nullable=False, primary_key=True)
+    url = Column('url', VARCHAR(255), nullable=False)
+    site_id = Column('site_id', INTEGER(display_width=11, unsigned=True), nullable=False)
     found_date_time = Column(DATETIME, default=datetime.utcnow)
     last_scan_date = Column(DATETIME)
 
@@ -95,10 +95,10 @@ class PersonPageRanks(Base):
     """ PersonPageRanks entity class """
     __tablename__ = 'person_page_ranks'
 
-    id = Column('id', INTEGER(unsigned=True), nullable=False, primary_key=True)
-    person_id = Column('person_id', INTEGER(unsigned=True), nullable=False)
-    page_id = Column('page_id', INTEGER(unsigned=True), nullable=False)
-    rank = Column('rank', INTEGER(unsigned=True), nullable=False)
+    id = Column('id', INTEGER(display_width=11, unsigned=True), nullable=False, primary_key=True)
+    person_id = Column('person_id', INTEGER(display_width=11, unsigned=True), nullable=False)
+    page_id = Column('page_id', INTEGER(display_width=11, unsigned=True), nullable=False)
+    rank = Column('rank', INTEGER(display_width=11, unsigned=True), nullable=False)
 
     __table_args__ = (ForeignKeyConstraint([person_id], [Persons.id],
                                            name='fk_rails_c1e71ae48d',
