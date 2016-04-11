@@ -42,7 +42,7 @@ def read_sitemap_xml(main_page_or_xml_url, robots=RobotsCache()):
         if guess_type(sitemap_url)[1] == 'gzip':
             sitemap_xml = gzip.GzipFile(fileobj=sitemap_xml)
         sitemap_xml_text = sitemap_xml.read()
-    except HTTPError:
+    except Exception:
         sitemap_xml_text = requests.get(sitemap_url, stream=True).\
                            content.decode('utf-8')
     except:
@@ -53,13 +53,19 @@ def read_sitemap_xml(main_page_or_xml_url, robots=RobotsCache()):
 
 
 def parse_sitemap_to_db(session, robots=RobotsCache()):
-    today_day = datetime.today().day
+    today_day = datetime.utcnow().date()
     for site in session.query(models.Sites).all():
-        main_page = session.query(models.Pages).filter(site.id == models.Pages.site_id).order_by(models.Pages.found_date_time).all()[0].url
-
+        try:
+            main_page = session.query(models.Pages).filter(site.id == models.Pages.site_id).order_by(models.Pages.found_date_time).all()[0].url
+        except:
+            print('no pages for site with id ', site.id)
+            continue
         new_pages_list = []
 
-        sitemap_text = read_sitemap_xml(main_page, robots)
+        try:
+            sitemap_text = read_sitemap_xml(main_page, robots)
+        except:
+            print("Возникла ошибка при доступе к карте сайта %s" % main_page)
         sitemap_xml_root = ET.fromstring(sitemap_text)
         ns = {'ns': gen_ns(sitemap_xml_root.tag)}
 
@@ -75,15 +81,17 @@ def parse_sitemap_to_db(session, robots=RobotsCache()):
                 xml_files_roots.append(sitemap_xml_root)
         else:
             xml_files_roots.append(sitemap_xml_root)
-
         for sitemap_xml_root in xml_files_roots:
             ns = {'ns': gen_ns(sitemap_xml_root.tag)}
             for url in sitemap_xml_root.iterfind("ns:url", ns):
                 if datetime.strptime(url.find("ns:lastmod", ns).text[:10],
-                                     "%Y-%m-%d").day == today_day:
+                                     "%Y-%m-%d").date() == today_day:
+                    # and url.find("ns:changefreq", ns).text == 'daily'
                     page_url = url.find("ns:loc", ns).text
                     if robots.allowed(page_url, '*') and not session.query(models.Pages).filter(site.id == models.Pages.site_id).filter(page_url == models.Pages.url).all():
                         new_pages_list.append(models.Pages(page_url, site.id))
+        if not new_pages_list:
+            print('no new pages for site "%s" with id %s' % (site.name, site.id))
 
         session.add_all(new_pages_list)
         session.commit()
