@@ -42,7 +42,7 @@ class M_Stats {
 	private function get_pages_ID_and_dates_by_site_ID($site_id, $start_date, $end_date) {
 		$pages = array();
 
-		$where = array("site_id = " => $site_id, "found_date_time >= " => $start_date, "found_date_time <= " => $end_date);
+		$where = array("site_id = " => $site_id, "found_date_time >= " => $start_date, "found_date_time < " => $end_date);
 		$order = "found_date_time";
 		$row = M_MSQL::Instance()->Select("pages", $where, $order);
 		
