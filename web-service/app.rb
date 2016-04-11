@@ -48,7 +48,7 @@ post "/persons/:id/keywords" do
   return [{error: {persons: ["person not found"]}}].to_json  unless person
   keyword = Keyword.new(name: body["name"], person_id: params[:person_id])
   if keyword.save
-    keyword.to_json
+    person.keywords.to_json
   else
     [{error: keyword.errors.messages}].to_json
   end
@@ -60,7 +60,7 @@ patch "/persons/:person_id/keyword/:id" do
   return [{error: {persons: ["person not found"]}}].to_json  unless person
   keyword = Keyword.find_by(id: params[:id])
   if keyword.update_attributes(body)
-    keyword.to_json
+    person.keywords.to_json
   else
     [{error: keyword.errors.messages}].to_json
   end
@@ -72,6 +72,7 @@ delete "/persons/:person_id/keyword/:id" do
   keyword = Site.find_by(id: params[:id])
   if keyword
     keyword.destroy
+    person.keywords.to_json
   else
     [{error: {keywords: "keyword not found"}}].to_json
   end
@@ -81,7 +82,7 @@ post "/sites" do
   body = request.POST
   site = Site.new(name: body["name"])
   if site.save
-    site.to_json
+    Site.all.to_json
   else
     [{error: site.errors.messages}].to_json
   end
@@ -92,7 +93,7 @@ patch "/sites/:id" do
   site = Site.find_by(id: params[:id])
   return [{error: {sites: ["site not found"]}}].to_json unless site
   if site.update_attributes(body)
-    site.to_json
+    Site.all.to_json
   else
     [{error: site.errors.messages}].to_json
   end
@@ -102,6 +103,7 @@ delete "/sites/:id" do
   site = Site.find_by(id: params[:id])
   if site
     site.destroy
+    Site.all.to_json
   else
     [{error: {sites: ["site not found"]}}].to_json
   end
@@ -111,7 +113,7 @@ post "/persons" do
   body = request.POST
   person = Person.new(name: body["name"])
   if person.save
-    person.to_json
+    Person.all.to_json
   else
     [{error: person.errors.messages}].to_json
   end
@@ -122,7 +124,7 @@ patch "/persons/:id" do
   person = Person.find_by(id: params[:id])
   return [{error: {persons: ["person not found"]}}].to_json unless person
   if person.update_attributes(body)
-    person.to_json
+    Person.all.to_json
   else
     [{error: person.errors.messages}].to_json
   end
@@ -132,6 +134,7 @@ delete "/persons/:id" do
   person = Person.find_by(id: params[:id])
   if person
     person.destroy
+    Person.all.to_json
   else
     [{error: {persons: ["person not found"]}}].to_json
   end
