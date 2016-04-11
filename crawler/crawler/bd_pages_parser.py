@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 
+from urllib.error import HTTPError
+
 from datetime import datetime
 
 import os
+import shutil
 
-# Позже улучшу с помощью дополнительных модулей загрузчик страниц 
 from urllib.request import urlopen, build_opener, urlretrieve 
 import requests
 
@@ -29,7 +31,19 @@ def page_downloader(page_db_object):
         n += 1
         filename = str(n) + filename[lnum:]
         file_path = os.path.join(page_dir, filename)
-    urlretrieve(page.url, file_path)
+    try:
+        urlretrieve(page.url, file_path)
+    except Exception:
+        with urlopen(page.url) as response, open(file_path, 'wb') as out_file:
+            shutil.copyfileobj(response, out_file)
+    except Exception:
+        with requests.get(page.url, stream=True).raw as response, open(file_path, 'wb') as out_file:
+            shutil.copyfileobj(response, out_file)
+    except:
+        opener = build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        with opener.open(page.url) as response, open(file_path, 'wb') as out_file:
+            shutil.copyfileobj(response, out_file)
     return file_path
 
 
@@ -42,7 +56,12 @@ def count_words(text):
 
 def parse_pages_from_bd(session):
     for page in session.query(models.Pages).filter(models.Pages.last_scan_date == None):
-        page_html = open(page_downloader(page), 'r').read()
+        try:
+            page_html = open(page_downloader(page), 'r').read()
+        except:
+            print("failed to download: ", page.url)
+            page.last_scan_date = datetime.utcnow()
+            continue
         html_text = html2text(BeautifulSoup(page_html, "lxml").text)  # or 'html.parse' parser
 
         words_count_dict = count_words(html_text)
