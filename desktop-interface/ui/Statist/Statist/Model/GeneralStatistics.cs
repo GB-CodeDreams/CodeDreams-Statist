@@ -13,8 +13,5 @@ namespace Statist.Model
 
         [JsonProperty(PropertyName = "rank")]
         public int Rank { get; set; }
-
-        [JsonProperty(PropertyName = "last_scan_date")]
-        public DateTime LastScanDate { get; set; }
     }
 }
