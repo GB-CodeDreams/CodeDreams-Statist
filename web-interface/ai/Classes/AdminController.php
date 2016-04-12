@@ -6,18 +6,14 @@ class AdminController
 
     public function actionSites()
     {
+        global $link;
         $view = new View();
         $model = new Sites();
-        $view->sites = $model->Sites_getAll();
-        global $link;
 
-        if(isset($_POST['del']))
-        {
-            $id = $_POST['id'];
-            $model = new Sites();
-            $model->Sites_deleteOne($id);
-            $view->sites = $model->Sites_getAll();
-        }
+        $id = mysqli_real_escape_string($link, $_GET['id']);
+        $model->Sites_deleteOne($id);
+        $view->sites = $model->Sites_getAll();
+
 
         if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = true;
@@ -36,18 +32,13 @@ class AdminController
 
     public function actionPersons()
     {
+        global $link;
         $view = new View();
         $model = new Persons();
-        $view->persons = $model->Persons_getAll();
-        global $link;
 
-        if(isset($_POST['del']))
-        {
-            $id = $_POST['id'];
-            $model = new Persons();
-            $model->Persons_deleteOne($id);
-            $view->persons = $model->Persons_getAll();
-        }
+        $id = mysqli_real_escape_string($link, $_GET['id']);
+        $model->Persons_deleteOne($id);
+        $view->persons = $model->Persons_getAll();
 
         if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = true;
@@ -66,20 +57,16 @@ class AdminController
 
     public function actionKeywords()
     {
+        global $link;
         $view = new View();
         $model = new Keywords();
-        global $link;
+
         $person_id = mysqli_real_escape_string($link, $_GET['person_id']);
         $view->person = $model->Persons_getOne($person_id);
-        $view->keywords = $model->Keywords_getAll($person_id);
 
-        if(isset($_POST['del']))
-        {
-            $id = $_POST['id'];
-            $model = new Keywords();
-            $model->Keywords_deleteOne($id);
-            $view->keywords = $model->Keywords_getAll($person_id);
-        }
+        $id = mysqli_real_escape_string($link, $_GET['id']);
+        $model->Keywords_deleteOne($id);
+        $view->keywords = $model->Keywords_getAll($person_id);
 
         if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = true;

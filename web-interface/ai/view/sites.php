@@ -25,13 +25,12 @@
                 <td width="250">
                     <article>
                         <h3 class="artitle">
-                            <div><?=$site['name'];?></div>
-                            <input type="hidden" name="id" value="<?=$site['id']?>" />
+                            <?=$site['name'];?>
                         </h3>
                     </article>
                 </td>
                 <td>
-                    <input type="submit" name="del" value="Удалить" />
+                    <a href="index.php?r=admin/sites&id=<?=$site['id'];?>">Удалить</a>
                 </td>
                 <?php endforeach; ?>
             </tr>

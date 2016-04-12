@@ -36,7 +36,7 @@
                         </article>
                     </td>
                     <td>
-                        <input type="submit" name="del" value="Удалить" />
+                        <a href="index.php?r=admin/keywords&person_id=<?=$person['id'];?>&id=<?=$keyword['id']?>">Удалить</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

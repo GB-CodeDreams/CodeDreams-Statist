@@ -26,13 +26,12 @@
                         <article>
                             <h3 class="artitle">
                                 <?=$person['name'];?>
-                                <input type="hidden" name="id" value="<?=$person['id']?>" />
                             </h3>
                         </article>
                     </td>
                     <td width="100">
-                        <input type="submit" name="del" value="Удалить" />
-                    </td>
+                        <a href="index.php?r=admin/persons&id=<?=$person['id']?>">Удалить</a>
+                        </td>
                     <td>
                         <a href="index.php?r=admin/keywords&person_id=<?=$person['id']?>">Задать набор искомых слов</a>
                     </td>
