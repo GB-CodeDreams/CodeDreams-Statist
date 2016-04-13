@@ -26,7 +26,7 @@ class AdminController
             }
         }
         // Вывод в шаблон.
-        $html = $view->display('sites.php');
+        $html = $view->display('sites.html');
         echo $html;
     }
 
@@ -51,7 +51,7 @@ class AdminController
             }
         }
         // Вывод в шаблон.
-        $html = $view->display('persons.php');
+        $html = $view->display('persons.html');
         echo $html;
     }
 
@@ -80,7 +80,7 @@ class AdminController
         }
 
         // Вывод в шаблон.
-        $html = $view->display('keywords.php');
+        $html = $view->display('keywords.html');
         echo $html;
     }
 }
