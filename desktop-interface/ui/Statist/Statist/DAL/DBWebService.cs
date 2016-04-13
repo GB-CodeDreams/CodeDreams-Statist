@@ -12,7 +12,7 @@ namespace Statist.DAL
 {
     public static class DBWebService
     {
-        public static List<Persons> FillPersons()
+        public static List<Persons> GetPersons()
         {
             string response = "";
             List<Persons> persons = new List<Persons>();
@@ -31,7 +31,7 @@ namespace Statist.DAL
             }
             return persons.OrderBy(n => n.Name).ToList();
         }
-        public static List<Sites> FillSites()
+        public static List<Sites> GetSites()
         {
             string response = "";
             List<Sites> sites = new List<Sites>();
