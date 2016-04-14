@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414072207) do
+ActiveRecord::Schema.define(version: 20160414075728) do
 
   create_table "keywords", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -67,13 +67,13 @@ ActiveRecord::Schema.define(version: 20160414072207) do
   create_table "users", force: :cascade do |t|
     t.string  "username", limit: 255
     t.string  "password", limit: 255
-    t.integer "admin",    limit: 1,   default: 0
+    t.boolean "admin",                default: false
   end
 
   add_foreign_key "keywords", "persons"
   add_foreign_key "pages", "sites"
   add_foreign_key "person_page_ranks", "pages"
   add_foreign_key "person_page_ranks", "persons"
-  add_foreign_key "persons", "users"
-  add_foreign_key "sites", "users"
+  add_foreign_key "persons", "users", on_delete: :cascade
+  add_foreign_key "sites", "users", on_delete: :cascade
 end

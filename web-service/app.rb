@@ -2,6 +2,7 @@ require 'sinatra'
 require "sinatra/activerecord"
 require 'json'
 require './environments'
+require './models/user'
 require './models/person'
 require './models/keyword'
 require './models/person_page_rank'
