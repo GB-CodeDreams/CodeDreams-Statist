@@ -33,8 +33,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtUpdateDate = new System.Windows.Forms.TextBox();
             this.dgvGeneralStatistics = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnApplyGeneral = new System.Windows.Forms.Button();
             this.cmbSiteGeneral = new System.Windows.Forms.ComboBox();
             this.lblSite = new System.Windows.Forms.Label();
@@ -52,6 +50,9 @@
             this.btnApplyDaily = new System.Windows.Forms.Button();
             this.cmbSiteDaily = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbStatistics.SuspendLayout();
             this.tbGeneralStatistics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGeneralStatistics)).BeginInit();
@@ -110,27 +111,13 @@
             this.dgvGeneralStatistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvGeneralStatistics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
+            this.Column5,
             this.Column2});
             this.dgvGeneralStatistics.Location = new System.Drawing.Point(279, 71);
             this.dgvGeneralStatistics.Name = "dgvGeneralStatistics";
             this.dgvGeneralStatistics.ReadOnly = true;
             this.dgvGeneralStatistics.Size = new System.Drawing.Size(296, 283);
             this.dgvGeneralStatistics.TabIndex = 3;
-            // 
-            // Column1
-            // 
-            this.Column1.DataPropertyName = "Name";
-            this.Column1.HeaderText = "Имя";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 150;
-            // 
-            // Column2
-            // 
-            this.Column2.DataPropertyName = "Rank";
-            this.Column2.HeaderText = "Количество упоминаний";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
             // 
             // btnApplyGeneral
             // 
@@ -310,6 +297,29 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Сайт";
             // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "Name";
+            this.Column1.HeaderText = "Имя";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 150;
+            // 
+            // Column5
+            // 
+            this.Column5.DataPropertyName = "LastScanDate";
+            this.Column5.HeaderText = "Дата обновления";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Visible = false;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "Rank";
+            this.Column2.HeaderText = "Количество упоминаний";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
             // frmStatist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -343,8 +353,6 @@
         private System.Windows.Forms.TextBox txtUpdateDate;
         private System.Windows.Forms.DataGridView dgvGeneralStatistics;
         private System.Windows.Forms.Button btnApplyGeneral;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DateTimePicker dtpPeriodFrom;
         private System.Windows.Forms.ComboBox cmbPersonDaily;
         private System.Windows.Forms.Label label3;
@@ -358,6 +366,9 @@
         private System.Windows.Forms.DataGridView dgvDailyStatistics;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
 

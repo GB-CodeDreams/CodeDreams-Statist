@@ -61,6 +61,24 @@ namespace Statist.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/day_statistic?site=.
+        /// </summary>
+        internal static string GetDailyStatistics {
+            get {
+                return ResourceManager.GetString("GetDailyStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/total_statistic?site=.
+        /// </summary>
+        internal static string GetGeneralStatistics {
+            get {
+                return ResourceManager.GetString("GetGeneralStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/persons.
         /// </summary>
         internal static string GetPersons {

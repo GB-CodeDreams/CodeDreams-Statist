@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Statist.Model;
 using Statist.Properties;
 using System;
@@ -66,6 +67,38 @@ namespace Statist.DAL
                 }
 
                 return generalStatistics;
+            }
+        }
+        public static List<DailyStatistics> GetDailyStatistics(string nameSite, string namePerson, string periodFrom, string periodBefore, ref List<DailyStatistics> dailyStatistics)
+        {
+            string response = "";
+            using (var webClient = new WebClient())
+            {
+                try
+                {
+                    webClient.Encoding = Encoding.UTF8;
+                    response = webClient.DownloadString(Resources.GetDailyStatistics + nameSite + "&query_word=" + namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore);
+                    
+                    dailyStatistics = JsonConvert.DeserializeObject<List<DailyStatistics>>(response);
+                    dailyStatistics.RemoveAt(dailyStatistics.Count - 1);
+                    //var dynObj = (JArray)JsonConvert.DeserializeObject(response);
+                    //var last = dynObj.Last;
+                    //foreach (var item in last)
+                    //{
+                    //    var item1 = item;
+                    //    foreach (JObject trend in item["trends"])
+                    //    {                            
+
+                    //    }
+                    //}
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                return dailyStatistics;
             }
         }
     }
