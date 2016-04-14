@@ -1,0 +1,7 @@
+/db/*.sqlite3
+/log/*
+!/log/.keep
+/tmp
+.env
+/config/database.yml
+*.*~
