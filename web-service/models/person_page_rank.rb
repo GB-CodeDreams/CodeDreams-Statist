@@ -30,7 +30,7 @@ class PersonPageRank < ActiveRecord::Base
       }.gsub(/\s+/, ' ').strip
 
       site_pages = %{
-        SELECT      s.name, p.id, p.last_scan_date as date
+        SELECT      s.name, p.id, DATE(p.last_scan_date) as date
         FROM        sites AS s
         INNER JOIN  pages AS p ON s.id = p.site_id
         WHERE       (s.name = '#{site}'
