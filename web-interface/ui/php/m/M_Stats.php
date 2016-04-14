@@ -25,42 +25,6 @@ class M_Stats {
 		return $sites;
 	}
 
-	private function get_site_ID_by_name($site){
-		$row = M_MSQL::Instance()->Select("sites", array("name = " => $site));
-		return (int)$row[0]['id'];
-	}
-
-	private function get_pages_ID_by_site_ID($site_id) {
-		$pages = array();
-		$row = M_MSQL::Instance()->Select("pages", array("site_id = " => $site_id));
-		foreach ($row as $value) {
-			$pages[] = $value['id'];
- 		}
-		return $pages;
-	}
-
-	private function get_pages_ID_and_dates_by_site_ID($site_id, $start_date, $end_date) {
-		$pages = array();
-
-		$where = array("site_id = " => $site_id, "found_date_time >= " => $start_date, "found_date_time < " => $end_date);
-		$order = "found_date_time";
-		$row = M_MSQL::Instance()->Select("pages", $where, $order);
-		
-		foreach ($row as $value) {
-			$pages[] = array("page_id" =>$value['id'], "date" => $value['found_date_time'], "rank" => 0);
- 		}
-		return $pages;
-	}
-
-	private function get_all_persons_with_id() {
-		$persons = M_MSQL::Instance()->Select("persons");
-		foreach ($persons as &$person) {
-			$person['rank'] = 0;
-		}
-		unset($person);
-		return $persons;
-	}
-
 	public function get_all_persons() {
 		$persons = array();
 		$row = M_MSQL::Instance()->Select("persons");
@@ -70,67 +34,53 @@ class M_Stats {
 		return $persons;
 	}
 
-	public function get_person_id_by_name($name) {
-		$row = M_MSQL::Instance()->Select("persons", array("name = " => $name));
-		return (int)$row[0]['id'];
-	}
-
-	//TODO: Слишком много запросов к БД
-	private function get_all_persons_and_ranks_by_site($site) {
-		$site_id = self::get_site_ID_by_name($site);
-		$pages = self::get_pages_ID_by_site_ID($site_id);
-		$persons = self::get_all_persons_with_id();
-		
-		foreach ($pages as $page) {
-			$row = M_MSQL::Instance()->Select("person_page_ranks", array("page_id = " => $page));
-			foreach ($row as $value) {
-				foreach ($persons as &$person) {
-					if($person['id'] == $value['person_id']) {
-						$person['rank'] += $value['rank'];
-					}
-				}	
-				unset($person);	
-			}
-		}
-		return $persons;
-	}
-
 	public function get_general_statistics($selected_site) {
 		$general_statistics = array();
-		$persons = self::get_all_persons_and_ranks_by_site($selected_site);
-		foreach ($persons as $person) {
-			$general_statistics[] = array('person' => $person['name'], 'rank' => $person['rank']);
+
+		$result = M_MSQL::Instance()->query
+			("	SELECT persons.name AS person, SUM(person_page_ranks.rank) AS rank
+				FROM persons, person_page_ranks, pages, sites
+				WHERE persons.id = person_page_ranks.person_id
+				AND person_page_ranks.page_id = pages.id
+				AND pages.site_id = sites.id
+				AND sites.name = '$selected_site'
+				GROUP BY persons.name
+			");
+		
+		while ($row = mysqli_fetch_assoc($result)) {
+			$general_statistics[] = $row;
 		}
+		
 		return $general_statistics;
 	}
 
 	public function get_daily_stats($selected_site, $selected_person, $start_date, $end_date) {
 		$daily_stats = array();
-		$site_id = self::get_site_ID_by_name($selected_site);
-		$pages = self::get_pages_ID_and_dates_by_site_ID($site_id, $start_date, $end_date);
-		$person_id = self::get_person_id_by_name($selected_person);
+		$result = M_MSQL::Instance()->query
+			("	SELECT DATE_FORMAT(pages.found_date_time, '%Y-%m-%d') AS day, SUM(person_page_ranks.rank) AS rank
+				FROM persons, person_page_ranks, pages, sites
+				WHERE persons.id = person_page_ranks.person_id
+				AND person_page_ranks.page_id = pages.id
+				AND pages.site_id = sites.id
+				AND persons.name = '$selected_person'
+				AND sites.name = '$selected_site'
+				AND pages.found_date_time >= '$start_date'
+				AND pages.found_date_time < '$end_date'
+				GROUP BY DATE_FORMAT(pages.found_date_time, '%Y-%m-%d')
+			");
 
-		foreach ($pages as &$page) {
-			$where = array("person_id = " => $person_id, "page_id = " => $page['page_id']);
-			$row = M_MSQL::Instance()->Select("person_page_ranks", $where);
-			foreach ($row as $value) {
-				$page['rank'] += $value['rank']; 
-			}
-		}
-		unset($page);
-
-		foreach ($pages as $page) {
-			@$daily_stats[$page['date']] += $page['rank']; 
+		while ($row = mysqli_fetch_assoc($result)) {
+			$daily_stats[$row['day']] = $row['rank'];
 		}
 
 		return $daily_stats;
 	}
 
-	public function get_total_person_count($daily_stats) {
-		$total_person_count = 0;
+	public function get_total_daily_count($daily_stats) {
+		$total_daily_count = 0;
 		foreach ($daily_stats as $count) {
-			$total_person_count += $count;
+			$total_daily_count += $count;
 		}
-		return $total_person_count;
+		return $total_daily_count;
 	}
 }
