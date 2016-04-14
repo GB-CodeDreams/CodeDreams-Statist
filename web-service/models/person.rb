@@ -2,8 +2,9 @@
 # ищет таблицу people вместо persons
 class Person < ActiveRecord::Base
   self.table_name = "persons"
-  has_many :keywords, dependent: :destroy
-  has_many :person_page_ranks, dependent: :destroy
+  has_many    :keywords, dependent: :destroy
+  has_many    :person_page_ranks, dependent: :destroy
+  belongs_to  :user
 
   validates_presence_of :name
 end
