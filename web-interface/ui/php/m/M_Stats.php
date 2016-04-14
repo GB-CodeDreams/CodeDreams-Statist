@@ -55,24 +55,28 @@ class M_Stats {
 	}
 
 	public function get_daily_stats($selected_site, $selected_person, $start_date, $end_date) {
-		$daily_stats = array();
+		for ($i = strtotime($start_date); $i < strtotime($end_date); $i+=86400) { 
+			$daily_stats[date("Y-m-d", $i)] = 0;
+		}
+		
 		$result = M_MSQL::Instance()->query
-			("	SELECT DATE_FORMAT(pages.found_date_time, '%Y-%m-%d') AS day, SUM(person_page_ranks.rank) AS rank
+			("	SELECT DATE_FORMAT(pages.last_scan_date, '%Y-%m-%d') AS day, SUM(person_page_ranks.rank) AS rank
 				FROM persons, person_page_ranks, pages, sites
 				WHERE persons.id = person_page_ranks.person_id
 				AND person_page_ranks.page_id = pages.id
 				AND pages.site_id = sites.id
 				AND persons.name = '$selected_person'
 				AND sites.name = '$selected_site'
-				AND pages.found_date_time >= '$start_date'
-				AND pages.found_date_time < '$end_date'
-				GROUP BY DATE_FORMAT(pages.found_date_time, '%Y-%m-%d')
+				AND pages.last_scan_date >= '$start_date'
+				AND pages.last_scan_date < '$end_date'
+				GROUP BY DATE_FORMAT(pages.last_scan_date, '%Y-%m-%d')
 			");
-
+	
 		while ($row = mysqli_fetch_assoc($result)) {
 			$daily_stats[$row['day']] = $row['rank'];
 		}
-
+			
+		ksort($daily_stats);
 		return $daily_stats;
 	}
 
