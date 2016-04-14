@@ -73,9 +73,8 @@ class C_Statistic extends C_Base {
 			}
 			
 			if(!$isError) {
-				
 				$daily_stats = M_Stats::Instance()->get_daily_stats($selected_site, $selected_person, $start_date, $end_date);
-				$total_count = M_Stats::Instance()->get_total_person_count($daily_stats);
+				$total_count = M_Stats::Instance()->get_total_daily_count($daily_stats);
 			}
 		} else {
 			$isError = true;
