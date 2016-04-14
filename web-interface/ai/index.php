@@ -1,0 +1,1 @@
+<?phpinclude_once __DIR__ . '/boot.php';if(isset($_GET['r']))    $r = $_GET['r'];$rout = new Rout($r);$controllerClassName = ucfirst($rout->controller).'Controller';$controller = new $controllerClassName;$controller->action($rout->action);
