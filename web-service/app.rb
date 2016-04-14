@@ -45,7 +45,7 @@ end
 get "/persons/:id/keywords" do
   person = Person.find_by(id: params[:id])
   if person
-    person.keywords.to_json if person
+    person.keywords.to_json
   else
     [{error: {persons: ["person not found"]}}].to_json if person.nil?
   end

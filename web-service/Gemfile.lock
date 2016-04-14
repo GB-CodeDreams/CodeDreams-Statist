@@ -52,6 +52,3 @@ DEPENDENCIES
   rake
   sinatra (= 1.4.7)
   sinatra-activerecord
-
-BUNDLED WITH
-   1.11.2
