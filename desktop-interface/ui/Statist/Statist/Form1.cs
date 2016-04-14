@@ -8,6 +8,10 @@ using System.Text;
 using System.Windows.Forms;
 using Statist.Model;
 using Statist.DAL;
+using System.Net;
+using System.IO;
+using System.Collections.Specialized;
+using Newtonsoft.Json;
 
 namespace Statist
 {
@@ -15,7 +19,6 @@ namespace Statist
     {
         List<Sites> sites = new List<Sites>();
         List<Persons> persons = new List<Persons>();
-        List<Pages> pages = new List<Pages>();
         List<GeneralStatistics> generalStatistics = new List<GeneralStatistics>();
         List<DailyStatistics> dailyStatistics = new List<DailyStatistics>();
 
@@ -23,9 +26,8 @@ namespace Statist
         {
             InitializeComponent();
 
-            persons = DBInitializer.FillPersons();
-            sites = DBInitializer.FillSites();
-            pages = DBInitializer.FillPages();
+            DBWebService.GetPersons(ref persons);
+            DBWebService.GetSites(ref sites);
 
             cmbSiteGeneral.DataSource = sites;
             cmbSiteDaily.DataSource = sites;
@@ -35,61 +37,70 @@ namespace Statist
         private void btnApply_Click(object sender, EventArgs e)
         {
             generalStatistics.Clear();
+
             var selectedSiteGeneral = cmbSiteGeneral.SelectedItem;
-            Pages page = Pages.GetPageById(pages, (selectedSiteGeneral as Sites).Id);
 
-            if(page != null)
-                txtUpdateDate.Text = page.LastScanDate.ToString();
+            DBWebService.GetGeneralStatistics((selectedSiteGeneral as Sites).Name, ref generalStatistics);
 
-            List<Pages> selectedPages = Pages.GetPagesBySiteId(pages, (selectedSiteGeneral as Sites).Id);
-
-            if (selectedPages.Count != 0)
+            BindingSource bindGeneral = new BindingSource { DataSource = generalStatistics };
+            if (generalStatistics.Count != 0)
             {
-                foreach (var person in persons)
-                {
-                    GeneralStatistics generalStatist = new GeneralStatistics();
-                    generalStatist.Name = person.Name;
-                    generalStatist.Rank = selectedPages.Where(si => si.SiteId == (selectedSiteGeneral as Sites).Id).SelectMany(p => p.PersonPageRanks).
-                        Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
-                    generalStatistics.Add(generalStatist);
-                }
-                BindingSource bindGeneral = new BindingSource { DataSource = generalStatistics };
+                txtUpdateDate.Text = generalStatistics[0].LastScanDate.ToString();
                 dgvGeneralStatistics.DataSource = bindGeneral;
-
             }
             else
+            {
+                txtUpdateDate.Text = "";
+                dgvGeneralStatistics.DataSource = bindGeneral;
                 MessageBox.Show("Данных не найдено.");
+            }
         }
 
         private void btnApplyDaily_Click(object sender, EventArgs e)
         {
             dailyStatistics.Clear();
+            dgvDailyStatistics.Rows.Clear();
 
             var selectedSiteDaily = cmbSiteDaily.SelectedItem;
-            var selectedPersonDaily = cmbPersonDaily.SelectedItem;            
-            var periodFrom = dtpPeriodFrom.Value.Date;
-            var periodBefore = dtpPeriodBefore.Value.Date;
-            periodBefore = periodBefore.AddDays(1);
+            var selectedPersonDaily = cmbPersonDaily.SelectedItem;
+            var periodFrom = dtpPeriodFrom.Value.Date.GetDateTimeFormats('d');
+            var periodBefore = dtpPeriodBefore.Value.Date.AddDays(1).GetDateTimeFormats('d');
 
-            List<Pages> selectedPages = pages.Where(d => d.LastScanDate > periodFrom).Where(dt => dt.LastScanDate < periodBefore).
-                Where(si => si.SiteId == (selectedSiteDaily as Sites).Id).ToList();
+            DBWebService.GetDailyStatistics((selectedSiteDaily as Sites).Name, (selectedPersonDaily as Persons).Name, periodFrom[4], periodBefore[4], ref dailyStatistics);
 
-            if (selectedPages.Count != 0)
+            if (dailyStatistics.Count != 0)
             {
-                foreach (var page in selectedPages)
-                {
-                    DailyStatistics dailyStatist = new DailyStatistics();
-                    dailyStatist.LastScanDate = page.LastScanDate;
-                    dailyStatist.Rank = page.PersonPageRanks.Where(p => p.PersonId == (selectedPersonDaily as Persons).Id).Select(r => r.Rank).FirstOrDefault();
-                    dailyStatistics.Add(dailyStatist);
-                }
-                BindingSource bindDaily = new BindingSource { DataSource = dailyStatistics };
-                dgvDailyStatistics.DataSource = bindDaily;
+                FillDailyDataGridViewRows(dailyStatistics, dgvDailyStatistics);
             }
             else
             {
-                MessageBox.Show("За указанный период поиск не производился.");
+                MessageBox.Show("За указанный период, данных не найдено.");
             }
+        }
+
+        void FillDailyDataGridViewRows(List<DailyStatistics> dailyStatistics, DataGridView dgv)
+        {
+            foreach (var dailyStatist in dailyStatistics)
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                DataGridViewTextBoxCell dateCell = new DataGridViewTextBoxCell();
+                DataGridViewTextBoxCell rankCell = new DataGridViewTextBoxCell();
+                dateCell.Value = dailyStatist.LastScanDate.ToShortDateString();
+                rankCell.Value = dailyStatist.Rank;
+                row.Cells.Add(dateCell);
+                row.Cells.Add(rankCell);
+                dgv.Rows.Add(row);
+            }
+
+            DataGridViewRow totalRow = new DataGridViewRow();
+            DataGridViewTextBoxCell totalDateCell = new DataGridViewTextBoxCell();
+            DataGridViewTextBoxCell totalRankCell = new DataGridViewTextBoxCell();
+            totalDateCell.Value = "Всего:";
+            totalRankCell.Value = dailyStatistics.Sum(l => l.Rank);
+            totalRow.Cells.Add(totalDateCell);
+            totalRow.Cells.Add(totalRankCell);
+            dgv.Rows.Add(totalRow);
+
         }
     }
 }
