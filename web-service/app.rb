@@ -2,12 +2,20 @@ require 'sinatra'
 require "sinatra/activerecord"
 require 'json'
 require './environments'
+require './controller/helper'
+require './controller/users_controller'
 require './models/user'
 require './models/person'
 require './models/keyword'
 require './models/person_page_rank'
 require './models/page'
 require './models/site'
+
+
+before %r{^/(sites|persons|keywords)} do
+  set_current_user
+  halt 401, "Authentication error!" unless current_user
+end
 
 get '/' do
  a = {a: "c", b: "b"}
