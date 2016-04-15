@@ -47,11 +47,14 @@ namespace Statist
             {
                 txtUpdateDate.Text = generalStatistics[0].LastScanDate.ToString();
                 dgvGeneralStatistics.DataSource = bindGeneral;
+                //chartDailyStatistics.DataSource = generalStatistics;
+                chartDailyStatistics.Series[0].Points.DataBindXY(bindGeneral, "Name", bindGeneral, "Rank");
             }
             else
             {
                 txtUpdateDate.Text = "";
                 dgvGeneralStatistics.DataSource = bindGeneral;
+                chartDailyStatistics.Series[0].Points.Clear();
                 MessageBox.Show("Данных не найдено.");
             }
         }
