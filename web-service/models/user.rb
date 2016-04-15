@@ -7,8 +7,9 @@ class User < ActiveRecord::Base
   has_many :persons, dependent: :destroy
   has_many :sites,   dependent: :destroy
 
-  validates :username, presence: true
-  validates :password, presence: true, length: {minimum: 6}
+  validates :username, presence:   true
+  validates :username, uniqueness: true
+  validates :password, presence:   true, length: {minimum: 6}
 
   before_save :password_to_md5
 
