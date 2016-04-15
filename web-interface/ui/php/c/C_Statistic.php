@@ -16,15 +16,15 @@ class C_Statistic extends C_Base {
 		$selected_site = $sites[0];
 
 		if ($this->IsPost()) {
-			$isSelectSite = true;
 			$selected_site = $_POST['site'];
 			
 			$general_statistics = M_Stats::Instance()->get_general_statistics($selected_site);
+			$isError = !$general_statistics;
 		} 	
 
 		$vars = array(
 			'general_statistics' => $general_statistics,
-			'isSelectSite' => $isSelectSite,
+			'isError' => $isError,
 			'selected_site' => $selected_site,
 			'sites' => $sites
 		);

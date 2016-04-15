@@ -48,9 +48,9 @@ class M_Stats {
 			");
 		
 		while ($row = mysqli_fetch_assoc($result)) {
-			$general_statistics[] = $row;
+			$general_statistics[$row['person']] = (int)$row['rank'];
 		}
-		
+
 		return $general_statistics;
 	}
 

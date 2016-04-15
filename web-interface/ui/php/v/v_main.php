@@ -12,6 +12,7 @@ $title - заголовок страницы
 	<title><?=$title?></title>
 	<link rel="stylesheet" href="v/style.css">
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 	
