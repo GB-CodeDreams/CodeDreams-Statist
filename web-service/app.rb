@@ -20,6 +20,10 @@ before %r{^/(sites|persons|keywords)} do
   authenticate
 end
 
+before %r{^/(sites|persons)} do
+  check_owner if request.post? || request.patch?
+end
+
 get '/total_statistic' do
   site = params[:site]
   if site
