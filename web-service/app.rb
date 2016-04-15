@@ -42,7 +42,7 @@ end
 
 get "/:key" do |k|
   classes = ["persons", "sites"]
-  k.singularize.capitalize.constantize.all.to_json if classes.include? k
+  get_collection_by_permission(k) if classes.include? k
 end
 
 # post "/test" do

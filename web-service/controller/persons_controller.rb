@@ -12,7 +12,7 @@ patch "/persons/:id" do
   return [400, [error: {persons: ["person not found"]}].to_json ] unless person
   authorize unless has_perrmission?(person)
   if person.update_attributes(form_data)
-    current_user.admin ? Person.all.to_json : current_user.persons.to_json
+    get_collection_by_permission("persons")
   else
     [400, [error: person.errors.messages].to_json]
   end
@@ -23,8 +23,8 @@ delete "/persons/:id" do
   authorize unless has_perrmission?(person)
   if person
     person.destroy
-    current_user.admin ? Person.all.to_json : current_user.persons.to_json
+    get_collection_by_permission("persons")
   else
-    [{error: {persons: ["person not found"]}}].to_json
+    [400, [error: {persons: ["person not found"]}].to_json ]
   end
 end
