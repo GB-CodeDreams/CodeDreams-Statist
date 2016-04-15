@@ -28,11 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tbStatistics = new System.Windows.Forms.TabControl();
             this.tbGeneralStatistics = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.txtUpdateDate = new System.Windows.Forms.TextBox();
             this.dgvGeneralStatistics = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnApplyGeneral = new System.Windows.Forms.Button();
             this.cmbSiteGeneral = new System.Windows.Forms.ComboBox();
             this.lblSite = new System.Windows.Forms.Label();
@@ -50,14 +59,15 @@
             this.btnApplyDaily = new System.Windows.Forms.Button();
             this.cmbSiteDaily = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chartGeneralStatistics = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartDailyStatistics = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tbStatistics.SuspendLayout();
             this.tbGeneralStatistics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGeneralStatistics)).BeginInit();
             this.tbDailyStatistics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDailyStatistics)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartGeneralStatistics)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartDailyStatistics)).BeginInit();
             this.SuspendLayout();
             // 
             // tbStatistics
@@ -68,12 +78,13 @@
             this.tbStatistics.Location = new System.Drawing.Point(12, 12);
             this.tbStatistics.Name = "tbStatistics";
             this.tbStatistics.SelectedIndex = 0;
-            this.tbStatistics.Size = new System.Drawing.Size(634, 399);
+            this.tbStatistics.Size = new System.Drawing.Size(1267, 399);
             this.tbStatistics.TabIndex = 0;
             // 
             // tbGeneralStatistics
             // 
             this.tbGeneralStatistics.BackColor = System.Drawing.Color.Transparent;
+            this.tbGeneralStatistics.Controls.Add(this.chartGeneralStatistics);
             this.tbGeneralStatistics.Controls.Add(this.label1);
             this.tbGeneralStatistics.Controls.Add(this.txtUpdateDate);
             this.tbGeneralStatistics.Controls.Add(this.dgvGeneralStatistics);
@@ -84,7 +95,7 @@
             this.tbGeneralStatistics.Location = new System.Drawing.Point(4, 25);
             this.tbGeneralStatistics.Name = "tbGeneralStatistics";
             this.tbGeneralStatistics.Padding = new System.Windows.Forms.Padding(3);
-            this.tbGeneralStatistics.Size = new System.Drawing.Size(626, 370);
+            this.tbGeneralStatistics.Size = new System.Drawing.Size(1259, 370);
             this.tbGeneralStatistics.TabIndex = 0;
             this.tbGeneralStatistics.Text = "Общая статистика";
             // 
@@ -119,6 +130,29 @@
             this.dgvGeneralStatistics.Size = new System.Drawing.Size(296, 283);
             this.dgvGeneralStatistics.TabIndex = 3;
             // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "Name";
+            this.Column1.HeaderText = "Имя";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 150;
+            // 
+            // Column5
+            // 
+            this.Column5.DataPropertyName = "LastScanDate";
+            this.Column5.HeaderText = "Дата обновления";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Visible = false;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "Rank";
+            this.Column2.HeaderText = "Количество упоминаний";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
             // btnApplyGeneral
             // 
             this.btnApplyGeneral.Location = new System.Drawing.Point(102, 71);
@@ -151,6 +185,7 @@
             // tbDailyStatistics
             // 
             this.tbDailyStatistics.BackColor = System.Drawing.Color.Transparent;
+            this.tbDailyStatistics.Controls.Add(this.chartDailyStatistics);
             this.tbDailyStatistics.Controls.Add(this.dgvDailyStatistics);
             this.tbDailyStatistics.Controls.Add(this.label6);
             this.tbDailyStatistics.Controls.Add(this.label5);
@@ -167,7 +202,7 @@
             this.tbDailyStatistics.Location = new System.Drawing.Point(4, 25);
             this.tbDailyStatistics.Name = "tbDailyStatistics";
             this.tbDailyStatistics.Padding = new System.Windows.Forms.Padding(3);
-            this.tbDailyStatistics.Size = new System.Drawing.Size(626, 370);
+            this.tbDailyStatistics.Size = new System.Drawing.Size(1259, 370);
             this.tbDailyStatistics.TabIndex = 1;
             this.tbDailyStatistics.Text = "Ежедневная статистика";
             // 
@@ -297,34 +332,49 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Сайт";
             // 
-            // Column1
+            // chartGeneralStatistics
             // 
-            this.Column1.DataPropertyName = "Name";
-            this.Column1.HeaderText = "Имя";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 150;
+            chartArea1.Name = "ChartArea1";
+            this.chartGeneralStatistics.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartGeneralStatistics.Legends.Add(legend1);
+            this.chartGeneralStatistics.Location = new System.Drawing.Point(603, 25);
+            this.chartGeneralStatistics.Name = "chartGeneralStatistics";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Количество";
+            series1.XValueMember = "Name";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series1.YValueMembers = "Rank";
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.chartGeneralStatistics.Series.Add(series1);
+            this.chartGeneralStatistics.Size = new System.Drawing.Size(640, 329);
+            this.chartGeneralStatistics.TabIndex = 6;
+            this.chartGeneralStatistics.Text = "chart1";
             // 
-            // Column5
+            // chartDailyStatistics
             // 
-            this.Column5.DataPropertyName = "LastScanDate";
-            this.Column5.HeaderText = "Дата обновления";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.Visible = false;
-            // 
-            // Column2
-            // 
-            this.Column2.DataPropertyName = "Rank";
-            this.Column2.HeaderText = "Количество упоминаний";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
+            chartArea2.Name = "ChartArea1";
+            this.chartDailyStatistics.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartDailyStatistics.Legends.Add(legend2);
+            this.chartDailyStatistics.Location = new System.Drawing.Point(628, 16);
+            this.chartDailyStatistics.Name = "chartDailyStatistics";
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Количество";
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date;
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.chartDailyStatistics.Series.Add(series2);
+            this.chartDailyStatistics.Size = new System.Drawing.Size(610, 336);
+            this.chartDailyStatistics.TabIndex = 14;
+            this.chartDailyStatistics.Text = "chart1";
             // 
             // frmStatist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(659, 423);
+            this.ClientSize = new System.Drawing.Size(1303, 423);
             this.Controls.Add(this.tbStatistics);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -338,6 +388,8 @@
             this.tbDailyStatistics.ResumeLayout(false);
             this.tbDailyStatistics.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDailyStatistics)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartGeneralStatistics)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartDailyStatistics)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -369,6 +421,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartGeneralStatistics;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartDailyStatistics;
     }
 }
 

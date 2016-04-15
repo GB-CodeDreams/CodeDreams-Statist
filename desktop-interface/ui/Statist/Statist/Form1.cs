@@ -12,6 +12,8 @@ using System.Net;
 using System.IO;
 using System.Collections.Specialized;
 using Newtonsoft.Json;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Collections;
 
 namespace Statist
 {
@@ -47,11 +49,13 @@ namespace Statist
             {
                 txtUpdateDate.Text = generalStatistics[0].LastScanDate.ToString();
                 dgvGeneralStatistics.DataSource = bindGeneral;
+                FillChart(chartGeneralStatistics, bindGeneral, "Name", "Rank");
             }
             else
             {
                 txtUpdateDate.Text = "";
                 dgvGeneralStatistics.DataSource = bindGeneral;
+                ClearChart(chartGeneralStatistics);
                 MessageBox.Show("Данных не найдено.");
             }
         }
@@ -71,9 +75,11 @@ namespace Statist
             if (dailyStatistics.Count != 0)
             {
                 FillDailyDataGridViewRows(dailyStatistics, dgvDailyStatistics);
+                FillChart(chartDailyStatistics, dailyStatistics, "LastScanDate", "Rank");
             }
             else
             {
+                ClearChart(chartDailyStatistics);
                 MessageBox.Show("За указанный период, данных не найдено.");
             }
         }
@@ -101,6 +107,16 @@ namespace Statist
             totalRow.Cells.Add(totalRankCell);
             dgv.Rows.Add(totalRow);
 
+        }
+
+        void ClearChart(Chart chart)
+        {
+            chart.Series[0].Points.Clear();
+        }
+
+        void FillChart(Chart chart, IEnumerable dataSource, string xField, string yField)
+        {
+            chart.Series[0].Points.DataBindXY(dataSource, xField, dataSource, yField);
         }
     }
 }
