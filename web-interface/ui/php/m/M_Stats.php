@@ -73,7 +73,7 @@ class M_Stats {
 			");
 	
 		while ($row = mysqli_fetch_assoc($result)) {
-			$daily_stats[$row['day']] = $row['rank'];
+			$daily_stats[$row['day']] = (int)$row['rank'];
 		}
 			
 		ksort($daily_stats);

@@ -74,6 +74,7 @@ $sites - массив сайтов, доступных для просмотра
 				}
 		</script>
 		<div id="chart_div"></div>
+		
 	<?php endif ?>
 
 </div>
