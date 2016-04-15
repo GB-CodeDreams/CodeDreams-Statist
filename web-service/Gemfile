@@ -1,0 +1,12 @@
+source "https://rubygems.org"
+ruby '2.2.4'
+gem 'rake'
+gem 'sinatra', '1.4.7'
+gem 'activerecord'
+gem 'activesupport'
+gem "sinatra-activerecord"
+gem 'foreman'
+# gem 'pg'
+# gem 'sqlite3'
+gem 'mysql2'
+gem 'puma'

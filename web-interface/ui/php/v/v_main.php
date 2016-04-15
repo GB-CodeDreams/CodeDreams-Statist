@@ -15,9 +15,12 @@ $title - заголовок страницы
 </head>
 <body>
 	
-	<div class="section">
-		
-		<?=$content?>
+	<div class="wrapper">
+		<div class="section">
+			
+			<?=$content?>
 
+		</div>
 	</div>
+
 </body>
