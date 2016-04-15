@@ -11,13 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160415063148) do
+ActiveRecord::Schema.define(version: 20160415064431) do
 
   create_table "keywords", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.integer  "person_id",  limit: 4
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "name_2",     limit: 255
+    t.integer  "distance",   limit: 4
   end
 
   add_index "keywords", ["person_id"], name: "index_keywords_on_person_id", using: :btree
