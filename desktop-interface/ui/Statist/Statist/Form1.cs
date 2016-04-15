@@ -12,6 +12,7 @@ using System.Net;
 using System.IO;
 using System.Collections.Specialized;
 using Newtonsoft.Json;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Statist
 {
@@ -47,14 +48,13 @@ namespace Statist
             {
                 txtUpdateDate.Text = generalStatistics[0].LastScanDate.ToString();
                 dgvGeneralStatistics.DataSource = bindGeneral;
-                //chartDailyStatistics.DataSource = generalStatistics;
                 chartDailyStatistics.Series[0].Points.DataBindXY(bindGeneral, "Name", bindGeneral, "Rank");
             }
             else
             {
                 txtUpdateDate.Text = "";
                 dgvGeneralStatistics.DataSource = bindGeneral;
-                chartDailyStatistics.Series[0].Points.Clear();
+                ClearChart(chartDailyStatistics);
                 MessageBox.Show("Данных не найдено.");
             }
         }
@@ -104,6 +104,11 @@ namespace Statist
             totalRow.Cells.Add(totalRankCell);
             dgv.Rows.Add(totalRow);
 
+        }
+
+        void ClearChart(Chart chart)
+        {
+            chart.Series[0].Points.Clear();
         }
     }
 }
