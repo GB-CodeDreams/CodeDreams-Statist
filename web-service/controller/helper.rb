@@ -39,4 +39,16 @@ helpers do
     @auth_params
   end
   
+  def get_collection_by_permission(collection)
+    if current_user.admin?
+      constant_from_collection(collection).all.to_json
+    else
+      current_user.send(collection.to_sym).to_json
+    end
+  end
+  
+  def constant_from_collection(collection)
+    collection.singularize.capitalize.constantize
+  end
+  
 end

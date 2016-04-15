@@ -1,7 +1,7 @@
 
 post "/sites" do
   return [400, [error: {pages: ["url can't be blank"]}].to_json] if form_data["url"].nil? || form_data["url"].empty?
-  site = Site.new(name: form_data["name"])
+  site = Site.new(name: form_data["name"], user_id: form_data["user_id"])
   if site.save
     site.pages.create(url: form_data["url"])
     Site.all.to_json

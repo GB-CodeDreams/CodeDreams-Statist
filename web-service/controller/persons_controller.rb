@@ -1,29 +1,29 @@
 post "/persons" do
-  body = request.POST
-  person = Person.new(name: body["name"])
+  person = Person.new(name: form_data["name"], user_id: form_data["user_id"])
   if person.save
-    Person.all.to_json
+    get_collection_by_permission("persons")
   else
-    [{error: person.errors.messages}].to_json
+    [400, [error: person.errors.messages].to_json ]
   end
 end
 
 patch "/persons/:id" do
-  body = request.POST
   person = Person.find_by(id: params[:id])
-  return [{error: {persons: ["person not found"]}}].to_json unless person
-  if person.update_attributes(body)
-    Person.all.to_json
+  return [400, [error: {persons: ["person not found"]}].to_json ] unless person
+  authorize unless has_perrmission?(person)
+  if person.update_attributes(form_data)
+    current_user.admin ? Person.all.to_json : current_user.persons.to_json
   else
-    [{error: person.errors.messages}].to_json
+    [400, [error: person.errors.messages].to_json]
   end
 end
 
 delete "/persons/:id" do
   person = Person.find_by(id: params[:id])
+  authorize unless has_perrmission?(person)
   if person
     person.destroy
-    Person.all.to_json
+    current_user.admin ? Person.all.to_json : current_user.persons.to_json
   else
     [{error: {persons: ["person not found"]}}].to_json
   end
