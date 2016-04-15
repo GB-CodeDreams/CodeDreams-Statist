@@ -16,16 +16,16 @@ helpers do
   end
 
   def authenticate
-    halt 401, [error: "Authentication error!"].to_json unless current_user
+    halt 401, [error: ["Authentication error!"]].to_json unless current_user
   end
 
   def authorize
-    halt 403, [error: "Permission error!"].to_json unless current_user.admin?
+    halt 403, [error: ["Permission error!"]].to_json unless current_user.admin?
   end
 
   def check_owner
     if (form_data["user_id"] != current_user.id) && !current_user.admin?
-      halt 403, [error: "You're not owner of the data or user_id blank"].to_json
+      halt 403, [error: ["You're not owner of the data or user_id blank"]].to_json
     end
   end
 

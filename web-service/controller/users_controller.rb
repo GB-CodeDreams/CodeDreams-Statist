@@ -3,6 +3,6 @@ post "/users" do
   if user.save
     200
   else
-    [error: user.errors.messages].to_json
+    [400, [error: user.errors.messages].to_json]
   end
 end
