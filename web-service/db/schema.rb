@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414075728) do
+ActiveRecord::Schema.define(version: 20160415063148) do
 
   create_table "keywords", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -69,6 +69,8 @@ ActiveRecord::Schema.define(version: 20160414075728) do
     t.string  "password", limit: 255
     t.boolean "admin",                default: false
   end
+
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "keywords", "persons"
   add_foreign_key "pages", "sites"
