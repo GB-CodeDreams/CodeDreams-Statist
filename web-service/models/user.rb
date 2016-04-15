@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   validates :username, presence: true
   validates :password, presence: true, length: {minimum: 6}
 
-  before_create :password_to_md5
+  before_save :password_to_md5
 
   def password_to_md5
     self.password = Digest::MD5.hexdigest(password + SALT)

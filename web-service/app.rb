@@ -17,7 +17,7 @@ require './models/site'
 
 before %r{^/(sites|persons|keywords)} do
   set_current_user
-  halt 401, [error: "Authentication error!"].to_json unless current_user
+  authenticate
 end
 
 get '/total_statistic' do
