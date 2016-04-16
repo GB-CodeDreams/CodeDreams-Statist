@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-from urllib.error import HTTPError
-
 from datetime import datetime
 
 from urllib.request import urlopen, build_opener
@@ -60,6 +58,7 @@ def parse_sitemap_to_db(session, robots=RobotsCache()):
         except:
             print('no pages for site with id ', site.id)
             continue
+        robots_rules = robots.fetch(main_page)
         new_pages_list = []
 
         try:
@@ -88,7 +87,7 @@ def parse_sitemap_to_db(session, robots=RobotsCache()):
                                      "%Y-%m-%d").date() == today_day:
                     # and url.find("ns:changefreq", ns).text == 'daily'
                     page_url = url.find("ns:loc", ns).text
-                    if robots.allowed(page_url, '*') and not session.query(models.Pages).filter(site.id == models.Pages.site_id).filter(page_url == models.Pages.url).all():
+                    if robots_rules.allowed(page_url, '*') and not session.query(models.Pages).filter(site.id == models.Pages.site_id).filter(page_url == models.Pages.url).all():
                         new_pages_list.append(models.Pages(page_url, site.id))
         if not new_pages_list:
             print('no new pages for site "%s" with id %s' % (site.name, site.id))
