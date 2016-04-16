@@ -29,9 +29,23 @@ class M_Stats {
 		$persons = array();
 		$row = M_MSQL::Instance()->Select("persons");
 		foreach ($row as $value) {
-			$persons[] = $value['name'];
+			$persons[$value['id']] = $value['name'];
 		}
 		return $persons;
+	}
+
+	public function get_all_keywords($person_id) {
+		$keywords = array();
+		$row = M_MSQL::Instance()->Select("keywords", ['person_id =' => $person_id]);
+		foreach ($row as $value) {
+			$keywords[$value['id']] = array('word_1' => $value['name'], 'word_2' => $value['name_2'], 'distance' => $value['distance']);
+		}
+		return $keywords;	
+	}
+
+	public function get_person_name_by_id($id) {
+		$result = M_MSQL::Instance()->Select("persons", ['id =' => $id]);
+		return $result[0]['name'];
 	}
 
 	public function get_general_statistics($selected_site) {
@@ -95,4 +109,21 @@ class M_Stats {
 	public function delete_site($site_id) {
 		M_MSQL::Instance()->Delete("sites", ['id =' => $site_id]);
 	}
+
+	public function add_new_person($person) {
+		M_MSQL::Instance()->Insert("persons", ['name' => $person]);		
+	}
+
+	public function delete_person($person_id) {
+		M_MSQL::Instance()->Delete("persons", ['id =' => $person_id]);
+	}
+
+	public function add_new_keyword($person_id, $word_1, $word_2, $distance) {
+		M_MSQL::Instance()->Insert("keywords", array('person_id' => $person_id, 'name' => $word_1, 'name_2' => $word_2, 'distance' => $distance ));
+	}
+
+	public function delete_keyword($keyword_id) {
+		M_MSQL::Instance()->Delete("keywords", ['id =' => $keyword_id]);
+	}
+	
 }
