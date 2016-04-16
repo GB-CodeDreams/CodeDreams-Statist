@@ -26,16 +26,18 @@ def create_db_session(db_settings_dict):
     return Session()
 
 
-class Crawler(threading.Thread):
-    def __init__(self, interval=86400, delay=0):
+class CrawlerThread(threading.Thread):
+    def __init__(self, delay=None, interval=None):
         threading.Thread.__init__(self)
         self.daemon = True
-        self.interval = interval
-        self.delay = delay
+        self.interval = interval or 86400
+        self._now = datetime.utcnow()
+        self.delay = delay or (self._now.replace(hour=23, minute=30, second=0, microsecond=0) - self._now).total_seconds()
 
     def run(self):
-        print('Запуск отложен на %s секунд...' % self.delay)
-        time.sleep(self.delay)
+        if self.delay > 0:
+            print('Запуск отложен на %s секунд...' % self.delay)
+            time.sleep(self.delay)
         while True:
             print("Start crawling at %s" % datetime.utcnow())
 
@@ -46,24 +48,18 @@ class Crawler(threading.Thread):
             parse_sitemap_to_db(session=session)
             # парсим новые страницы из БД на рейтинги
             parse_pages_from_db(session=session)
-            # засыпаем на self.interval часов
-            time.sleep(self.interval)
 
             print("End crawling at %s" % datetime.utcnow())
+            # засыпаем на self.interval часов
             time.sleep(self.interval)
 
 
 def main():
     try:
-        # ппосчитаем задержку первого запуска в секундах до 23:30:00
-        utc_now = datetime.utcnow()
-        delay_sec = (utc_now.replace(hour=23, minute=30, second=0, microsecond=0) - utc_now).total_seconds()
-
-        # интервал заупска краулера - сутки(в секундах)
-        interval_sec = 86400
-
-        crawler = Crawler(interval_sec, delay_sec)
-        # crawler = Crawler(60, 5)
+        # создаем краулер в отдельном потоке 
+        # первый вргумент - задержка в секундах (по умолчанию - до 23:30 по местному времени)
+        # второй вргумент - периодичность в секундах автоматического запуска краулера (по умолчанию - сутки)
+        crawler = CrawlerThread(5, 60)
         crawler.start()
     except Exception as e:
         print("Возникла ошибка!")
