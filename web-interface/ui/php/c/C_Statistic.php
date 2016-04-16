@@ -10,10 +10,10 @@ class C_Statistic extends C_Base {
 
 	public function action_general_statistics(){
 		$general_statistics = array();
-		$isSelectSite = false;
+		$isError = true;
 
 		$sites = M_Stats::Instance()->get_all_sites();
-		$selected_site = $sites[0];
+		$selected_site = current($sites);
 
 		if ($this->IsPost()) {
 			$selected_site = $_POST['site'];
@@ -98,4 +98,24 @@ class C_Statistic extends C_Base {
 	public function action_admin_panel() {
 		header( 'Location: index.php' );
 	}
+
+	public function action_edit_sites(){
+		if ($this->IsPost()) {
+			$new_site = $_POST['site'];
+			if ($new_site != "") {
+				M_Stats::Instance()->add_new_site($new_site);
+			}
+			header( 'Location: index.php?c=statistic&act=edit_sites' );
+		} 	
+		if (isset($_GET['delete']) && isset($_GET['site_id'])) {
+			M_Stats::Instance()->delete_site($_GET['site_id']);
+		}
+
+		$sites = M_Stats::Instance()->get_all_sites();
+		
+		$vars = array('sites' => $sites);
+		$this->title .= '::Редактирование справочника сайтов';
+		$this->content = $this->Template('v/v_edit_sites.php', $vars);
+	}
+
 }

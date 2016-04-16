@@ -20,7 +20,7 @@ class M_Stats {
 		$sites = array();
 		$row = M_MSQL::Instance()->Select("sites");
 		foreach ($row as $value) {
-			$sites[] = $value['name'];
+			$sites[$value['id']] = $value['name'];
 		}
 		return $sites;
 	}
@@ -86,5 +86,13 @@ class M_Stats {
 			$total_daily_count += $count;
 		}
 		return $total_daily_count;
+	}
+
+	public function add_new_site($site) {
+		M_MSQL::Instance()->Insert("sites", ['name' => $site]);
+	}
+
+	public function delete_site($site_id) {
+		M_MSQL::Instance()->Delete("sites", ['id =' => $site_id]);
 	}
 }
