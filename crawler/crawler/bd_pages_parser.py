@@ -30,12 +30,23 @@ def make_word_indexes_dict(text):
 def count_page_person_rank(person, word_index_dict):
     rank = 0
     for kw in person.keywords:
-        word1_ind_list = word_index_dict.get(kw.name, [])
-        word2_ind_list = word_index_dict.get(kw.name_2, [])
+        word1 = kw.name
+        word2 = kw.name_2
+        word1_ind_list = word_index_dict.get(word1, [])
+        word2_ind_list = word_index_dict.get(word2, [])
         distance = kw.distance
         for ind1 in word1_ind_list:
             for ind2 in word2_ind_list:
-                if abs(ind1 - ind2) <= distance:
+                i1, i2 = ind1, ind2
+                w1, w2 = word1, word2
+                if i1 > i2:
+                    i1, i2 = i2, i1
+                    w1, w2 = w2, w1
+                start_distance = i2 - i1
+                if start_distance == 0 or start_distance < len(w2):
+                    continue
+                word_distance = start_distance - len(w2)
+                if word_distance <= distance:
                     rank += 1
     return rank
 
