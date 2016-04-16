@@ -28,13 +28,15 @@ def create_db_session(db_settings_dict):
 
 class CrawlerThread(threading.Thread):
     def __init__(self, delay=None, interval=None):
-        threading.Thread.__init__(self)
+        super().__init__()
+        self._stop = threading.Event()
         self.daemon = True
         self.interval = interval or 86400
-        self._now = datetime.utcnow()
-        self.delay = delay or (self._now.replace(hour=23, minute=30, second=0, microsecond=0) - self._now).total_seconds()
+        self.delay = delay
 
     def run(self):
+        self.__now = datetime.utcnow()
+        self.delay = self.delay if self.delay is not None else (self.__now.replace(hour=23, minute=30, second=0, microsecond=0) - self.__now).total_seconds()
         if self.delay > 0:
             print('Запуск отложен на %s секунд...' % self.delay)
             time.sleep(self.delay)
@@ -52,6 +54,12 @@ class CrawlerThread(threading.Thread):
             print("End crawling at %s" % datetime.utcnow())
             # засыпаем на self.interval часов
             time.sleep(self.interval)
+
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet()
 
 
 def main():
