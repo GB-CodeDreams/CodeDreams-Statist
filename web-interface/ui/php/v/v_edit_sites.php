@@ -7,7 +7,7 @@ $sites - массив сайтов, доступных для просмотра
 */?>
 
 <ul class="tabs">
-    <li class="current"><a href="index.php?c=statistic&act=general_statistics">Общая статистика</a></li>
+    <li><a href="index.php?c=statistic&act=general_statistics">Общая статистика</a></li>
     <li><a href="index.php?c=statistic&act=daily_stats">Ежедневная статистика</a></li>
     <li><a href="../../ai/index.php?r=admin/sites">Панель администратора</a></li>
 </ul>
@@ -21,6 +21,10 @@ $sites - массив сайтов, доступных для просмотра
 	</form>
 
 	<table>
+		<tr>
+			<td>Сайт</td>
+			<td>Действие</td>
+		</tr>
 	<?php foreach ($sites as $site_id => $site): ?>
 		<tr>
 			<td><?=$site?></td>
