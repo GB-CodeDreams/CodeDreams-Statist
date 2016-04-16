@@ -19,7 +19,11 @@ class Persons(Base):
 
     keywords = relationship('Keywords', backref='person')
 
-    ranks = relationship('PersonPageRanks', backref='person')
+    ranks = relationship('PersonPageRanks',
+                         backref='person',
+                         lazy='dynamic',
+                         cascade="all, delete-orphan",
+                         passive_deletes=True)
 
     __table_args__ = {
         'mysql_engine': 'InnoDB',
@@ -35,6 +39,8 @@ class Keywords(Base):
 
     id = Column('id', INTEGER(display_width=11, unsigned=True), nullable=False, primary_key=True)
     name = Column('name', VARCHAR(255), nullable=False)
+    name_2 = Column('name_2', VARCHAR(255))
+    distance = Column('distance', INTEGER(display_width=11))
     person_id = Column('person_id', INTEGER(display_width=11, unsigned=True), nullable=False)
 
     __table_args__ = (ForeignKeyConstraint([person_id], [Persons.id],
@@ -56,7 +62,10 @@ class Sites(Base):
     id = Column('id', INTEGER(display_width=11, unsigned=True), nullable=False, primary_key=True)
     name = Column('name', VARCHAR(255), nullable=False)
 
-    pages = relationship('Pages', backref='site')
+    pages = relationship('Pages',
+                         backref='site',
+                         cascade="all, delete-orphan",
+                         passive_deletes=True)
 
     __table_args__ = {
         'mysql_engine': 'InnoDB',
@@ -77,7 +86,11 @@ class Pages(Base):
     found_date_time = Column(DATETIME, default=datetime.utcnow)
     last_scan_date = Column(DATETIME)
 
-    ranks = relationship('PersonPageRanks', backref='page')
+    ranks = relationship('PersonPageRanks',
+                         backref='page',
+                         lazy='dynamic',
+                         cascade="all, delete-orphan",
+                         passive_deletes=True)
 
     __table_args__ = (ForeignKeyConstraint([site_id], [Sites.id],
                                            name='fk_rails_a8ad97ecff',
@@ -86,9 +99,11 @@ class Pages(Base):
                        'mysql_charset': 'utf8'}
                       )
 
-    def __init__(self, url, site_id):
+    def __init__(self, url, site_id, found_date_time=None, last_scan_date=None):
         self.url = url
         self.site_id = site_id
+        self.last_scan_date = last_scan_date or None
+        self.found_date_time = found_date_time or datetime.utcnow()
 
 
 class PersonPageRanks(Base):
