@@ -21,9 +21,12 @@ def make_word_indexes_dict(text):
     for word in index_dict:
         search_start = 0
         for _n in range(word_list.count(word)):
-            index = text.index(word, search_start)
+            # index = text.index(word, search_start)
+            # search_start = index + 1
+            list_index = word_list.index(word, search_start)
+            index = sum(map(lambda s: len(s), word_list[:list_index]), list_index)
+            search_start = list_index + 1
             index_dict[word].append(index)
-            search_start = index + 1
     return index_dict
 
 
