@@ -53,6 +53,7 @@ def read_sitemap_xml(main_page_or_xml_url, robots=RobotsCache()):
 def parse_sitemap_to_db(session, robots=RobotsCache()):
     today_day = datetime.utcnow().date()
     for site in session.query(models.Sites).all():
+        print('Сейчас сканируем:', site.name)
         try:
             main_page = session.query(models.Pages).filter(site.id == models.Pages.site_id).order_by(models.Pages.found_date_time).all()[0].url
         except:
@@ -65,6 +66,7 @@ def parse_sitemap_to_db(session, robots=RobotsCache()):
             sitemap_text = read_sitemap_xml(main_page, robots)
         except:
             print("Возникла ошибка при доступе к карте сайта %s" % main_page)
+            continue
         sitemap_xml_root = ET.fromstring(sitemap_text)
         ns = {'ns': gen_ns(sitemap_xml_root.tag)}
 
@@ -73,24 +75,43 @@ def parse_sitemap_to_db(session, robots=RobotsCache()):
         if sitemap_xml_root.tag.split('}')[-1] == 'sitemapindex':
             # достаем по очереди ссылки на sitemap из списка
             for sitemap in sitemap_xml_root.iterfind("ns:sitemap", ns):
-                sitemap_url = sitemap.find("ns:loc").text
+                sitemap_url = sitemap.find("ns:loc", ns).text
+                print(sitemap_url)  # !
                 # открываем и добавляем в список их xml root'ы
                 sitemap_text = read_sitemap_xml(sitemap_url, robots)
-                sitemap_xml_root = ET.fromstring(sitemap_text)
-                xml_files_roots.append(sitemap_xml_root)
+                try:
+                    sitemap_xml_root = ET.fromstring(sitemap_text)
+                except Exception as e:
+                    print(e.args)
+                    continue
+                else:
+                    xml_files_roots.append(sitemap_xml_root)
+                    break  # !
         else:
             xml_files_roots.append(sitemap_xml_root)
+
         for sitemap_xml_root in xml_files_roots:
             ns = {'ns': gen_ns(sitemap_xml_root.tag)}
             for url in sitemap_xml_root.iterfind("ns:url", ns):
-                if datetime.strptime(url.find("ns:lastmod", ns).text[:10],
-                                     "%Y-%m-%d").date() == today_day:
+                try:
+                    lastmod_date = datetime.strptime(url.find("ns:lastmod", ns).text[:10],
+                                                     "%Y-%m-%d").date()
+                except:
+                    continue
+                if lastmod_date == today_day:
                     # and url.find("ns:changefreq", ns).text == 'daily'
                     page_url = url.find("ns:loc", ns).text
-                    if robots_rules.allowed(page_url, '*') and not session.query(models.Pages).filter(site.id == models.Pages.site_id).filter(page_url == models.Pages.url).all():
+                    for _ in range(2):
+                        try:
+                            same_page = session.query(models.Pages).filter(site.id == models.Pages.site_id).filter(page_url == models.Pages.url).all()
+                        except Exception:
+                            from main import create_db_session, DB
+                            session = create_db_session(DB)
+                        else:
+                            break
+                    if robots_rules.allowed(page_url, '*') and not same_page:
                         new_pages_list.append(models.Pages(page_url, site.id))
         if not new_pages_list:
             print('no new pages for site "%s" with id %s' % (site.name, site.id))
-
         session.add_all(new_pages_list)
         session.commit()
