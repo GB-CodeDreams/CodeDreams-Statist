@@ -36,7 +36,7 @@ class CrawlerThread(threading.Thread):
         self.__now = datetime.utcnow()
         self.delay = self.delay if self.delay is not None else (self.__now.replace(hour=23, minute=30, second=0, microsecond=0) - self.__now).total_seconds()
         if self.delay > 0:
-            print('Запуск отложен на %s секунд...' % self.delay)
+            print('Launch presponded for %s seconds...' % self.delay)
             time.sleep(self.delay)
         while True:
             print("Start crawling at %s" % datetime.now())
@@ -60,20 +60,11 @@ class CrawlerThread(threading.Thread):
 
 
 def main():
-    try:
-        # создаем краулер в отдельном потоке 
-        # первый вргумент - задержка в секундах (по умолчанию - до 23:30 по местному времени)
-        # второй вргумент - периодичность в секундах автоматического запуска краулера (по умолчанию - сутки)
-        crawler = CrawlerThread(5, 60)
-        crawler.start()
-    except Exception as e:
-        print("Возникла ошибка!")
-        print(e.message, e.args)
-        print("Повторим проход цикла краулера.")
-        main()
-    except Exception as e:
-        print(e.message, e.args)
-        print("Не удалось решить проблему.")
+    # создаем краулер в отдельном потоке 
+    # первый вргумент - задержка в секундах (по умолчанию - до 23:30 по местному времени)
+    # второй вргумент - периодичность в секундах автоматического запуска краулера (по умолчанию - сутки)
+    crawler = CrawlerThread(5, 60)
+    crawler.start()
 
 if __name__ == '__main__':
     main()
