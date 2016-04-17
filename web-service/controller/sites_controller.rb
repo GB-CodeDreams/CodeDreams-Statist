@@ -45,6 +45,6 @@ delete "/sites/:id" do
     site.destroy
     get_collection_by_permission("sites")
   else
-    [{error: {sites: ["site not found"]}}].to_json
+    [400, [error: {sites: ["site not found"]}].to_json]
   end
 end

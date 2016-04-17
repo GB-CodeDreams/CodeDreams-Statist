@@ -13,6 +13,7 @@ require './models/keyword'
 require './models/person_page_rank'
 require './models/page'
 require './models/site'
+require './repository/lib/repository'
 
 
 before %r{^/(sites|persons|keywords)} do
