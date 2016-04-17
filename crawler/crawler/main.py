@@ -11,8 +11,6 @@ from bd_pages_parser import *
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from reppy.cache import RobotsCache
-
 
 def create_db_session(db_settings_dict):
     DB = db_settings_dict
@@ -43,7 +41,6 @@ class CrawlerThread(threading.Thread):
         while True:
             print("Start crawling at %s" % datetime.now())
 
-            robots_cache = RobotsCache()  # не обязательно, кэш для быстродействия
             session = create_db_session(DB)  # создаем сессию БД с настройками DB
 
             # из sitemap в БД пишем все новые страницы
