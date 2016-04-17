@@ -4,6 +4,7 @@ class AdminController
     extends AController
 {
 
+//исправил ошибку при удалении из справочника
     public function actionSites()
     {
         global $link;
