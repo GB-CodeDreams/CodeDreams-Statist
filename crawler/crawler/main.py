@@ -41,7 +41,7 @@ class CrawlerThread(threading.Thread):
             print('Запуск отложен на %s секунд...' % self.delay)
             time.sleep(self.delay)
         while True:
-            print("Start crawling at %s" % datetime.utcnow())
+            print("Start crawling at %s" % datetime.now())
 
             robots_cache = RobotsCache()  # не обязательно, кэш для быстродействия
             session = create_db_session(DB)  # создаем сессию БД с настройками DB
@@ -51,7 +51,7 @@ class CrawlerThread(threading.Thread):
             # парсим новые страницы из БД на рейтинги
             parse_pages_from_db(session=session)
 
-            print("End crawling at %s" % datetime.utcnow())
+            print("End crawling at %s" % datetime.now())
             # засыпаем на self.interval часов
             time.sleep(self.interval)
 
