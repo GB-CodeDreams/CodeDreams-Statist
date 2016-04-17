@@ -29,6 +29,18 @@ helpers do
     end
   end
 
+  def users_resources?(request)
+    site = Site.find_by(name: params["site"])
+    user_id = current_user.id
+    case request
+      when :day_statistic
+        person = Person.find_by(name: params["query_word"])
+        site.user_id == user_id && person.user_id == user_id if site && person
+      when :total_statistic
+        site.user_id == user_id if site
+    end
+  end
+
   def has_perrmission?(object)
     object.user_id == current_user.id
   end
