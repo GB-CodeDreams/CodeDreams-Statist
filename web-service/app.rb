@@ -2,15 +2,34 @@ require 'sinatra'
 require "sinatra/activerecord"
 require 'json'
 require './environments'
+require './controller/helper'
+require './controller/users_controller'
+require './controller/persons_controller'
+require './controller/keywords_controller'
+require './controller/sites_controller'
+require './models/user'
 require './models/person'
 require './models/keyword'
 require './models/person_page_rank'
 require './models/page'
 require './models/site'
+require './repository/lib/repository'
 
-get '/' do
- a = {a: "c", b: "b"}
- a.to_json
+
+before %r{^/(sites|persons|keywords|total_statistic|day_statistic)} do
+  set_current_user
+  authenticate
+end
+
+before %r{^/(sites|persons)} do
+  check_owner if request.post? || request.patch?
+end
+
+before "/total_statistic" do
+  authorize unless users_resources?(:total_statistic)
+end
+before "/day_statistic" do
+  authorize unless users_resources?(:day_statistic)
 end
 
 get '/total_statistic' do
@@ -29,120 +48,18 @@ get '/day_statistic' do
   end
 end
 
-get "/catalogs" do
+get "/" do
   ["Persons", "Keywords", "Sites"].to_json
 end
 
-get "/persons/:id/keywords" do
-  person = Person.find_by(id: params[:id])
-  if person
-    person.keywords.to_json if person
-  else
-    [{error: {persons: ["person not found"]}}].to_json if person.nil?
-  end
-end
-
-post "/persons/:id/keywords" do
-  body = request.POST
-  person = Person.find_by(id: params[:id])
-  return [{error: {persons: ["person not found"]}}].to_json  unless person
-  keyword = Keyword.new(name: body["name"], person_id: params[:person_id])
-  if keyword.save
-    person.keywords.to_json
-  else
-    [{error: keyword.errors.messages}].to_json
-  end
-end
-
-patch "/persons/:person_id/keyword/:id" do
-  body = request.POST
-  person = Person.find_by(id: params[:person_id])
-  return [{error: {persons: ["person not found"]}}].to_json  unless person
-  keyword = Keyword.find_by(id: params[:id])
-  if keyword.update_attributes(body)
-    person.keywords.to_json
-  else
-    [{error: keyword.errors.messages}].to_json
-  end
-end
-
-delete "/persons/:person_id/keyword/:id" do
-  person = Person.find_by(id: params[:person_id])
-  return [{error: {persons: ["person not found"]}}].to_json  unless person
-  keyword = Site.find_by(id: params[:id])
-  if keyword
-    keyword.destroy
-    person.keywords.to_json
-  else
-    [{error: {keywords: "keyword not found"}}].to_json
-  end
-end
-
-post "/sites" do
-  body = request.POST
-  site = Site.new(name: body["name"])
-  if site.save
-    Site.all.to_json
-  else
-    [{error: site.errors.messages}].to_json
-  end
-end
-
-patch "/sites/:id" do
-  body = request.POST
-  site = Site.find_by(id: params[:id])
-  return [{error: {sites: ["site not found"]}}].to_json unless site
-  if site.update_attributes(body)
-    Site.all.to_json
-  else
-    [{error: site.errors.messages}].to_json
-  end
-end
-
-delete "/sites/:id" do
-  site = Site.find_by(id: params[:id])
-  if site
-    site.destroy
-    Site.all.to_json
-  else
-    [{error: {sites: ["site not found"]}}].to_json
-  end
-end
-
-post "/persons" do
-  body = request.POST
-  person = Person.new(name: body["name"])
-  if person.save
-    Person.all.to_json
-  else
-    [{error: person.errors.messages}].to_json
-  end
-end
-
-patch "/persons/:id" do
-  body = request.POST
-  person = Person.find_by(id: params[:id])
-  return [{error: {persons: ["person not found"]}}].to_json unless person
-  if person.update_attributes(body)
-    Person.all.to_json
-  else
-    [{error: person.errors.messages}].to_json
-  end
-end
-
-delete "/persons/:id" do
-  person = Person.find_by(id: params[:id])
-  if person
-    person.destroy
-    Person.all.to_json
-  else
-    [{error: {persons: ["person not found"]}}].to_json
-  end
+post "/signin" do
+  user = User.find_by(username: form_data["username"], password: hash_from_password)
+  user ? user.password.to_json : authenticate
 end
 
 get "/:key" do |k|
   classes = ["persons", "sites"]
-  k.singularize.capitalize.constantize.all.to_json if classes.include? k
+  get_collection_by_permission(k) if classes.include? k
 end
 
 # post "/test" do
