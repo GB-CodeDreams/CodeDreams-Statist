@@ -52,6 +52,11 @@ get "/" do
   ["Persons", "Keywords", "Sites"].to_json
 end
 
+post "/signin" do
+  user = User.find_by(username: form_data["username"], password: hash_from_password)
+  user ? user.password.to_json : authenticate
+end
+
 get "/:key" do |k|
   classes = ["persons", "sites"]
   get_collection_by_permission(k) if classes.include? k

@@ -53,6 +53,10 @@ helpers do
       false
     end
   end
+  
+  def hash_from_password
+    Digest::MD5.hexdigest(form_data["password"] + User::SALT) if form_data
+  end
 
   def auth_params
     @auth_params
