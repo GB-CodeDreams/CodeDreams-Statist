@@ -36,15 +36,27 @@ $tatal_count - суммарное количество новых упомина
 				</td>
 			</tr>
 			<tr>
+				<td></td>
 				<td>
-					<label for="person">Личность:</label>
+					<a href="index.php?c=statistic&act=edit_sites">редактировать справочник сайтов</a>					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="person">Запрос:</label>
 				</td>
 				<td>
 					<select id="person" name="person" class="every_day_select">
-						<?php foreach ($persons as $person): ?>
+						<?php foreach ($persons as $person_id => $person): ?>
 							<option value="<?=$person?>"><?=$person?></option>
 						<?php endforeach ?>
 					</select>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<a href="index.php?c=statistic&act=edit_persons">редактировать справочник запросов</a>
 				</td>
 			</tr>
 			<tr>
@@ -73,6 +85,8 @@ $tatal_count - суммарное количество новых упомина
 	<?php if ($isError): ?>
 		<p style="color:red; font-weight:bold;">Заполните все поля формы</p>
 	<?php else: ?>
+
+		<div id="chart_div"></div>
 		<table>
 			<tr>
 				<th>Дата</th>
@@ -88,5 +102,30 @@ $tatal_count - суммарное количество новых упомина
 				<td colspan="2">Всего за период: <?=$total_count?></td>
 			</tr>
 		</table>
+
+		<script type="text/javascript">
+				google.charts.load('current', {'packages':['corechart']});
+			    google.charts.setOnLoadCallback(drawChart);
+			    function drawChart() {
+			    	var json_data = <?=json_encode($daily_stats)?>;
+			    	var arr = [];
+					for(var k in json_data) {
+						arr.push([k, json_data[k]]);
+					}
+						
+					var data = new google.visualization.DataTable();
+					data.addColumn('string', 'Дата');
+					data.addColumn('number', 'Количество упоминаний');
+					data.addRows(arr);
+					
+					var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart_div'));
+					var options = {
+						bar: {groupWidth: "95%"},
+						legend: { position: "none" },
+					};
+					chart.draw(data, options);
+				}
+		</script>
+
 	<?php endif ?>
 </div>

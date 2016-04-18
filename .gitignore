@@ -215,3 +215,5 @@ ModelManifest.xml
 wiki/
 __pycache__/
 crawler/crawler/pages
+
+#web-service
