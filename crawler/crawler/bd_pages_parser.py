@@ -33,8 +33,11 @@ def make_word_indexes_dict(text):
 def count_page_person_rank(person, word_index_dict):
     rank = 0
     for kw in person.keywords:
-        word1 = kw.name
-        word2 = kw.name_2
+        word1 = kw.name.lower()
+        if not kw.name_2 or not kw.distance:
+            word1_ind_list = word_index_dict.get(word1, [])
+            return len(word1_ind_list)
+        word2 = kw.name_2.lower()
         word1_ind_list = word_index_dict.get(word1, [])
         word2_ind_list = word_index_dict.get(word2, [])
         distance = kw.distance
@@ -46,9 +49,10 @@ def count_page_person_rank(person, word_index_dict):
                     i1, i2 = i2, i1
                     w1, w2 = w2, w1
                 start_distance = i2 - i1
-                if start_distance == 0 or start_distance < len(w2):
+                if start_distance == 0 or start_distance < len(w1):
                     continue
-                word_distance = start_distance - len(w2)
+                word_distance = start_distance - len(w1)
+                print(word_distance)
                 if word_distance <= distance:
                     rank += 1
     return rank
@@ -65,7 +69,9 @@ def count_person_old_ranks_sum(session, page, person):
 def parse_pages_from_db(session):
     today_date = datetime.utcnow().date()
     stmt = session.query(models.Pages.url, func.max(models.Pages.last_scan_date).label('lsd')).group_by(models.Pages.url).subquery()
-    for page in session.query(models.Pages).join(stmt, and_(models.Pages.last_scan_date == stmt.c.lsd, models.Pages.url == stmt.c.url)).filter(func.DATE(models.Pages.last_scan_date) != today_date).order_by(models.Pages.id):
+    last_scanned_pages = session.query(models.Pages).join(stmt, and_(models.Pages.last_scan_date == stmt.c.lsd, models.Pages.url == stmt.c.url)).filter(func.DATE(models.Pages.last_scan_date) != today_date)
+    never_scanned_pages = session.query(models.Pages).filter(models.Pages.last_scan_date == None)
+    for page in last_scanned_pages.union(never_scanned_pages).order_by(models.Pages.id):
         if not page.last_scan_date:
             page.last_scan_date = datetime.utcnow()
         new_ranks = []
