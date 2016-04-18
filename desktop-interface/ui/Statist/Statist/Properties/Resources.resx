@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Authorization" xml:space="preserve">
+    <value>uid=12&amp;token=69c4465dea54309e1318efaee82bf27f</value>
+  </data>
   <data name="GetDailyStatistics" xml:space="preserve">
     <value>https://aqueous-tundra-17545.herokuapp.com/day_statistic?site=</value>
   </data>

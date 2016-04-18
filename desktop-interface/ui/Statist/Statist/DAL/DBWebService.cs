@@ -21,7 +21,7 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetPersons + "?uid=12&token=69c4465dea54309e1318efaee82bf27f");
+                    response = webClient.DownloadString(Resources.GetPersons + "?" + Resources.Authorization);
                     persons = JsonConvert.DeserializeObject<List<Persons>>(response);
                 }
                 catch(Exception ex)
@@ -39,7 +39,7 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetSites + "?uid=12&token=69c4465dea54309e1318efaee82bf27f");
+                    response = webClient.DownloadString(Resources.GetSites + "?" + Resources.Authorization);
                     sites = JsonConvert.DeserializeObject<List<Sites>>(response);
                 }
                 catch (Exception ex)
@@ -58,7 +58,7 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetGeneralStatistics + nameSite + "&uid=12&token=69c4465dea54309e1318efaee82bf27f");
+                    response = webClient.DownloadString(Resources.GetGeneralStatistics + nameSite + "&" + Resources.Authorization);
                     generalStatistics = JsonConvert.DeserializeObject<List<GeneralStatistics>>(response);
                 }
                 catch (Exception ex)
@@ -78,7 +78,7 @@ namespace Statist.DAL
                 {
                     webClient.Encoding = Encoding.UTF8;
                     response = webClient.DownloadString(Resources.GetDailyStatistics + nameSite + "&query_word=" + 
-                        namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore + "&uid=12&token=69c4465dea54309e1318efaee82bf27f");
+                        namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore + "&" + Resources.Authorization);
                     dailyStatistics = JsonConvert.DeserializeObject<List<DailyStatistics>>(response);
                     dailyStatistics.RemoveAt(dailyStatistics.Count - 1);
                     //var dynObj = (JArray)JsonConvert.DeserializeObject(response);

@@ -61,6 +61,15 @@ namespace Statist.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на uid=12&amp;token=69c4465dea54309e1318efaee82bf27f.
+        /// </summary>
+        internal static string Authorization {
+            get {
+                return ResourceManager.GetString("Authorization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/day_statistic?site=.
         /// </summary>
         internal static string GetDailyStatistics {
