@@ -41,10 +41,12 @@ class CrawlerThread(threading.Thread):
         while True:
             print("Start crawling at %s" % datetime.now())
 
-            session = create_db_session(DB)  # создаем сессию БД с настройками DB
+            # создаем сессию БД с настройками DB
+            session = create_db_session(DB)
 
             # из sitemap в БД пишем все новые страницы
             parse_sitemap_to_db(session=session)
+
             # парсим новые страницы из БД на рейтинги
             parse_pages_from_db(session=session)
 
