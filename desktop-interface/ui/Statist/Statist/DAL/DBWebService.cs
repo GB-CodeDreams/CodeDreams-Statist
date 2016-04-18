@@ -21,12 +21,12 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetPersons);                    
+                    response = webClient.DownloadString(Resources.GetPersons + "?uid=12&token=69c4465dea54309e1318efaee82bf27f");
                     persons = JsonConvert.DeserializeObject<List<Persons>>(response);
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }                
             }
             return persons.OrderBy(n => n.Name).ToList();
@@ -39,12 +39,12 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetSites);
+                    response = webClient.DownloadString(Resources.GetSites + "?uid=12&token=69c4465dea54309e1318efaee82bf27f");
                     sites = JsonConvert.DeserializeObject<List<Sites>>(response);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
                 return sites.OrderBy(n => n.Name).ToList();
@@ -58,7 +58,7 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetGeneralStatistics + nameSite);
+                    response = webClient.DownloadString(Resources.GetGeneralStatistics + nameSite + "&uid=12&token=69c4465dea54309e1318efaee82bf27f");
                     generalStatistics = JsonConvert.DeserializeObject<List<GeneralStatistics>>(response);
                 }
                 catch (Exception ex)
@@ -77,8 +77,8 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetDailyStatistics + nameSite + "&query_word=" + namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore);
-                    
+                    response = webClient.DownloadString(Resources.GetDailyStatistics + nameSite + "&query_word=" + 
+                        namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore + "&uid=12&token=69c4465dea54309e1318efaee82bf27f");
                     dailyStatistics = JsonConvert.DeserializeObject<List<DailyStatistics>>(response);
                     dailyStatistics.RemoveAt(dailyStatistics.Count - 1);
                     //var dynObj = (JArray)JsonConvert.DeserializeObject(response);
