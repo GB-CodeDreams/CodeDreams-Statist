@@ -6,8 +6,11 @@ helpers do
 
   def set_current_user
     get_auth_params
-    if auth_params && user = User.find_by(id: auth_params["uid"])
-      @current_user = user if user.password == auth_params["token"]
+    # if auth_params && user = User.find_by(id: auth_params["uid"])
+    #   @current_user = user if user.password == auth_params["token"]
+    # end
+    if auth_params && user = User.find_by(password: auth_params["token"])
+      @current_user = user
     end
   end
 
@@ -47,15 +50,16 @@ helpers do
 
   def get_auth_params
     data = (request.post? || request.patch?) ? form_data : params
-    if data.has_key?("uid") && data.has_key?("token")
-      @auth_params = data
-    else
-      false
-    end
+    # if data.has_key?("uid") && data.has_key?("token")
+    #   @auth_params = data
+    # else
+    #   false
+    # end
+    data.has_key?("token") ? @auth_params = data : false
   end
   
-  def hash_from_password
-    Digest::MD5.hexdigest(form_data["password"] + User::SALT) if form_data
+  def pass_and_name_to_hash
+    Digest::MD5.hexdigest(form_data["password"] + User::SALT + form_data["username"]) if form_data
   end
 
   def auth_params

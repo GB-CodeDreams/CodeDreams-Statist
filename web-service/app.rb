@@ -53,8 +53,8 @@ get "/" do
 end
 
 post "/signin" do
-  user = User.find_by(username: form_data["username"], password: hash_from_password)
-  user ? user.password.to_json : authenticate
+  user = User.find_by(username: form_data["username"], password: pass_and_name_to_hash)
+  user ? [token: user.password].to_json : authenticate
 end
 
 get "/:key" do |k|
