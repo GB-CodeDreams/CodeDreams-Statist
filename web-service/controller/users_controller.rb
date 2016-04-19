@@ -8,5 +8,5 @@ post "/users" do
 end
 
 get "/users" do
-  User.all.map{|u| u.extract!(:id, :name)}.to_json
+  User.all.map{|u| u.attributes.extract!("id", "username")}.to_json
 end
