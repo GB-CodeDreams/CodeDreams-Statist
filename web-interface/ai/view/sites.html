@@ -13,22 +13,27 @@
 <a href="index.php?r=admin/persons">Справочник личностей</a> |
 <form method="post">
     <br>
-    <br>
     Введите название сайта:
     <br/>
-    <input width="2000"  name="name" value="" autofocus/>
-    <br/>
-    <input type="submit" name="insert" value="Добавить" />
+    <input  name="name" value="" autofocus/>
     <br>
-    <table width="300">
+    <br>
+    Введите ссылку на главную страницу сайта:
+    <br/>
+    <input type="url"  name="url" value="" placeholder="http://www.sites.com"/>
+    <br/>
+    <br>
+    <input type="submit" name="insert" value="Добавить" />
+    <br/>
+    <table>
+        <tr>
+            <td>Название сайта</td>
+            <td>Действие</td>
+        </tr>
         <?php foreach ($sites as $site): ?>
         <tr>
-            <td width="250">
-                <article>
-                    <h3 class="artitle">
-                        <?=$site['name'];?>
-                    </h3>
-                </article>
+            <td width="430">
+                <?=$site['name'];?>
             </td>
             <td>
                 <a href="index.php?r=admin/sites&id=<?=$site['id'];?>">Удалить</a>

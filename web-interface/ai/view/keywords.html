@@ -21,20 +21,34 @@
     <br>
     Введите искомые слова:
     <br/>
-    <input type="text" size="10" name="name" value="" autofocus/>
+    <br>
+    <input size="30" name="name" placeholder="ключевое слово 1" value="" autofocus required/>
+    <input size="30" name="name_2" placeholder="ключевое слово 2" value="" required/>
+    <input name="distance" pattern="^[ 0-9]+$" placeholder="интервал, число" value="" required/>
     <br/>
+    <br>
     <input type="submit" name="insert" value="Добавить" />
     <br>
-    <table width="300">
+    <?php if ($new_error): ?>
+    <p style="color:red; font-weight:bold;">Заполните все поля формы</p>
+    <?php else: ?>
+    <table>
+        <tr>
+            <td>Ключевое слово 1</td>
+            <td>Ключевое слово 2</td>
+            <td>Интервал</td>
+            <td>Действие</td>
+        </tr>
         <?php foreach ($keywords as $keyword): ?>
         <tr>
+            <td width="300">
+                <?=$keyword['name'];?>
+            </td>
+            <td width="300">
+                <?=$keyword['name_2'];?>
+            </td>
             <td width="250">
-                <article>
-                    <h3 class="artitle">
-                        <?=$keyword['name'];?>
-                        <input type="hidden" name="id" value="<?=$keyword['id']?>" />
-                    </h3>
-                </article>
+                <?=$keyword['distance'];?>
             </td>
             <td>
                 <a href="index.php?r=admin/keywords&person_id=<?=$person['id'];?>&id=<?=$keyword['id']?>">Удалить</a>
@@ -42,6 +56,8 @@
         </tr>
         <?php endforeach; ?>
     </table>
+
+    <?php endif ?>
 </form>
 </body>
 </html>

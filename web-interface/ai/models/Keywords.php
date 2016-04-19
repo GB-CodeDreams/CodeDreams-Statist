@@ -24,9 +24,10 @@ class Keywords
         return $this->db->DBQuery("SELECT * FROM keywords WHERE person_id = " .$person_id);
     }
 
-    public function Keywords_setOne($name, $person_id)
+    public function Keywords_setOne($name, $name_2, $distance, $person_id)
     {
-        $this->db->DBQueryExecut("INSERT INTO keywords (Name, person_id) VALUE ('$name', '$person_id')");
+        $this->db->DBQueryExecut("INSERT INTO keywords (name, name_2, distance, person_id) 
+                                  VALUE ('$name', '$name_2', '$distance', '$person_id')");
     }
 
     public function Keywords_deleteOne($id)

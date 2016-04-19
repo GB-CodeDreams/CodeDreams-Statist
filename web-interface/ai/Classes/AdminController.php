@@ -22,8 +22,12 @@ class AdminController
         else{
             if(isset($_POST['insert']) and isset($_POST['name'])){
                 $name = mysqli_real_escape_string($link, $_POST['name']);
+                $url = mysqli_real_escape_string($link, $_POST['url']);
                 $model->Sites_setOne($name);
                 $view->sites = $model->Sites_getAll();
+                $site_id = 40;
+                $model->Pages_setOne($url, $site_id);
+                var_dump($model);
             }
         }
         // Вывод в шаблон.
@@ -41,7 +45,7 @@ class AdminController
         $model->Persons_deleteOne($id);
         $view->persons = $model->Persons_getAll();
 
-        if(isset($_POST['insert']) and $_POST['name'] == ""){
+        if(isset($_POST['insert']) and $_POST['name'] == "" or $_POST['name_2'] == "" or $_POST['distance'] == ""){
             $new_error = true;
         }
         else{
@@ -70,12 +74,14 @@ class AdminController
         $view->keywords = $model->Keywords_getAll($person_id);
 
         if(isset($_POST['insert']) and $_POST['name'] == ""){
-            $new_error = true;
+            $new_error = "Заполните все поля";
         }
         else {
             if (isset($_POST['insert']) and isset($_POST['name'])) {
                 $name = mysqli_real_escape_string($link, $_POST['name']);
-                $model->Keywords_setOne($name, $person_id);
+                $name_2 = mysqli_real_escape_string($link, $_POST['name_2']);
+                $distance = mysqli_real_escape_string($link, $_POST['distance']);
+                $model->Keywords_setOne($name, $name_2, $distance, $person_id);
                 $view->keywords = $model->Keywords_getAll($person_id);
             }
         }
