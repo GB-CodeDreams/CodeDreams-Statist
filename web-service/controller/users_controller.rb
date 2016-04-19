@@ -6,3 +6,7 @@ post "/users" do
     [400, [error: user.errors.messages].to_json]
   end
 end
+
+get "/users" do
+  User.all.map{|u| u.extract!(:id, :name)}.to_json
+end

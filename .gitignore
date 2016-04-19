@@ -217,3 +217,4 @@ __pycache__/
 crawler/crawler/pages
 
 #web-service
+web-service/config/database.yml
