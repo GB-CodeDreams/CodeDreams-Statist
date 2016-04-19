@@ -16,9 +16,13 @@ require './models/site'
 require './repository/lib/repository'
 
 
-before %r{^/(sites|persons|keywords|total_statistic|day_statistic)} do
+before %r{^/(sites|persons|keywords|total_statistic|day_statistic|users)} do
   set_current_user
   authenticate
+end
+
+before "/users" do
+  authorize
 end
 
 before %r{^/(sites|persons)} do
@@ -54,7 +58,7 @@ end
 
 post "/signin" do
   user = User.find_by(username: form_data["username"], password: pass_and_name_to_hash)
-  user ? [token: user.password].to_json : authenticate
+  user ? [token: user.password, id: user.id, username: user.username].to_json : authenticate
 end
 
 get "/:key" do |k|

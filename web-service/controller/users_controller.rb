@@ -1,5 +1,5 @@
 post "/users" do
-  user = User.new(form_data)
+  user = User.new(username: form_data["username"], password: form_data["password"])
   if user.save
     200
   else
