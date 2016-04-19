@@ -23,11 +23,9 @@ class AdminController
             if(isset($_POST['insert']) and isset($_POST['name'])){
                 $name = mysqli_real_escape_string($link, $_POST['name']);
                 $url = mysqli_real_escape_string($link, $_POST['url']);
-                $model->Sites_setOne($name);
-                $view->sites = $model->Sites_getAll();
-                $site_id = 40;
+                $site_id = $model->Sites_setOne($name);
                 $model->Pages_setOne($url, $site_id);
-                var_dump($model);
+                $view->sites = $model->Sites_getAll();
             }
         }
         // Вывод в шаблон.

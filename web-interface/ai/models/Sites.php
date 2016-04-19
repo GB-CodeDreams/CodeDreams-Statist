@@ -16,15 +16,13 @@ class Sites
 
     public function Sites_setOne($name)
     {
-        $this->db->DBQueryExecut("INSERT INTO sites (name) VALUE ('$name')");
+        $num = $this->db->DBQueryExecut("INSERT INTO sites (name) VALUE ('$name')");
+        return $num;
     }
 
     public function Pages_setOne($url, $site_id)
     {
-        var_dump($url);
-        var_dump($site_id);
-        $a = $this->db->DBQueryExecut("INSERT INTO pages (url) VALUE  ('$url')");
-        var_dump($a);
+        $this->db->DBQueryExecut("INSERT INTO pages (url, site_id) VALUE  ('$url', '$site_id')");
     }
 
     public function Sites_deleteOne($id)
