@@ -22,3 +22,7 @@ patch "/users/:id" do
   end
 end
 
+get "/users" do
+  User.all.map{|u| u.attributes.extract!("id", "username")}.to_json
+end
+
