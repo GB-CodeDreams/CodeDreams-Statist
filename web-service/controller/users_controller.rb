@@ -6,3 +6,19 @@ post "/users" do
     [400, [error: user.errors.messages].to_json]
   end
 end
+
+patch "/users/:id" do
+  user = User.find_by(id: params[:id])
+  resource_not_found(:users) unless user
+  unless current_user.admin?
+    authorize unless user == current_user
+    form_data.delete "admin"
+  end
+  form_data.delete "token"
+  if user.update_attributes(form_data)
+    200
+  else
+    object_validation_error(user)
+  end
+end
+

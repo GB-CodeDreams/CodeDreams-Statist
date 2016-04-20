@@ -61,17 +61,15 @@ post "/signin" do
   user ? [token: user.password, id: user.id, username: user.username].to_json : authenticate
 end
 
+post "remind" do
+  if form_data["username"] && user = User.find_by(username: form_data["username"])
+    remind_user_data(user, :password)
+  elsif form_data["password"] && user = User.find_by(password: pass_and_name_to_hash)
+    remind_user_data(user, :username)
+  end
+end
+
 get "/:key" do |k|
   classes = ["persons", "sites"]
   get_collection_by_permission(k) if classes.include? k
 end
-
-# post "/test" do
-#   p request.POST
-#   # p JSON.parse(request.body.read)
-# end
-
-# get "/test" do
-#   p params
-#   # p JSON.parse(request.body.read)
-# end

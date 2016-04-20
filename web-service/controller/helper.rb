@@ -31,6 +31,15 @@ helpers do
       halt 403, [error: ["You're not owner of the data or user_id blank"]].to_json
     end
   end
+  
+  def resource_not_found(resource)
+    resource = resource.to_sym
+    halt 400, [error: {resource.to_sym => ["#{resource.to_s.singularize} not found"]}].to_json
+  end
+  
+  def object_validation_error(object)
+    [400, [error: object.errors.messages].to_json]
+  end
 
   def users_resources?(request)
     site = Site.find_by(name: params["site"])
@@ -76,6 +85,9 @@ helpers do
 
   def constant_from_collection(collection)
     collection.singularize.capitalize.constantize
+  end
+  
+  def remind_user_data
   end
 
 end
