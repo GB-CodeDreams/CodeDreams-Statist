@@ -61,7 +61,7 @@ namespace Statist.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на uid=12&amp;token=69c4465dea54309e1318efaee82bf27f.
+        ///   Ищет локализованную строку, похожую на uid=12&amp;token=06d9f00ce052a83b9e0eaa45f65f9dea.
         /// </summary>
         internal static string Authorization {
             get {
@@ -90,18 +90,18 @@ namespace Statist.Properties {
         /// <summary>
         ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/persons.
         /// </summary>
-        internal static string GetPersons {
+        internal static string Persons {
             get {
-                return ResourceManager.GetString("GetPersons", resourceCulture);
+                return ResourceManager.GetString("Persons", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/sites.
         /// </summary>
-        internal static string GetSites {
+        internal static string Sites {
             get {
-                return ResourceManager.GetString("GetSites", resourceCulture);
+                return ResourceManager.GetString("Sites", resourceCulture);
             }
         }
     }
