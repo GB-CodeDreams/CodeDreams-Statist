@@ -61,11 +61,11 @@ namespace Statist.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на uid=12&amp;token=06d9f00ce052a83b9e0eaa45f65f9dea.
+        ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/signin.
         /// </summary>
-        internal static string Authorization {
+        internal static string Auth {
             get {
-                return ResourceManager.GetString("Authorization", resourceCulture);
+                return ResourceManager.GetString("Auth", resourceCulture);
             }
         }
         
@@ -102,6 +102,15 @@ namespace Statist.Properties {
         internal static string Sites {
             get {
                 return ResourceManager.GetString("Sites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на token=06d9f00ce052a83b9e0eaa45f65f9dea.
+        /// </summary>
+        internal static string TokenUser {
+            get {
+                return ResourceManager.GetString("TokenUser", resourceCulture);
             }
         }
     }
