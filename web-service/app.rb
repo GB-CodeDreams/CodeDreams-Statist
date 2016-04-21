@@ -57,15 +57,18 @@ get "/" do
 end
 
 post "/signin" do
-  user = User.find_by(username: form_data["username"], password: pass_and_name_to_hash)
-  user ? [token: user.password, id: user.id, username: user.username].to_json : authenticate
+  if form_data["username"] && form_data["password"]
+    user = User.find_by(username: form_data["username"], password: pass_and_name_to_hash)
+    user ? [token: user.password, id: user.id, username: user.username].to_json : authenticate
+  end
 end
 
-post "remind" do
-  if form_data["username"] && user = User.find_by(username: form_data["username"])
-    remind_user_data(user, :password)
-  elsif form_data["password"] && user = User.find_by(password: pass_and_name_to_hash)
-    remind_user_data(user, :username)
+post "/remind" do
+  user = User.find_by(username: form_data["username"])
+  if user
+    remind_password(user)
+  else
+    resource_not_found(:users)
   end
 end
 

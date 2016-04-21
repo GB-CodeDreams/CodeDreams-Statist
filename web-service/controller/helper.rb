@@ -87,7 +87,7 @@ helpers do
     collection.singularize.capitalize.constantize
   end
 
-  def remind_user_data
+  def remind_password(user)
   end
 
 end
