@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Statist.Model
 {
-    class Keywords
+    public class Keywords
     {
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
