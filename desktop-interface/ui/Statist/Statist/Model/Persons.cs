@@ -14,6 +14,6 @@ namespace Statist.Model
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        //public ICollection<PersonPageRanks> PersonPageRanks { get; set; } = new List<PersonPageRanks>();
+        public ICollection<PersonPageRanks> PersonPageRanks { get; set; } = new List<PersonPageRanks>();
     }
 }
