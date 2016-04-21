@@ -27,16 +27,16 @@ helpers do
   end
 
   def check_owner
-    if (form_data["user_id"] != current_user.id) && !current_user.admin?
+    if (form_data["user_id"].to_i != current_user.id) && !current_user.admin?
       halt 403, [error: ["You're not owner of the data or user_id blank"]].to_json
     end
   end
-  
+
   def resource_not_found(resource)
     resource = resource.to_sym
     halt 400, [error: {resource.to_sym => ["#{resource.to_s.singularize} not found"]}].to_json
   end
-  
+
   def object_validation_error(object)
     [400, [error: object.errors.messages].to_json]
   end
@@ -66,7 +66,7 @@ helpers do
     # end
     data.has_key?("token") ? @auth_params = data : false
   end
-  
+
   def pass_and_name_to_hash
     Digest::MD5.hexdigest(form_data["password"] + User::SALT + form_data["username"]) if form_data
   end
@@ -86,7 +86,7 @@ helpers do
   def constant_from_collection(collection)
     collection.singularize.capitalize.constantize
   end
-  
+
   def remind_user_data
   end
 
