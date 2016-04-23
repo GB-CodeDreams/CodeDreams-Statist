@@ -36,15 +36,27 @@ $tatal_count - суммарное количество новых упомина
 				</td>
 			</tr>
 			<tr>
+				<td></td>
 				<td>
-					<label for="person">Личность:</label>
+					<a href="index.php?c=statistic&act=edit_sites">редактировать справочник сайтов</a>					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="person">Запрос:</label>
 				</td>
 				<td>
 					<select id="person" name="person" class="every_day_select">
-						<?php foreach ($persons as $person): ?>
+						<?php foreach ($persons as $person_id => $person): ?>
 							<option value="<?=$person?>"><?=$person?></option>
 						<?php endforeach ?>
 					</select>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<a href="index.php?c=statistic&act=edit_persons">редактировать справочник запросов</a>
 				</td>
 			</tr>
 			<tr>

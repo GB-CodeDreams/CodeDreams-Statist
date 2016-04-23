@@ -26,6 +26,7 @@ $sites - массив сайтов, доступных для просмотра
 		</select>
 		<input type="submit" value="Применить">
 	</form>
+	<a href="index.php?c=statistic&act=edit_sites">редактировать справочник сайтов</a>
 
 	<?/* Скрипт сохраняет выбранный сайт в поле 'Select' */?>
 	<script type="text/javascript">
