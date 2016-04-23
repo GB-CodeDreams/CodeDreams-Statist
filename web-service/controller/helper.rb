@@ -12,9 +12,6 @@ helpers do
 
   def set_current_user
     get_auth_params
-    # if auth_params && user = User.find_by(id: auth_params["uid"])
-    #   @current_user = user if user.password == auth_params["token"]
-    # end
     if auth_params && user = User.find_by(password: auth_params["token"])
       @current_user = user
     end
@@ -59,17 +56,12 @@ helpers do
     end
   end
 
-  def has_perrmission?(object)
+  def has_permission?(object)
     object.user_id == current_user.id
   end
 
   def get_auth_params
     data = (request.post? || request.patch?) ? form_data : params
-    # if data.has_key?("uid") && data.has_key?("token")
-    #   @auth_params = data
-    # else
-    #   false
-    # end
     data.has_key?("token") ? @auth_params = data : false
   end
 

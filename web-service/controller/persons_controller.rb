@@ -10,7 +10,7 @@ end
 patch "/persons/:id" do
   person = Person.find_by(id: params[:id])
   resource_not_found(:persons) unless person
-  authorize unless has_perrmission?(person)
+  authorize unless has_permission?(person)
   if person.update_attributes(data_without_extra_params)
     get_collection_by_permission("persons")
   else
@@ -20,7 +20,7 @@ end
 
 delete "/persons/:id" do
   person = Person.find_by(id: params[:id])
-  authorize unless has_perrmission?(person)
+  authorize unless has_permission?(person)
   if person
     person.destroy
     get_collection_by_permission("persons")

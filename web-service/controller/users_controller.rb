@@ -15,7 +15,7 @@ patch "/users/:id" do
     form_data.delete "admin"
   end
   form_data.delete "token"
-  if user.update_attributes(form_data)
+  if user.update_attributes(data_without_extra_params)
     200
   else
     object_validation_error(user)
@@ -25,4 +25,3 @@ end
 get "/users" do
   User.all.map{|u| u.attributes.extract!("id", "username")}.to_json
 end
-
