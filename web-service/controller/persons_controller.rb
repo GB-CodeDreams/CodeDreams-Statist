@@ -9,9 +9,9 @@ end
 
 patch "/persons/:id" do
   person = Person.find_by(id: params[:id])
-  return [400, [error: {persons: ["person not found"]}].to_json ] unless person
+  resource_not_found(:persons) unless person
   authorize unless has_perrmission?(person)
-  if person.update_attributes(form_data)
+  if person.update_attributes(data_without_extra_params)
     get_collection_by_permission("persons")
   else
     [400, [error: person.errors.messages].to_json]

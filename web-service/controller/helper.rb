@@ -4,6 +4,12 @@ helpers do
     request.POST
   end
 
+  def data_without_extra_params
+    data = form_data
+    form_data.extract!("id", "token")
+    data
+  end
+
   def set_current_user
     get_auth_params
     # if auth_params && user = User.find_by(id: auth_params["uid"])
