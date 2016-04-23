@@ -34,12 +34,16 @@ class CrawlerThread(threading.Thread):
 
     def run(self):
         self.__now = datetime.utcnow()
-        self.delay = self.delay if self.delay is not None else (self.__now.replace(hour=23, minute=30, second=0, microsecond=0) - self.__now).total_seconds()
+        if self.delay is None:
+            self.delay = (self.__now.replace(hour=23, minute=30,
+                                             second=0, microsecond=0) -
+                          self.__now).total_seconds()
         if self.delay > 0:
             print('Launch presponded for %s seconds...' % self.delay)
             time.sleep(self.delay)
         while True:
-            print("Start crawling at %s" % datetime.now())
+            print("\n{text:*^80}".format(text='Start crawling at %s' %
+                                         datetime.now()))
 
             # создаем сессию БД с настройками DB
             session = create_db_session(DB)
@@ -65,7 +69,7 @@ def main():
     # создаем краулер в отдельном потоке 
     # первый вргумент - задержка в секундах (по умолчанию - до 23:30 по местному времени)
     # второй вргумент - периодичность в секундах автоматического запуска краулера (по умолчанию - сутки)
-    crawler = CrawlerThread(5, 60)
+    crawler = CrawlerThread(5, 3600)
     crawler.start()
 
 if __name__ == '__main__':
