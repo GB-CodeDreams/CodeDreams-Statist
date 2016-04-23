@@ -11,6 +11,7 @@ import gzip
 import xml.etree.ElementTree as ET
 
 import models
+import links_finder as lf
 
 
 def gen_ns(tag):
@@ -26,23 +27,26 @@ def read_sitemap_xml(main_page_or_xml_url, robots=RobotsCache()):
         ext = main_page_or_xml_url.split('/')[-1].split('.')[1]
     except IndexError:
         ext = False
-    if not ext == 'xml':
+    if not ext or not ext.startswith('xml'):
         main_page = main_page_or_xml_url
         sitemap_urls = robots.sitemaps(main_page)
         if not sitemap_urls:
-            sitemap_url = main_page + 'sitemap.xml' if main_page[-1] == '/' else main_page + '/sitemap.xml'
+            if main_page[-1] == '/':
+                sitemap_url = main_page + 'sitemap.xml'
+            else:
+                sitemap_url = main_page + '/sitemap.xml'
         else:
             sitemap_url = sitemap_urls[0]
     else:
         sitemap_url = main_page_or_xml_url
+
     try:
         sitemap_xml = urlopen(sitemap_url)
         if guess_type(sitemap_url)[1] == 'gzip':
             sitemap_xml = gzip.GzipFile(fileobj=sitemap_xml)
         sitemap_xml_text = sitemap_xml.read()
     except Exception:
-        sitemap_xml_text = requests.get(sitemap_url, stream=True).\
-                           content.decode('utf-8')
+        sitemap_xml_text = requests.get(sitemap_url, stream=True).text
     except:
         opener = build_opener()
         opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -51,20 +55,34 @@ def read_sitemap_xml(main_page_or_xml_url, robots=RobotsCache()):
 
 
 def today_urls_from_sitemap(sitemap_xml_root,
-                            today_day=datetime.utcnow().date()):
+                            today_day=datetime.utcnow().date(),
+                            max_without_date=50):
     today_urls = []
     ns = {'ns': gen_ns(sitemap_xml_root.tag)}
+    try:
+        ignore_date = not bool(sitemap_xml_root.find("./ns:url/ns:lastmod",
+                                                     ns).text)
+    except AttributeError:
+        ignore_date = True
+        print('Lastmod information not avaliable.'
+              'Will be scanned first %s urls.' % max_without_date)
+
+    n = 0
     for url in sitemap_xml_root.iterfind("ns:url", ns):
-        try:
-            lastmod_date = datetime.strptime(url.find("ns:lastmod",
-                                                      ns).text[:10],
-                                             "%Y-%m-%d").date()
-        except:
-            continue
-        if lastmod_date == today_day:
-            # and url.find("ns:changefreq", ns).text == 'daily'
+        if not ignore_date:
+            try:
+                lastmod_date = datetime.strptime(url.find("ns:lastmod",
+                                                          ns).text[:10],
+                                                 "%Y-%m-%d").date()
+            except:
+                continue
+        else:
+            n += 1
+        if ignore_date or lastmod_date == today_day:
             page_url = url.find("ns:loc", ns).text
             today_urls.append(page_url)
+            if n == max_without_date:
+                break
     return today_urls
 
 
@@ -115,20 +133,29 @@ def parse_sitemap_to_db(session, robots=RobotsCache()):
                                                              site.id))
             continue
 
+        robots_rules = robots.fetch(main_page)
+
         try:
             sitemap_text = read_sitemap_xml(main_page, robots)
-        except:
+            sitemap_xml_root = ET.fromstring(sitemap_text)
+            recursive_scanning = False
+        except Exception:
             print("Error to access the sitemap from %s" % main_page)
-            continue
-        sitemap_xml_root = ET.fromstring(sitemap_text)
+            recursive_scanning = True
+            print("Recursive scanning Enabled")
 
-        if sitemap_xml_root.tag.split('}')[-1] == 'sitemapindex':
-            site_today_urls = parse_sitemapindex_sitemaps(sitemap_xml_root,
+        if not recursive_scanning:
+            if sitemap_xml_root.tag.split('}')[-1] == 'sitemapindex':
+                site_today_urls = parse_sitemapindex_sitemaps(sitemap_xml_root,
+                                                              today_day)
+            else:
+                site_today_urls = today_urls_from_sitemap(sitemap_xml_root,
                                                           today_day)
         else:
-            site_today_urls = today_urls_from_sitemap(sitemap_xml_root,
-                                                      today_day)
-        robots_rules = robots.fetch(main_page)
+            site_today_urls = lf.recursive_url_search(main_page,
+                                                      robots_rules=robots_rules)
+            print('%s links found on a website during recursive search.'
+                  % len(site_today_urls))
 
         new_pages_list = []
         for url in site_today_urls:
@@ -150,5 +177,6 @@ def parse_sitemap_to_db(session, robots=RobotsCache()):
                     session = create_db_session(DB)
                     continue
                 else:
-                    print("%s new pages was added for site %s" % (len(new_pages_list), site.name))
+                    print('%s new pages was added for site "%s"'
+                          % (len(new_pages_list), site.name))
                     break
