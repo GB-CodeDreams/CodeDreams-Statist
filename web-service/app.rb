@@ -25,7 +25,7 @@ before "/users" do
   authorize
 end
 
-before %r{^/(sites|persons\Z)} do
+before %r{^/(sites|persons(\/\d+)?\Z)} do
   check_owner if request.post? || request.patch?
 end
 
