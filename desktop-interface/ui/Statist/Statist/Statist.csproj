@@ -63,6 +63,7 @@
     <Compile Include="Model\DailyStatistics.cs" />
     <Compile Include="Model\GeneralStatistics.cs" />
     <Compile Include="Model\GetStatistics.cs" />
+    <Compile Include="Model\Keywords.cs" />
     <Compile Include="Model\Pages.cs" />
     <Compile Include="Model\PersonPageRanks.cs" />
     <Compile Include="Model\Persons.cs" />

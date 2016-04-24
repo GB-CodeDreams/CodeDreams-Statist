@@ -18,6 +18,6 @@ namespace Statist.Model
         public string Name2 { get; set; }
 
         [JsonProperty(PropertyName = "distance")]
-        public int Distance { get; set; }
+        public int? Distance { get; set; }
     }
 }
