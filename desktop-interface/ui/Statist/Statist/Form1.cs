@@ -28,10 +28,12 @@ namespace Statist
         BindingSource bindGuidePersons = new BindingSource();
         BindingSource bindGuideKeywords = new BindingSource();
         object selectedPersonGuideKeyword;
+        frmLogin frmLogin;
 
-        public frmStatist()
+        public frmStatist(frmLogin frmLogin)
         {
             InitializeComponent();
+            this.frmLogin = frmLogin;
             txtDistanceGuideKeywords.LostFocus += new EventHandler(txtDistanceGuideKeywords_LostFocus);
 
             DBWebService.GetPersons(ref persons);
@@ -383,6 +385,11 @@ namespace Statist
                     MessageBox.Show("Ключевое слово изменено.");
                 }
             }
+        }
+
+        private void frmStatist_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            frmLogin.Close();
         }
     }
 }
