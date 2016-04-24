@@ -96,4 +96,14 @@ helpers do
     @permitted_params
   end
 
+  def send_new_password(user)
+    new_pass = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+    user.update_attributes(:password => new_pass)
+
+    Pony.mail :to => user.username,
+              :from => 'support@statist.ru',
+              :subject => 'New password.',
+              :body => "New password to your Statist account is '#{user.password}'"
+  end
+
 end
