@@ -89,9 +89,7 @@ helpers do
 
   def set_permitted_params(*params)
     stringify_params = params.map{|p| p.to_s}
-    p stringify_params
     @permitted_params = form_data.extract!(*stringify_params)
-    p @permitted_params
   end
 
   def permitted_params
