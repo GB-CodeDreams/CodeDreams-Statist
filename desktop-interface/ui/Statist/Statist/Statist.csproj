@@ -68,6 +68,7 @@
     <Compile Include="Model\PersonPageRanks.cs" />
     <Compile Include="Model\Persons.cs" />
     <Compile Include="Model\Sites.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
