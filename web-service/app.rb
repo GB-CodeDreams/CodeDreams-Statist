@@ -1,6 +1,7 @@
 require 'sinatra'
 require "sinatra/activerecord"
 require 'json'
+require 'pony'
 require './environments'
 require './controller/helper'
 require './controller/users_controller'
@@ -70,6 +71,11 @@ post "/remind" do
   else
     resource_not_found(:users)
   end
+end
+
+post "/restore_password" do
+  user = User.find_by(username: form_data["username"])
+  send_new_password(user)
 end
 
 get "/:key" do |k|
