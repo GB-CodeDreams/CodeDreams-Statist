@@ -5,9 +5,8 @@ helpers do
   end
 
   def data_without_extra_params
-    data = form_data
-    form_data.extract!("id", "token")
-    data
+    permitted_params.extract!("id", "token")
+    permitted_params
   end
 
   def set_current_user
@@ -86,6 +85,17 @@ helpers do
   end
 
   def remind_password(user)
+  end
+
+  def set_permitted_params(*params)
+    stringify_params = params.map{|p| p.to_s}
+    p stringify_params
+    @permitted_params = form_data.extract!(*stringify_params)
+    p @permitted_params
+  end
+
+  def permitted_params
+    @permitted_params
   end
 
 end

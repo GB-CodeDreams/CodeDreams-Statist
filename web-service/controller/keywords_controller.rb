@@ -1,9 +1,12 @@
+before %r{^/persons/\d+/keywords(\/\d+)?\Z} do
+  set_permitted_params(:person_id, :name, :name_2, :distance) if request.patch? || request.post?
+end
 
 post "/persons/:id/keywords" do
   person = Person.find_by(id: params[:id])
   resource_not_found(:persons) unless person
   authorize unless has_permission?(person)
-  keyword = Keyword.new(name: form_data["name"], person_id: params[:person_id])
+  keyword = Keyword.new(data_without_extra_params)
   if keyword.save
     person.keywords.to_json
   else
@@ -24,11 +27,11 @@ patch "/persons/:person_id/keywords/:id" do
   end
 end
 
-delete "/persons/:person_id/keyword/:id" do
+delete "/persons/:person_id/keywords/:id" do
   person = Person.find_by(id: params[:person_id])
   resource_not_found(:persons) unless person
   authorize unless has_permission?(person)
-  keyword = Site.find_by(id: params[:id])
+  keyword = Keyword.find_by(id: params[:id])
   if keyword
     keyword.destroy
     person.keywords.to_json
