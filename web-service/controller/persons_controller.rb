@@ -1,5 +1,9 @@
+before %r{^/persons(\/\d+)?\Z} do
+  set_permitted_params(:user_id, :name) if request.patch? || request.post?
+end
+
 post "/persons" do
-  person = Person.new(name: form_data["name"], user_id: form_data["user_id"])
+  person = Person.new(data_without_extra_params)
   if person.save
     get_collection_by_permission("persons")
   else

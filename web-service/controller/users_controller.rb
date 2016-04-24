@@ -1,9 +1,13 @@
+before %r{^/users(\/\d+)?\Z} do
+  set_permitted_params(:username, :password) if request.patch? || request.post?
+end
+
 post "/users" do
-  user = User.new(username: form_data["username"], password: form_data["password"])
+  user = User.new(data_without_extra_params)
   if user.save
     200
   else
-    [400, [error: user.errors.messages].to_json]
+    object_validation_error(user)
   end
 end
 
@@ -14,7 +18,6 @@ patch "/users/:id" do
     authorize unless user == current_user
     form_data.delete "admin"
   end
-  form_data.delete "token"
   if user.update_attributes(data_without_extra_params)
     200
   else
