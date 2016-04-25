@@ -10,21 +10,21 @@ class C_Statistic extends C_Base {
 
 	public function action_general_statistics(){
 		$general_statistics = array();
-		$isSelectSite = false;
+		$isError = true;
 
 		$sites = M_Stats::Instance()->get_all_sites();
-		$selected_site = $sites[0];
+		$selected_site = current($sites);
 
 		if ($this->IsPost()) {
-			$isSelectSite = true;
 			$selected_site = $_POST['site'];
 			
 			$general_statistics = M_Stats::Instance()->get_general_statistics($selected_site);
+			$isError = !$general_statistics;
 		} 	
 
 		$vars = array(
 			'general_statistics' => $general_statistics,
-			'isSelectSite' => $isSelectSite,
+			'isError' => $isError,
 			'selected_site' => $selected_site,
 			'sites' => $sites
 		);
@@ -42,8 +42,8 @@ class C_Statistic extends C_Base {
 		$sites = M_Stats::Instance()->get_all_sites();
 		$persons = M_Stats::Instance()->get_all_persons();
 
-		$selected_site = $sites[0];
-		$selected_person = $persons[0];
+		$selected_site = current($sites);
+		$selected_person = current($persons);
 		
 		if ($this->IsPost()) {
 			
@@ -98,4 +98,63 @@ class C_Statistic extends C_Base {
 	public function action_admin_panel() {
 		header( 'Location: index.php' );
 	}
+
+	public function action_edit_sites(){
+		if ($this->IsPost()) {
+			$new_site = $_POST['site'];
+			M_Stats::Instance()->add_new_site($new_site);
+			header( 'Location: index.php?c=statistic&act=edit_sites' );
+		} 	
+		if (isset($_GET['delete']) && isset($_GET['site_id'])) {
+			M_Stats::Instance()->delete_site($_GET['site_id']);
+		}
+
+		$sites = M_Stats::Instance()->get_all_sites();
+		
+		$vars = array('sites' => $sites);
+		$this->title .= '::Редактирование справочника сайтов';
+		$this->content = $this->Template('v/v_edit_sites.php', $vars);
+	}
+
+	public function action_edit_persons(){
+		if ($this->IsPost()) {
+			$new_person = $_POST['person'];
+			M_Stats::Instance()->add_new_person($new_person);
+			header( 'Location: index.php?c=statistic&act=edit_persons' );
+		} 	
+		if (isset($_GET['delete']) && isset($_GET['person_id'])) {
+			M_Stats::Instance()->delete_person($_GET['person_id']);
+		}
+
+		$persons = M_Stats::Instance()->get_all_persons();
+		
+		$vars = array('persons' => $persons);
+		$this->title .= '::Редактирование справочника запросов';
+		$this->content = $this->Template('v/v_edit_persons.php', $vars);
+	}
+
+	public function action_edit_keywords(){
+		$person_id = $_GET['person_id'];
+		$person_name = M_Stats::Instance()->get_person_name_by_id($person_id);
+		if ($this->IsPost()) {
+			$word_1 = $_POST['word_1'];
+			$word_2 = $_POST['word_2'];
+			$distance = $_POST['distance'];
+			M_Stats::Instance()->add_new_keyword($person_id, $word_1, $word_2, $distance);
+			$loc = "Location: index.php?c=statistic&act=edit_keywords&person_id=".$person_id;
+			header( $loc );
+		} 	
+
+		if (isset($_GET['delete']) && isset($_GET['keyword_id'])) {
+			M_Stats::Instance()->delete_keyword($_GET['keyword_id']);
+		}
+
+		$keywords = M_Stats::Instance()->get_all_keywords($person_id);
+		
+		$vars = array('keywords' => $keywords, 'person_id' => $person_id, 'person_name' => $person_name);
+		
+		$this->title .= '::Редактирование справочника ключевых слов';
+		$this->content = $this->Template('v/v_edit_keywords.php', $vars);
+	}
+
 }

@@ -9,13 +9,14 @@ class AdminController
     {
         global $link;
         $view = new View();
-        $model = new Sites();
+        $model = Sites::Instance();
 
+        //удаление сайта
         $id = mysqli_real_escape_string($link, $_GET['id']);
         $model->Sites_deleteOne($id);
         $view->sites = $model->Sites_getAll();
 
-
+        //добавление сайта
         if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = true;
         }
@@ -23,11 +24,9 @@ class AdminController
             if(isset($_POST['insert']) and isset($_POST['name'])){
                 $name = mysqli_real_escape_string($link, $_POST['name']);
                 $url = mysqli_real_escape_string($link, $_POST['url']);
-                $model->Sites_setOne($name);
-                $view->sites = $model->Sites_getAll();
-                $site_id = 40;
+                $site_id = $model->Sites_setOne($name);
                 $model->Pages_setOne($url, $site_id);
-                var_dump($model);
+                $view->sites = $model->Sites_getAll();
             }
         }
         // Вывод в шаблон.
@@ -39,13 +38,15 @@ class AdminController
     {
         global $link;
         $view = new View();
-        $model = new Persons();
+        $model = Persons::Instance();
 
+        //удаление персоны
         $id = mysqli_real_escape_string($link, $_GET['id']);
         $model->Persons_deleteOne($id);
         $view->persons = $model->Persons_getAll();
 
-        if(isset($_POST['insert']) and $_POST['name'] == "" or $_POST['name_2'] == "" or $_POST['distance'] == ""){
+        //добавление персоны
+        if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = true;
         }
         else{
@@ -64,15 +65,17 @@ class AdminController
     {
         global $link;
         $view = new View();
-        $model = new Keywords();
+        $model = Keywords::Instance();
 
         $person_id = mysqli_real_escape_string($link, $_GET['person_id']);
         $view->person = $model->Persons_getOne($person_id);
 
+        //удаление ключевых слов
         $id = mysqli_real_escape_string($link, $_GET['id']);
         $model->Keywords_deleteOne($id);
         $view->keywords = $model->Keywords_getAll($person_id);
 
+        //добавление ключевых слов
         if(isset($_POST['insert']) and $_POST['name'] == ""){
             $new_error = "Заполните все поля";
         }
