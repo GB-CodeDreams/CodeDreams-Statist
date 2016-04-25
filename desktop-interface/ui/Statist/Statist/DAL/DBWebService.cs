@@ -25,7 +25,7 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.Persons + "?" + Resources.TokenUser);
+                    response = webClient.DownloadString(Resources.Persons + "?" + "token=" + User.Token);
                     persons = JsonConvert.DeserializeObject<List<Persons>>(response);
                 }
                 catch(Exception ex)
@@ -43,7 +43,7 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.Sites + "?" + Resources.TokenUser);
+                    response = webClient.DownloadString(Resources.Sites + "?" + "token=" + User.Token);
                     sites = JsonConvert.DeserializeObject<List<Sites>>(response);
                 }
                 catch (Exception ex)
@@ -62,7 +62,7 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.Persons + "/" + idPerson + "/keywords" + "?" + Resources.TokenUser);
+                    response = webClient.DownloadString(Resources.Persons + "/" + idPerson + "/keywords" + "?" + "token=" + User.Token);
                     keywords = JsonConvert.DeserializeObject<List<Keywords>>(response);
                 }
                 catch (Exception ex)
@@ -81,7 +81,7 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetGeneralStatistics + nameSite + "&" + Resources.TokenUser);
+                    response = webClient.DownloadString(Resources.GetGeneralStatistics + nameSite + "&" + "token=" + User.Token);
                     generalStatistics = JsonConvert.DeserializeObject<List<GeneralStatistics>>(response);
                 }
                 catch (Exception ex)
@@ -100,21 +100,10 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    response = webClient.DownloadString(Resources.GetDailyStatistics + nameSite + "&query_word=" + 
-                        namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore + "&" + Resources.TokenUser);
+                    response = webClient.DownloadString(Resources.GetDailyStatistics + nameSite + "&query_word=" +
+                        namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore + "&" + "token=" + User.Token);
                     dailyStatistics = JsonConvert.DeserializeObject<List<DailyStatistics>>(response);
                     dailyStatistics.RemoveAt(dailyStatistics.Count - 1);
-                    //var dynObj = (JArray)JsonConvert.DeserializeObject(response);
-                    //var last = dynObj.Last;
-                    //foreach (var item in last)
-                    //{
-                    //    var item1 = item;
-                    //    foreach (JObject trend in item["trends"])
-                    //    {                            
-
-                    //    }
-                    //}
-
                 }
                 catch (Exception ex)
                 {
@@ -132,10 +121,10 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     pars.Add("name", nameSite);
                     pars.Add("url", urlSite);
-                    pars.Add("user_id", userId);
+                    pars.Add("user_id", User.Id);
 
                     webClient.UploadValues(Resources.Sites, "POST", pars);
                     return true;
@@ -156,9 +145,9 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     pars.Add("name", newNameSite);
-                    pars.Add("user_id", userId);
+                    pars.Add("user_id", User.Id);
                     webClient.UploadValues(Resources.Sites + "/" + idSite, "PATCH", pars);
                     return true;
                 }
@@ -177,7 +166,7 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     webClient.UploadValues(Resources.Sites + "/" + idSite, "DELETE", pars);
                     return true;
                 }
@@ -196,9 +185,9 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     pars.Add("name", namePerson);
-                    pars.Add("user_id", userId);
+                    pars.Add("user_id", User.Id);
 
                     webClient.UploadValues(Resources.Persons, "POST", pars);
                     return true;
@@ -219,7 +208,7 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     webClient.UploadValues(Resources.Persons + "/" + idPerson, "DELETE", pars);
                     return true;
                 }
@@ -238,9 +227,9 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     pars.Add("name", newNamePerson);
-                    pars.Add("user_id", userId);
+                    pars.Add("user_id", User.Id);
                     webClient.UploadValues(Resources.Persons + "/" + idPerson, "PATCH", pars);
                     return true;
                 }
@@ -259,9 +248,9 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     pars.Add("name", name);
-                    pars.Add("name2", name2);
+                    pars.Add("name_2", name2);
                     pars.Add("distance", distance);
                     pars.Add("person_id", idPerson);
 
@@ -284,7 +273,7 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     webClient.UploadValues(Resources.Persons + "/" + idPerson + "/keywords/" + idKeyword, "DELETE", pars);
                     return true;
                 }
@@ -303,9 +292,9 @@ namespace Statist.DAL
                 {
                     var pars = new NameValueCollection();
 
-                    pars.Add("token", tokenUser);
+                    pars.Add("token", User.Token);
                     pars.Add("name", name);
-                    pars.Add("name2", name2);
+                    pars.Add("name_2", name2);
                     pars.Add("distance", distance);
                     pars.Add("person_id", idPerson);
 
@@ -319,12 +308,44 @@ namespace Statist.DAL
                 }
             }
         }
-        //var pars = new NameValueCollection();
+        public static bool Authorization(string username, string password)
+        {
+            using (var webClient = new WebClient())
+            {
+                try
+                {
+                    var pars = new NameValueCollection();
 
-        //pars.Add("username", "user1");
-        //pars.Add("password", "password1");
-        //var response2 = webClient.UploadValues(Resources.Auth, "POST", pars);
-        //string str = Encoding.ASCII.GetString(response2);
+                    pars.Add("username", username);
+                    pars.Add("password", password);
+                    var response2 = webClient.UploadValues(Resources.Auth, "POST", pars);
+                    string str = Encoding.ASCII.GetString(response2);
 
+                    var dynObj = (JArray)JsonConvert.DeserializeObject(str);
+                    var first = dynObj.First;
+                    foreach (var item in first)
+                    {
+                        switch((item as JProperty).Name)
+                        {
+                            case "token":
+                                User.Token = (item as JProperty).Value.ToString();
+                                break;
+                            case "id":
+                                User.Id = (item as JProperty).Value.ToString();
+                                break;
+                            case "username":
+                                User.Name = (item as JProperty).Value.ToString();
+                                break;
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+        }
     }
 }

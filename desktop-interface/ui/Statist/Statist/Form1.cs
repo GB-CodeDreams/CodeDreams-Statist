@@ -28,10 +28,13 @@ namespace Statist
         BindingSource bindGuidePersons = new BindingSource();
         BindingSource bindGuideKeywords = new BindingSource();
         object selectedPersonGuideKeyword;
+        frmLogin frmLogin;
 
-        public frmStatist()
+        public frmStatist(frmLogin frmLogin)
         {
             InitializeComponent();
+            this.Text += " - " + User.Name;
+            this.frmLogin = frmLogin;
             txtDistanceGuideKeywords.LostFocus += new EventHandler(txtDistanceGuideKeywords_LostFocus);
 
             DBWebService.GetPersons(ref persons);
@@ -147,12 +150,12 @@ namespace Statist
 
             if (keywords.Count != 0)
             {
-                bindGuideKeywords = new BindingSource { DataSource = keywords.OrderBy(i => i.Id) };
+                bindGuideKeywords.DataSource = keywords.OrderBy(i => i.Id);
                 dgvGuideKeywords.DataSource = bindGuideKeywords;
             }
             else
             {
-                dgvGuideKeywords.DataSource = keywords;
+                bindGuideKeywords.DataSource = keywords;
                 MessageBox.Show("Данных не найдено");
             }
         }
@@ -216,21 +219,21 @@ namespace Statist
         void FillListsSites()
         {
             DBWebService.GetSites(ref sites);
-            bindGuideSites.DataSource = sites.OrderBy(n => n.Name);
+            bindGuideSites.DataSource = sites.Count != 0 ? sites.OrderBy(n => n.Name).ToList() : sites;
             cmbSiteDaily.DataSource = sites.OrderBy(n => n.Name).ToList();
             cmbSiteGeneral.DataSource = sites.OrderBy(n => n.Name).ToList();
         }
         void FillListsPersons()
         {
             DBWebService.GetPersons(ref persons);
-            bindGuidePersons.DataSource = persons.OrderBy(n => n.Name);
+            bindGuidePersons.DataSource = persons.Count != 0 ? persons.OrderBy(n => n.Name).ToList() : persons;
             cmbPersonDaily.DataSource = persons.OrderBy(n => n.Name).ToList();
             cmbPersonGuideKeyword.DataSource = persons.OrderBy(n => n.Name).ToList();
         }
         void FillListsKeywords()
         {
             DBWebService.GetKeywords(ref keywords, (selectedPersonGuideKeyword as Persons).Id);
-            bindGuideKeywords.DataSource = keywords.OrderBy(i => i.Id);
+            bindGuideKeywords.DataSource = keywords.Count != 0 ? keywords.OrderBy(i => i.Id).ToList() : keywords;
         }
 
         void ShowMessageError(DataGridViewDataErrorEventArgs e)
@@ -318,7 +321,7 @@ namespace Statist
             else
             {
                 if (selectedPersonGuideKeyword != null)
-                {
+                {                    
                     if (DBWebService.AddKeyword(txtName1GuideKeywords.Text, txtName2GuideKeywords.Text, txtDistanceGuideKeywords.Text, (selectedPersonGuideKeyword as Persons).Id.ToString()))
                     {
                         keywords.Clear();
@@ -380,9 +383,14 @@ namespace Statist
                     cellDistEditRow.FormattedValue.ToString(), (selectedPersonGuideKeyword as Persons).Id.ToString(), cellNumEditRow.Value.ToString()))
                 {
                     FillListsKeywords();
-                    MessageBox.Show("Ключевое слово изменено.");
+                    MessageBox.Show("Изменения сохранены.");
                 }
             }
+        }
+
+        private void frmStatist_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            frmLogin.Close();
         }
     }
 }
