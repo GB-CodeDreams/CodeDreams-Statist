@@ -69,9 +69,11 @@ class M_Stats {
 	}
 
 	public function get_daily_stats($selected_site, $selected_person, $start_date, $end_date) {
-		for ($i = strtotime($start_date); $i < strtotime($end_date); $i+=86400) { 
+		for ($i = strtotime($start_date); $i <= strtotime($end_date); $i+=86400) { 
 			$daily_stats[date("Y-m-d", $i)] = 0;
 		}
+
+		$end_date = date('Y-m-d', time($end_date) + 86400);
 		
 		$result = M_MSQL::Instance()->query
 			("	SELECT DATE_FORMAT(pages.last_scan_date, '%Y-%m-%d') AS day, SUM(person_page_ranks.rank) AS rank
@@ -82,7 +84,7 @@ class M_Stats {
 				AND persons.name = '$selected_person'
 				AND sites.name = '$selected_site'
 				AND pages.last_scan_date >= '$start_date'
-				AND pages.last_scan_date < '$end_date'
+				AND pages.last_scan_date <= '$end_date'
 				GROUP BY DATE_FORMAT(pages.last_scan_date, '%Y-%m-%d')
 			");
 	
@@ -102,8 +104,9 @@ class M_Stats {
 		return $total_daily_count;
 	}
 
-	public function add_new_site($site) {
-		M_MSQL::Instance()->Insert("sites", ['name' => $site]);
+	public function add_new_site($site, $description) {
+		$site_id = M_MSQL::Instance()->Insert("sites", ['name' => $description]);
+		M_MSQL::Instance()->Insert("pages", ['url' => $site, 'site_id' => $site_id]);
 	}
 
 	public function delete_site($site_id) {

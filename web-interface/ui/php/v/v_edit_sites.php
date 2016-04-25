@@ -16,7 +16,10 @@ $sites - массив сайтов, доступных для просмотра
 
 	<form method="post" action="index.php?c=statistic&act=edit_sites">
 		<label for="site">Cайт:</label>
-		<input type="text" id="site" name="site" required>
+		<input type="url" id="site" name="site" value="http://" required>
+		<br>
+		<label for="description">Описание:</label>
+		<input type="text" id="description" name="description" required>
 		<input type="submit" value="Добавить">
 	</form>
 
