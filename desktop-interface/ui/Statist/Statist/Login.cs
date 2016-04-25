@@ -25,7 +25,19 @@ namespace Statist
         }
 
         private void btnOk_Click(object sender, EventArgs e)
-        {            
+        {
+            Authorization();
+        }
+
+        private void txtPassword_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyData == Keys.Enter)
+            {
+                Authorization();
+            }
+        }
+        void Authorization()
+        {
             if (DBWebService.Authorization(txtLogin.Text, txtPassword.Text))
             {
                 frmStatist frmStatist = new frmStatist(this);

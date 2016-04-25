@@ -25,7 +25,6 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    //response = webClient.DownloadString(Resources.Persons + "?" + Resources.TokenUser);
                     response = webClient.DownloadString(Resources.Persons + "?" + "token=" + User.Token);
                     persons = JsonConvert.DeserializeObject<List<Persons>>(response);
                 }
@@ -44,7 +43,6 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    //response = webClient.DownloadString(Resources.Sites + "?" + Resources.TokenUser);
                     response = webClient.DownloadString(Resources.Sites + "?" + "token=" + User.Token);
                     sites = JsonConvert.DeserializeObject<List<Sites>>(response);
                 }
@@ -64,7 +62,6 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    //response = webClient.DownloadString(Resources.Persons + "/" + idPerson + "/keywords" + "?" + Resources.TokenUser);
                     response = webClient.DownloadString(Resources.Persons + "/" + idPerson + "/keywords" + "?" + "token=" + User.Token);
                     keywords = JsonConvert.DeserializeObject<List<Keywords>>(response);
                 }
@@ -84,7 +81,6 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    //response = webClient.DownloadString(Resources.GetGeneralStatistics + nameSite + "&" + Resources.TokenUser);
                     response = webClient.DownloadString(Resources.GetGeneralStatistics + nameSite + "&" + "token=" + User.Token);
                     generalStatistics = JsonConvert.DeserializeObject<List<GeneralStatistics>>(response);
                 }
@@ -104,8 +100,6 @@ namespace Statist.DAL
                 try
                 {
                     webClient.Encoding = Encoding.UTF8;
-                    //response = webClient.DownloadString(Resources.GetDailyStatistics + nameSite + "&query_word=" + 
-                    //    namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore + "&" + Resources.TokenUser);
                     response = webClient.DownloadString(Resources.GetDailyStatistics + nameSite + "&query_word=" +
                         namePerson + "&start_date=" + periodFrom + "&end_date=" + periodBefore + "&" + "token=" + User.Token);
                     dailyStatistics = JsonConvert.DeserializeObject<List<DailyStatistics>>(response);
@@ -256,7 +250,7 @@ namespace Statist.DAL
 
                     pars.Add("token", User.Token);
                     pars.Add("name", name);
-                    pars.Add("name2", name2);
+                    pars.Add("name_2", name2);
                     pars.Add("distance", distance);
                     pars.Add("person_id", idPerson);
 
@@ -300,7 +294,7 @@ namespace Statist.DAL
 
                     pars.Add("token", User.Token);
                     pars.Add("name", name);
-                    pars.Add("name2", name2);
+                    pars.Add("name_2", name2);
                     pars.Add("distance", distance);
                     pars.Add("person_id", idPerson);
 
