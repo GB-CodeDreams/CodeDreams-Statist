@@ -102,8 +102,9 @@ class M_Stats {
 		return $total_daily_count;
 	}
 
-	public function add_new_site($site) {
-		M_MSQL::Instance()->Insert("sites", ['name' => $site]);
+	public function add_new_site($site, $description) {
+		$site_id = M_MSQL::Instance()->Insert("sites", ['name' => $description]);
+		M_MSQL::Instance()->Insert("pages", ['url' => $site, 'site_id' => $site_id]);
 	}
 
 	public function delete_site($site_id) {
