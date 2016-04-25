@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   validates :username, presence:   true
   validates :username, uniqueness: true
-  validates :username, format:   { with: email_regex }
+  validates :username, format:   { with: email_regex, message: "Username must be of email format (yourname@example.com)" }
   validates :password, presence:   true, length: {minimum: 6}
 
   before_save :password_to_md5, if: Proc.new {|user| user.password_changed? }
