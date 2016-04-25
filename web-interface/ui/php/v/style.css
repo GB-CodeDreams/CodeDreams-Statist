@@ -16,6 +16,13 @@ body {
 	height: 100%;
 }
 
+#chart_div {
+	width: auto;
+	height: auto;
+	margin-top: 20px;
+	margin-right: 10px;
+}
+
 .wrapper {
 	display: flex;
 	height: 100%;

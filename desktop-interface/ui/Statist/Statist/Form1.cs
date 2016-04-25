@@ -8,6 +8,12 @@ using System.Text;
 using System.Windows.Forms;
 using Statist.Model;
 using Statist.DAL;
+using System.Net;
+using System.IO;
+using System.Collections.Specialized;
+using Newtonsoft.Json;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Collections;
 
 namespace Statist
 {
@@ -15,81 +21,376 @@ namespace Statist
     {
         List<Sites> sites = new List<Sites>();
         List<Persons> persons = new List<Persons>();
-        List<Pages> pages = new List<Pages>();
         List<GeneralStatistics> generalStatistics = new List<GeneralStatistics>();
         List<DailyStatistics> dailyStatistics = new List<DailyStatistics>();
+        List<Keywords> keywords = new List<Keywords>();
+        BindingSource bindGuideSites = new BindingSource();
+        BindingSource bindGuidePersons = new BindingSource();
+        BindingSource bindGuideKeywords = new BindingSource();
+        object selectedPersonGuideKeyword;
+        frmLogin frmLogin;
 
-        public frmStatist()
+        public frmStatist(frmLogin frmLogin)
         {
             InitializeComponent();
+            this.Text += " - " + User.Name;
+            this.frmLogin = frmLogin;
+            txtDistanceGuideKeywords.LostFocus += new EventHandler(txtDistanceGuideKeywords_LostFocus);
 
-            persons = DBInitializer.FillPersons();
-            sites = DBInitializer.FillSites();
-            pages = DBInitializer.FillPages();
+            DBWebService.GetPersons(ref persons);
+            DBWebService.GetSites(ref sites);
 
-            cmbSiteGeneral.DataSource = sites;
-            cmbSiteDaily.DataSource = sites;
-            cmbPersonDaily.DataSource = persons;
+            bindGuideSites.DataSource = sites.OrderBy(n => n.Name);
+            dgvGuideSites.DataSource = bindGuideSites;
+            bindGuidePersons.DataSource = persons.OrderBy(n => n.Name);
+            dgvGuidePersons.DataSource = bindGuidePersons;
+
+            cmbSiteGeneral.DataSource = sites.OrderBy(n => n.Name).ToList();
+            cmbSiteDaily.DataSource = sites.OrderBy(n => n.Name).ToList();
+            cmbPersonDaily.DataSource = persons.OrderBy(n => n.Name).ToList();
+            cmbPersonGuideKeyword.DataSource = persons.OrderBy(n => n.Name).ToList();
         }
-
+        private void txtDistanceGuideKeywords_LostFocus(object sender, EventArgs e)
+        {
+            int sum = 0;
+            if (!int.TryParse(txtDistanceGuideKeywords.Text, out sum))
+            {
+                MessageBox.Show("\"Дистанция\" должна быть целым числом!");
+                txtDistanceGuideKeywords.Focus();
+            }
+        }
         private void btnApply_Click(object sender, EventArgs e)
         {
             generalStatistics.Clear();
+
             var selectedSiteGeneral = cmbSiteGeneral.SelectedItem;
-            Pages page = Pages.GetPageById(pages, (selectedSiteGeneral as Sites).Id);
 
-            if(page != null)
-                txtUpdateDate.Text = page.LastScanDate.ToString();
+            DBWebService.GetGeneralStatistics((selectedSiteGeneral as Sites).Name, ref generalStatistics);
 
-            List<Pages> selectedPages = Pages.GetPagesBySiteId(pages, (selectedSiteGeneral as Sites).Id);
-
-            if (selectedPages.Count != 0)
+            BindingSource bindGeneral = new BindingSource { DataSource = generalStatistics };
+            if (generalStatistics.Count != 0)
             {
-                foreach (var person in persons)
-                {
-                    GeneralStatistics generalStatist = new GeneralStatistics();
-                    generalStatist.Name = person.Name;
-                    generalStatist.Rank = selectedPages.Where(si => si.SiteId == (selectedSiteGeneral as Sites).Id).SelectMany(p => p.PersonPageRanks).
-                        Where(pi => pi.PersonId == person.Id).Sum(r => r.Rank);
-                    generalStatistics.Add(generalStatist);
-                }
-                BindingSource bindGeneral = new BindingSource { DataSource = generalStatistics };
+                txtUpdateDate.Text = generalStatistics[0].LastScanDate.ToString();
                 dgvGeneralStatistics.DataSource = bindGeneral;
-
+                FillChart(chartGeneralStatistics, bindGeneral, "Name", "Rank");
             }
             else
+            {
+                txtUpdateDate.Text = "";
+                dgvGeneralStatistics.DataSource = bindGeneral;
+                ClearChart(chartGeneralStatistics);
                 MessageBox.Show("Данных не найдено.");
+            }
         }
 
         private void btnApplyDaily_Click(object sender, EventArgs e)
         {
             dailyStatistics.Clear();
+            dgvDailyStatistics.Rows.Clear();
 
             var selectedSiteDaily = cmbSiteDaily.SelectedItem;
-            var selectedPersonDaily = cmbPersonDaily.SelectedItem;            
-            var periodFrom = dtpPeriodFrom.Value.Date;
-            var periodBefore = dtpPeriodBefore.Value.Date;
-            periodBefore = periodBefore.AddDays(1);
+            var selectedPersonDaily = cmbPersonDaily.SelectedItem;
+            var periodFrom = dtpPeriodFrom.Value.Date.GetDateTimeFormats('d');
+            var periodBefore = dtpPeriodBefore.Value.Date.AddDays(1).GetDateTimeFormats('d');
 
-            List<Pages> selectedPages = pages.Where(d => d.LastScanDate > periodFrom).Where(dt => dt.LastScanDate < periodBefore).
-                Where(si => si.SiteId == (selectedSiteDaily as Sites).Id).ToList();
+            DBWebService.GetDailyStatistics((selectedSiteDaily as Sites).Name, (selectedPersonDaily as Persons).Name, periodFrom[4], periodBefore[4], ref dailyStatistics);
 
-            if (selectedPages.Count != 0)
+            if (dailyStatistics.Count != 0)
             {
-                foreach (var page in selectedPages)
-                {
-                    DailyStatistics dailyStatist = new DailyStatistics();
-                    dailyStatist.LastScanDate = page.LastScanDate;
-                    dailyStatist.Rank = page.PersonPageRanks.Where(p => p.PersonId == (selectedPersonDaily as Persons).Id).Select(r => r.Rank).FirstOrDefault();
-                    dailyStatistics.Add(dailyStatist);
-                }
-                BindingSource bindDaily = new BindingSource { DataSource = dailyStatistics };
-                dgvDailyStatistics.DataSource = bindDaily;
+                FillDailyDataGridViewRows(dailyStatistics, dgvDailyStatistics);
+                FillChart(chartDailyStatistics, dailyStatistics, "LastScanDate", "Rank");
             }
             else
             {
-                MessageBox.Show("За указанный период поиск не производился.");
+                ClearChart(chartDailyStatistics);
+                MessageBox.Show("За указанный период, данных не найдено.");
             }
+        }
+
+        void FillDailyDataGridViewRows(List<DailyStatistics> dailyStatistics, DataGridView dgv)
+        {
+            foreach (var dailyStatist in dailyStatistics)
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                DataGridViewTextBoxCell dateCell = new DataGridViewTextBoxCell();
+                DataGridViewTextBoxCell rankCell = new DataGridViewTextBoxCell();
+                dateCell.Value = dailyStatist.LastScanDate.ToShortDateString();
+                rankCell.Value = dailyStatist.Rank;
+                row.Cells.Add(dateCell);
+                row.Cells.Add(rankCell);
+                dgv.Rows.Add(row);
+            }
+
+            DataGridViewRow totalRow = new DataGridViewRow();
+            DataGridViewTextBoxCell totalDateCell = new DataGridViewTextBoxCell();
+            DataGridViewTextBoxCell totalRankCell = new DataGridViewTextBoxCell();
+            totalDateCell.Value = "Всего:";
+            totalRankCell.Value = dailyStatistics.Sum(l => l.Rank);
+            totalRow.Cells.Add(totalDateCell);
+            totalRow.Cells.Add(totalRankCell);
+            dgv.Rows.Add(totalRow);
+
+        }
+
+        void ClearChart(Chart chart)
+        {
+            chart.Series[0].Points.Clear();
+        }
+
+        void FillChart(Chart chart, IEnumerable dataSource, string xField, string yField)
+        {
+            chart.Series[0].Points.DataBindXY(dataSource, xField, dataSource, yField);
+        }
+
+        private void cmbPersonGuideKeyword_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            selectedPersonGuideKeyword = (sender as ComboBox).SelectedValue;
+
+            DBWebService.GetKeywords(ref keywords, (selectedPersonGuideKeyword as Persons).Id);
+
+            if (keywords.Count != 0)
+            {
+                bindGuideKeywords.DataSource = keywords.OrderBy(i => i.Id);
+                dgvGuideKeywords.DataSource = bindGuideKeywords;
+            }
+            else
+            {
+                bindGuideKeywords.DataSource = keywords;
+                MessageBox.Show("Данных не найдено");
+            }
+        }
+
+        private void btnAddGuideSite_Click(object sender, EventArgs e)
+        {
+            if (DBWebService.AddSite(txtNameGuideSite.Text, txtUrlGuideSite.Text))
+            {
+                sites.Clear();
+                FillListsSites();
+                MessageBox.Show("Сайт успешно добавлен.");
+            }
+        }
+
+        private void btnDeleteGuideSite_Click(object sender, EventArgs e)
+        {
+            var selectedSitesRows = dgvGuideSites.SelectedRows;
+
+            if (selectedSitesRows.Count == 1)
+            {
+                if (DBWebService.DeleteSite((selectedSitesRows[0].DataBoundItem as Sites).Id.ToString()))
+                {
+                    FillListsSites();
+                    MessageBox.Show("Операция успешно завершена.");
+                }
+            }
+            else
+            {
+                bool error = false;
+                for (int i = 0; i < selectedSitesRows.Count; i++)
+                {
+                    var selectedSite = selectedSitesRows[i].DataBoundItem;
+                    if (!DBWebService.DeleteSite((selectedSite as Sites).Id.ToString()))
+                    {
+                        error = true;
+                        break;
+                    }
+                }
+                FillListsSites();
+                if (!error)
+                {
+                    MessageBox.Show("Операция успешно завершена.");
+                }
+            }
+        }
+        private void dgvGuideSites_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var selectedCells = (sender as DataGridView).SelectedCells;
+            if (selectedCells.Count != 0)
+            {
+                int rowIndex = selectedCells[0].RowIndex;
+                DataGridViewCell cellNumEditRow = (sender as DataGridView).Rows[rowIndex].Cells[0];
+
+                if(DBWebService.EditSite(cellNumEditRow.Value.ToString(), selectedCells[0].Value.ToString()))
+                {
+                    FillListsSites();
+                    MessageBox.Show("Имя сайта изменено.");
+                }
+            }
+        }
+        void FillListsSites()
+        {
+            DBWebService.GetSites(ref sites);
+            bindGuideSites.DataSource = sites.Count != 0 ? sites.OrderBy(n => n.Name).ToList() : sites;
+            cmbSiteDaily.DataSource = sites.OrderBy(n => n.Name).ToList();
+            cmbSiteGeneral.DataSource = sites.OrderBy(n => n.Name).ToList();
+        }
+        void FillListsPersons()
+        {
+            DBWebService.GetPersons(ref persons);
+            bindGuidePersons.DataSource = persons.Count != 0 ? persons.OrderBy(n => n.Name).ToList() : persons;
+            cmbPersonDaily.DataSource = persons.OrderBy(n => n.Name).ToList();
+            cmbPersonGuideKeyword.DataSource = persons.OrderBy(n => n.Name).ToList();
+        }
+        void FillListsKeywords()
+        {
+            DBWebService.GetKeywords(ref keywords, (selectedPersonGuideKeyword as Persons).Id);
+            bindGuideKeywords.DataSource = keywords.Count != 0 ? keywords.OrderBy(i => i.Id).ToList() : keywords;
+        }
+
+        void ShowMessageError(DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show(e.Exception.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        private void dgvGuideSites_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            ShowMessageError(e);
+        }
+
+        private void dgvGuidePersons_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            ShowMessageError(e);
+        }
+
+        private void dgvGuideKeywords_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            ShowMessageError(e);
+        }
+
+        private void btnAddGuidePerson_Click(object sender, EventArgs e)
+        {
+            if (DBWebService.AddPerson(txtNameGuidePerson.Text))
+            {
+                persons.Clear();
+                FillListsPersons();
+                MessageBox.Show("Личность успешно добавлена.");
+            }
+        }
+
+        private void btnDeleteGuidePerson_Click(object sender, EventArgs e)
+        {
+            var selectedPersonsRows = dgvGuidePersons.SelectedRows;
+
+            if (selectedPersonsRows.Count == 1)
+            {
+                if (DBWebService.DeletePerson((selectedPersonsRows[0].DataBoundItem as Persons).Id.ToString()))
+                {
+                    FillListsPersons();
+                    MessageBox.Show("Операция успешно завершена.");
+                }
+            }
+            else
+            {
+                bool error = false;
+                for (int i = 0; i < selectedPersonsRows.Count; i++)
+                {
+                    var selectedPerson = selectedPersonsRows[i].DataBoundItem;
+                    if(!DBWebService.DeletePerson((selectedPerson as Persons).Id.ToString()))
+                    {
+                        error = true;
+                        break;
+                    }
+                }
+                FillListsPersons();
+                if (!error)
+                {
+                    MessageBox.Show("Операция успешно завершена.");
+                }
+            }
+        }
+        private void dgvGuidePersons_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var selectedCells = (sender as DataGridView).SelectedCells;
+            if (selectedCells.Count != 0)
+            {
+                int rowIndex = selectedCells[0].RowIndex;
+                DataGridViewCell cellNumEditRow = (sender as DataGridView).Rows[rowIndex].Cells[0];
+
+                if (DBWebService.EditPerson(cellNumEditRow.Value.ToString(), selectedCells[0].Value.ToString()))
+                {
+                    FillListsPersons();
+                    MessageBox.Show("Имя личности изменено.");
+                }
+            }
+        }
+        private void btnAddGuideKeyword_Click(object sender, EventArgs e)
+        {
+            if(txtName1GuideKeywords.Text == "")
+            {
+                MessageBox.Show("1 ключевое слово должно быть заполнено.");
+                txtName1GuideKeywords.Focus();
+            }
+            else
+            {
+                if (selectedPersonGuideKeyword != null)
+                {                    
+                    if (DBWebService.AddKeyword(txtName1GuideKeywords.Text, txtName2GuideKeywords.Text, txtDistanceGuideKeywords.Text, (selectedPersonGuideKeyword as Persons).Id.ToString()))
+                    {
+                        keywords.Clear();
+                        FillListsKeywords();
+                        MessageBox.Show("Ключевые слова добавлены.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Вы не выбрали личность.");
+                }
+            }
+        }
+
+        private void btnDeleteGuideKeyword_Click(object sender, EventArgs e)
+        {
+            var selectedKeywordsRows = dgvGuideKeywords.SelectedRows;
+
+            if (selectedKeywordsRows.Count == 1)
+            {
+                if (DBWebService.DeleteKeywords((selectedPersonGuideKeyword as Persons).Id.ToString(), (selectedKeywordsRows[0].DataBoundItem as Keywords).Id.ToString()))
+                {
+                    FillListsKeywords();
+                    MessageBox.Show("Операция успешно завершена.");
+                }
+            }
+            else
+            {
+                bool error = false;
+                for (int i = 0; i < selectedKeywordsRows.Count; i++)
+                {
+                    var selectedKeyword = selectedKeywordsRows[i].DataBoundItem;
+                    if (!DBWebService.DeleteKeywords((selectedPersonGuideKeyword as Persons).Id.ToString(), (selectedKeyword as Keywords).Id.ToString()))
+                    {
+                        error = true;
+                        break;
+                    }
+                }
+                FillListsKeywords();
+                if (!error)
+                {
+                    MessageBox.Show("Операция успешно завершена.");
+                }
+            }
+        }
+
+        private void dgvGuideKeywords_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var selectedCells = (sender as DataGridView).SelectedCells;
+            if (selectedCells.Count != 0)
+            {
+                int rowIndex = selectedCells[0].RowIndex;
+                DataGridViewCell cellNumEditRow = (sender as DataGridView).Rows[rowIndex].Cells[0];
+                DataGridViewCell cellNameEditRow = (sender as DataGridView).Rows[rowIndex].Cells[1];
+                DataGridViewCell cellName2EditRow = (sender as DataGridView).Rows[rowIndex].Cells[2];
+                DataGridViewCell cellDistEditRow = (sender as DataGridView).Rows[rowIndex].Cells[3];
+
+                if (DBWebService.EditKeyword(cellNameEditRow.Value.ToString(), cellName2EditRow.FormattedValue.ToString(),
+                    cellDistEditRow.FormattedValue.ToString(), (selectedPersonGuideKeyword as Persons).Id.ToString(), cellNumEditRow.Value.ToString()))
+                {
+                    FillListsKeywords();
+                    MessageBox.Show("Изменения сохранены.");
+                }
+            }
+        }
+
+        private void frmStatist_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            frmLogin.Close();
         }
     }
 }

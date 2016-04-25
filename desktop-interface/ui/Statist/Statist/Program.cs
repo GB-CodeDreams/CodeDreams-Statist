@@ -15,7 +15,7 @@ namespace Statist
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmStatist());
+            Application.Run(new frmLogin());
         }
     }
 }
