@@ -16,7 +16,7 @@ class C_Statistic extends C_Base {
 		$selected_site = current($sites);
 
 		if ($this->IsPost()) {
-			$selected_site = $_POST['site'];
+			$selected_site = M_MSQL::Instance()->real_escape_string($_POST['site']);
 			
 			$general_statistics = M_Stats::Instance()->get_general_statistics($selected_site);
 			$isError = !$general_statistics;
@@ -48,13 +48,13 @@ class C_Statistic extends C_Base {
 		if ($this->IsPost()) {
 			
 			if (isset($_POST['site'])) {
-				$selected_site = $_POST['site'];
+				$selected_site = M_MSQL::Instance()->real_escape_string($_POST['site']);
 			} else {
 				$isError = true;
 			}
 
 			if (isset($_POST['person'])) {
-				$selected_person = $_POST['person'];
+				$selected_person = M_MSQL::Instance()->real_escape_string($_POST['person']);
 			} else {
 				$isError = true;
 			}
@@ -63,8 +63,8 @@ class C_Statistic extends C_Base {
 				$isError = true;
 			}
 
-			$end_date = $_POST['end_date'];
-			$start_date = $_POST['start_date'];
+			$end_date = M_MSQL::Instance()->real_escape_string($_POST['end_date']);
+			$start_date = M_MSQL::Instance()->real_escape_string($_POST['start_date']);
 
 			if ($end_date < $start_date) {
 				$tmp_date = $end_date;
@@ -101,12 +101,13 @@ class C_Statistic extends C_Base {
 
 	public function action_edit_sites(){
 		if ($this->IsPost()) {
-			$new_site = $_POST['site'];
-			M_Stats::Instance()->add_new_site($new_site);
+			$new_site = M_MSQL::Instance()->real_escape_string($_POST['site']);
+			$description = M_MSQL::Instance()->real_escape_string($_POST['description']);
+			M_Stats::Instance()->add_new_site($new_site, $description);
 			header( 'Location: index.php?c=statistic&act=edit_sites' );
 		} 	
 		if (isset($_GET['delete']) && isset($_GET['site_id'])) {
-			M_Stats::Instance()->delete_site($_GET['site_id']);
+			M_Stats::Instance()->delete_site(M_MSQL::Instance()->real_escape_string($_GET['site_id']));
 		}
 
 		$sites = M_Stats::Instance()->get_all_sites();
@@ -118,12 +119,12 @@ class C_Statistic extends C_Base {
 
 	public function action_edit_persons(){
 		if ($this->IsPost()) {
-			$new_person = $_POST['person'];
+			$new_person = M_MSQL::Instance()->real_escape_string($_POST['person']);
 			M_Stats::Instance()->add_new_person($new_person);
 			header( 'Location: index.php?c=statistic&act=edit_persons' );
 		} 	
 		if (isset($_GET['delete']) && isset($_GET['person_id'])) {
-			M_Stats::Instance()->delete_person($_GET['person_id']);
+			M_Stats::Instance()->delete_person(M_MSQL::Instance()->real_escape_string($_GET['person_id']));
 		}
 
 		$persons = M_Stats::Instance()->get_all_persons();
@@ -134,19 +135,19 @@ class C_Statistic extends C_Base {
 	}
 
 	public function action_edit_keywords(){
-		$person_id = $_GET['person_id'];
+		$person_id = M_MSQL::Instance()->real_escape_string($_GET['person_id']);
 		$person_name = M_Stats::Instance()->get_person_name_by_id($person_id);
 		if ($this->IsPost()) {
-			$word_1 = $_POST['word_1'];
-			$word_2 = $_POST['word_2'];
-			$distance = $_POST['distance'];
+			$word_1 = M_MSQL::Instance()->real_escape_string($_POST['word_1']);
+			$word_2 = M_MSQL::Instance()->real_escape_string($_POST['word_2']);
+			$distance = M_MSQL::Instance()->real_escape_string($_POST['distance']);
 			M_Stats::Instance()->add_new_keyword($person_id, $word_1, $word_2, $distance);
 			$loc = "Location: index.php?c=statistic&act=edit_keywords&person_id=".$person_id;
 			header( $loc );
 		} 	
 
 		if (isset($_GET['delete']) && isset($_GET['keyword_id'])) {
-			M_Stats::Instance()->delete_keyword($_GET['keyword_id']);
+			M_Stats::Instance()->delete_keyword(M_MSQL::Instance()->real_escape_string($_GET['keyword_id']));
 		}
 
 		$keywords = M_Stats::Instance()->get_all_keywords($person_id);
