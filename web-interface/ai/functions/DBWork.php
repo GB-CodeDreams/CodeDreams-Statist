@@ -6,6 +6,14 @@ class DBWork {
         return include __DIR__ . '/../config.php';
     }
 
+    private static $instance;
+
+    public static function Instance() {
+        if (self::$instance == null)
+            self::$instance = new DBWork();
+        return self::$instance;
+    }
+
     public function __construct () {
         $config = $this->config();
 
@@ -52,9 +60,10 @@ class DBWork {
     {
         global $link;
         $result = mysqli_query($link, $sql);
-        $n = mysqli_affected_rows($link);
-        if($n === 1)
-            return true;
+        $rez = mysqli_affected_rows($link);
+        $num = mysqli_insert_id($link);
+        if($rez === 1)
+            return $num;
         else
             return false;
     }
