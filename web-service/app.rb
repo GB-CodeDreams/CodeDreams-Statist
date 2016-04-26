@@ -55,7 +55,7 @@ end
 
 post "/restore_password" do
   user = User.find_by(username: form_data["username"])
-  send_new_password(user)
+  user ? send_new_password(user) : resource_not_found(:users)
 end
 
 get "/:key" do |k|

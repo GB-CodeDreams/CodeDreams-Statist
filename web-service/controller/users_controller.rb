@@ -1,4 +1,8 @@
 before %r{^/users(\/\d+)?\Z} do
+  authorize unless request.patch?
+end
+
+before %r{^/users(\/\d+)?\Z} do
   set_permitted_params(:username, :password) if request.patch? || request.post?
 end
 
@@ -23,6 +27,11 @@ patch "/users/:id" do
   else
     object_validation_error(user)
   end
+end
+
+delete "/users/:id" do
+  user = User.find_by(id: params["id"])
+  user ? user.destroy : resource_not_found(:users)
 end
 
 get "/users" do
