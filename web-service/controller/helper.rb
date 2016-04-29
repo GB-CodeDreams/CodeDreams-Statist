@@ -101,7 +101,6 @@ helpers do
     user.update_attributes(:password => new_pass)
 
     Pony.mail :to => user.username,
-              :from => 'support@statist.ru',
               :subject => 'New password.',
               :body => "New password to your Statist account is '#{user.password}'"
   end

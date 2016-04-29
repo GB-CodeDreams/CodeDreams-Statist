@@ -218,3 +218,4 @@ crawler/crawler/pages
 
 #web-service
 web-service/config/database.yml
+web-service/config/pony_config.rb

@@ -2,6 +2,7 @@ require 'sinatra'
 require "sinatra/activerecord"
 require 'json'
 require 'pony'
+require_relative './config/pony_config'
 require_relative './environments'
 require_relative './controller/helper'
 require_relative './controller/filters'
