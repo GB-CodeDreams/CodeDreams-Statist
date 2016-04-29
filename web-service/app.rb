@@ -20,7 +20,11 @@ require_relative './repository/lib/repository'
 get '/total_statistic' do
   site = params[:site]
   if site
-    result = PersonPageRank.site_persons_rank(site)
+    result =  if current_user.admin?
+                PersonPageRank.site_persons_rank(site)
+              else
+                PersonPageRank.site_persons_rank(site, current_user)
+              end
     PersonPageRank.hash_result_without_id(result).to_json
   end
 end
