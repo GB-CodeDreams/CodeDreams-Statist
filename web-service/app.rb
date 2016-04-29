@@ -2,26 +2,30 @@ require 'sinatra'
 require "sinatra/activerecord"
 require 'json'
 require 'pony'
-require './config/pony_config'
-require './environments'
-require './controller/helper'
-require './controller/filters'
-require './controller/users_controller'
-require './controller/persons_controller'
-require './controller/keywords_controller'
-require './controller/sites_controller'
-require './models/user'
-require './models/person'
-require './models/keyword'
-require './models/person_page_rank'
-require './models/page'
-require './models/site'
-require './repository/lib/repository'
+require_relative './config/pony_config'
+require_relative './environments'
+require_relative './controller/helper'
+require_relative './controller/filters'
+require_relative './controller/users_controller'
+require_relative './controller/persons_controller'
+require_relative './controller/keywords_controller'
+require_relative './controller/sites_controller'
+require_relative './models/user'
+require_relative './models/person'
+require_relative './models/keyword'
+require_relative './models/person_page_rank'
+require_relative './models/page'
+require_relative './models/site'
+require_relative './repository/lib/repository'
 
 get '/total_statistic' do
   site = params[:site]
   if site
-    result = PersonPageRank.site_persons_rank(site)
+    result =  if current_user.admin?
+                PersonPageRank.site_persons_rank(site)
+              else
+                PersonPageRank.site_persons_rank(site, current_user)
+              end
     PersonPageRank.hash_result_without_id(result).to_json
   end
 end
@@ -56,7 +60,7 @@ end
 
 post "/restore_password" do
   user = User.find_by(username: form_data["username"])
-  send_new_password(user)
+  user ? send_new_password(user) : resource_not_found(:users)
 end
 
 get "/:key" do |k|

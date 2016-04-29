@@ -2,7 +2,7 @@ class PersonPageRank < ActiveRecord::Base
   belongs_to :person
   belongs_to :page
 
-  scope :site_persons_rank, ->(site) {
+  scope :site_persons_rank, ->(site, user = nil) {
     person_rank = %{
       SELECT sum(r.rank) as rank, per.name as query_word, s_p.name as site, max(s_p.last_scan_date) as last_scan_date
       FROM   person_page_ranks r
@@ -15,7 +15,7 @@ class PersonPageRank < ActiveRecord::Base
       WHERE (s.name = '#{site}')
     }.gsub(/\s+/, ' ').strip
 
-    find_by_sql("#{person_rank} JOIN (#{site_pages}) as s_p ON s_p.id = r.page_id GROUP BY query_word ORDER BY rank DESC")
+    find_by_sql("#{person_rank} JOIN (#{site_pages}) as s_p ON s_p.id = r.page_id #{"WHERE per.user_id = #{user.id}" if user} GROUP BY query_word ORDER BY rank DESC")
   }
 
   scope :day_statistic, ->(site, query_word, start_date, end_date) {
