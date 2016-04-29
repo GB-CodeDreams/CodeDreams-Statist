@@ -3,10 +3,6 @@ before %r{^/(sites|persons|keywords|total_statistic|day_statistic|users)} do
   authenticate
 end
 
-before "/users" do
-  authorize
-end
-
 before %r{^/(sites|persons(\/\d+)?\Z)} do
   check_owner if request.post? || request.patch?
 end

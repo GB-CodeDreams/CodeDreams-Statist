@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/brandonweiss/rack-minitest.git
+  revision: ff8669c284e05c3cba8d14b867165c103283a167
+  specs:
+    rack-minitest (0.0.10)
+      json
+      minitest (~> 5.0)
+      rack-test
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -33,6 +42,8 @@ GEM
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
+    rack-test (0.6.3)
+      rack (>= 1.0)
     rake (11.1.2)
     sinatra (1.4.7)
       rack (~> 1.5)
@@ -57,6 +68,11 @@ DEPENDENCIES
   mysql2
   pony
   puma
+  rack-minitest!
+  rack-test
   rake
   sinatra (= 1.4.7)
   sinatra-activerecord
+
+BUNDLED WITH
+   1.11.2
