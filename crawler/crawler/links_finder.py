@@ -42,7 +42,7 @@ def get_url_site_links(url, robots_rules=None):
 
 
 def recursive_url_search(url, _visited=set(), robots_rules=None,
-                         visited_limit=300, depth_limit=3, depth=0):
+                         visited_limit=200, depth_limit=2, depth=0):
     depth += 1
     if (not visited_limit or len(_visited) <= visited_limit)\
             and (not depth_limit or depth <= depth_limit):
