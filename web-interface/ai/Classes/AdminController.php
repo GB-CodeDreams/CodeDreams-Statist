@@ -4,9 +4,15 @@ class AdminController
     extends AController
 {
 
-//исправил ошибку при удалении из справочника
     public function actionSites()
     {
+        $instUsers = Users::Instance();
+        $user = $instUsers->Get();
+        if(!isset($user) or (isset($user) and $user['admin'] != 1)) {   // проверка прав доступа
+            header('Location: index.php?r=admin/denied');
+            exit;
+        }
+        
         global $link;
         $view = new View();
         $model = Sites::Instance();
@@ -30,12 +36,21 @@ class AdminController
             }
         }
         // Вывод в шаблон.
-        $html = $view->display('sites.html');
+        $view->title = 'Интерфейс администратора';
+        $view->user = $instUsers->Get();
+        $html = $view->display('sites.php');
         echo $html;
     }
 
     public function actionPersons()
     {
+        $instUsers = Users::Instance();
+        $user = $instUsers->Get();
+        if(!isset($user) or (isset($user) and $user['admin'] != 1)) {   // проверка прав доступа
+            header('Location: index.php?r=admin/denied');
+            exit;
+        }
+
         global $link;
         $view = new View();
         $model = Persons::Instance();
@@ -57,12 +72,21 @@ class AdminController
             }
         }
         // Вывод в шаблон.
-        $html = $view->display('persons.html');
+        $view->title = 'Интерфейс администратора';
+        $view->user = $instUsers->Get();
+        $html = $view->display('persons.php');
         echo $html;
     }
 
     public function actionKeywords()
     {
+        $instUsers = Users::Instance();
+        $user = $instUsers->Get();
+        if(!isset($user) or (isset($user) and $user['admin'] != 1)) {   // проверка прав доступа
+            header('Location: index.php?r=admin/denied');
+            exit;
+        }
+
         global $link;
         $view = new View();
         $model = Keywords::Instance();
@@ -77,7 +101,7 @@ class AdminController
 
         //добавление ключевых слов
         if(isset($_POST['insert']) and $_POST['name'] == ""){
-            $new_error = "Заполните все поля";
+            $view->new_error = "Заполните все поля";
         }
         else {
             if (isset($_POST['insert']) and isset($_POST['name'])) {
@@ -90,7 +114,17 @@ class AdminController
         }
 
         // Вывод в шаблон.
-        $html = $view->display('keywords.html');
+        $view->title = 'Интерфейс администратора';
+        $view->user = $instUsers->Get();
+        $html = $view->display('keywords.php');
+        echo $html;
+    }
+
+    public function actionDenied(){
+        // Вывод в шаблон.
+        $view = new View();
+        $view->title = ' >> СТОП';
+        $html = $view->display('denied.php');
         echo $html;
     }
 }
