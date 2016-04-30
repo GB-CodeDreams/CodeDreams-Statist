@@ -49,15 +49,6 @@ post "/signin" do
   end
 end
 
-post "/remind" do
-  user = User.find_by(username: form_data["username"])
-  if user
-    remind_password(user)
-  else
-    resource_not_found(:users)
-  end
-end
-
 post "/restore_password" do
   user = User.find_by(username: form_data["username"])
   user ? send_new_password(user) : resource_not_found(:users)

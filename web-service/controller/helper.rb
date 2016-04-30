@@ -84,9 +84,6 @@ helpers do
     collection.singularize.capitalize.constantize
   end
 
-  def remind_password(user)
-  end
-
   def set_permitted_params(*params)
     stringify_params = params.map{|p| p.to_s}
     @permitted_params = form_data.extract!(*stringify_params)
@@ -102,7 +99,7 @@ helpers do
 
     Pony.mail :to => user.username,
               :subject => 'New password.',
-              :body => "New password to your Statist account is '#{user.password}'"
+              :body => "New password to your Statist account is '#{new_pass}'"
   end
 
 end
