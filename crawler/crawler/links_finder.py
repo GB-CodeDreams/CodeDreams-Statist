@@ -8,7 +8,9 @@ import re
 
 
 def get_url_site_links(url, robots_rules=None):
-    host = url[:url.find('/', 8) + 1]
+    if not url.endswith('/'):
+        url += '/'
+    host = url[:url.find('/', len('https://')) + 1]
     try:
         robots_rules = robots_rules if robots_rules else RC().fetch(host)
     except:
@@ -41,8 +43,10 @@ def get_url_site_links(url, robots_rules=None):
     return page_links
 
 
-def recursive_url_search(url, _visited=set(), robots_rules=None,
+def recursive_url_search(url, _visited=None, robots_rules=None,
                          visited_limit=200, depth_limit=2, depth=0):
+    if _visited is None:
+        _visited = set()
     depth += 1
     if (not visited_limit or len(_visited) <= visited_limit)\
             and (not depth_limit or depth <= depth_limit):
