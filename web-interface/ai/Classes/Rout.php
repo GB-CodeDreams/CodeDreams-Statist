@@ -16,8 +16,8 @@ class Rout
                 $this->controller = $routParts[0];
                 $this->action = $routParts[1];
             }else{
-                $this->controller = 'admin';
-                $this->action = 'sites';
+                $this->controller = 'user';
+                $this->action = 'login';
             }
 
     }

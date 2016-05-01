@@ -10,3 +10,6 @@ gem 'foreman'
 # gem 'sqlite3'
 gem 'mysql2'
 gem 'puma'
+gem 'pony'
+gem 'rack-test'
+gem "rack-minitest", git: "git://github.com/brandonweiss/rack-minitest.git"

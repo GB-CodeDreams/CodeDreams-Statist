@@ -4,10 +4,15 @@ helpers do
     request.POST
   end
 
+  def data_without_extra_params
+    permitted_params.extract!("id", "token")
+    permitted_params
+  end
+
   def set_current_user
     get_auth_params
-    if auth_params && user = User.find_by(id: auth_params["uid"])
-      @current_user = user if user.password == auth_params["token"]
+    if auth_params && user = User.find_by(password: auth_params["token"])
+      @current_user = user
     end
   end
 
@@ -24,9 +29,18 @@ helpers do
   end
 
   def check_owner
-    if (form_data["user_id"] != current_user.id) && !current_user.admin?
+    if (form_data["user_id"].to_i != current_user.id) && !current_user.admin?
       halt 403, [error: ["You're not owner of the data or user_id blank"]].to_json
     end
+  end
+
+  def resource_not_found(resource)
+    resource = resource.to_sym
+    halt 400, [error: {resource.to_sym => ["#{resource.to_s.singularize} not found"]}].to_json
+  end
+
+  def object_validation_error(object)
+    [400, [error: object.errors.messages].to_json]
   end
 
   def users_resources?(request)
@@ -41,21 +55,17 @@ helpers do
     end
   end
 
-  def has_perrmission?(object)
+  def has_permission?(object)
     object.user_id == current_user.id
   end
 
   def get_auth_params
     data = (request.post? || request.patch?) ? form_data : params
-    if data.has_key?("uid") && data.has_key?("token")
-      @auth_params = data
-    else
-      false
-    end
+    data.has_key?("token") ? @auth_params = data : false
   end
-  
-  def hash_from_password
-    Digest::MD5.hexdigest(form_data["password"] + User::SALT) if form_data
+
+  def pass_and_name_to_hash
+    Digest::MD5.hexdigest(form_data["password"] + User::SALT + form_data["username"]) if form_data
   end
 
   def auth_params
@@ -72,6 +82,24 @@ helpers do
 
   def constant_from_collection(collection)
     collection.singularize.capitalize.constantize
+  end
+
+  def set_permitted_params(*params)
+    stringify_params = params.map{|p| p.to_s}
+    @permitted_params = form_data.extract!(*stringify_params)
+  end
+
+  def permitted_params
+    @permitted_params
+  end
+
+  def send_new_password(user)
+    new_pass = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+    user.update_attributes(:password => new_pass)
+
+    Pony.mail :to => user.username,
+              :subject => 'New password.',
+              :body => "New password to your Statist account is '#{new_pass}'"
   end
 
 end
