@@ -61,6 +61,15 @@ namespace Statist.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/signin.
+        /// </summary>
+        internal static string Auth {
+            get {
+                return ResourceManager.GetString("Auth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/day_statistic?site=.
         /// </summary>
         internal static string GetDailyStatistics {
@@ -81,18 +90,27 @@ namespace Statist.Properties {
         /// <summary>
         ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/persons.
         /// </summary>
-        internal static string GetPersons {
+        internal static string Persons {
             get {
-                return ResourceManager.GetString("GetPersons", resourceCulture);
+                return ResourceManager.GetString("Persons", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на https://aqueous-tundra-17545.herokuapp.com/sites.
         /// </summary>
-        internal static string GetSites {
+        internal static string Sites {
             get {
-                return ResourceManager.GetString("GetSites", resourceCulture);
+                return ResourceManager.GetString("Sites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на token=06d9f00ce052a83b9e0eaa45f65f9dea.
+        /// </summary>
+        internal static string TokenUser {
+            get {
+                return ResourceManager.GetString("TokenUser", resourceCulture);
             }
         }
     }

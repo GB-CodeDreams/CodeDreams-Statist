@@ -211,7 +211,7 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
-# Craler
+# Crawler
 wiki/
 __pycache__/
 crawler/crawler/pages
