@@ -34,6 +34,7 @@ class DBWork {
     {
         global $link;
         $result = mysqli_query($link, $sql);
+        //var_dump($result);
 
         if (!$result)
             die(mysqli_error($link));

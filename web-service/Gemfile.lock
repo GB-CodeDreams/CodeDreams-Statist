@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/brandonweiss/rack-minitest.git
+  revision: ff8669c284e05c3cba8d14b867165c103283a167
+  specs:
+    rack-minitest (0.0.10)
+      json
+      minitest (~> 5.0)
+      rack-test
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -20,12 +29,21 @@ GEM
       thor (~> 0.19.1)
     i18n (0.7.0)
     json (1.8.3)
+    mail (2.6.4)
+      mime-types (>= 1.16, < 4)
+    mime-types (3.0)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0221)
     minitest (5.8.4)
     mysql2 (0.4.3)
+    pony (1.11)
+      mail (>= 2.0)
     puma (3.4.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
+    rack-test (0.6.3)
+      rack (>= 1.0)
     rake (11.1.2)
     sinatra (1.4.7)
       rack (~> 1.5)
@@ -48,7 +66,13 @@ DEPENDENCIES
   activesupport
   foreman
   mysql2
+  pony
   puma
+  rack-minitest!
+  rack-test
   rake
   sinatra (= 1.4.7)
   sinatra-activerecord
+
+BUNDLED WITH
+   1.11.2

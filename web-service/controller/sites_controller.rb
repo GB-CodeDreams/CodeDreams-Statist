@@ -14,7 +14,7 @@ end
 patch "/sites/:id" do
   site = Site.find_by(id: params[:id])
   return [400, [error: {sites: ["site not found"]}].to_json] unless site
-  authorize unless has_perrmission?(site)
+  authorize unless has_permission?(site)
   if form_data["name"] && form_data["url"]
     page = site.pages.first
     if site.update_attributes(name: form_data["name"]) && page.update_attributes(url: form_data["url"])
@@ -40,7 +40,7 @@ end
 
 delete "/sites/:id" do
   site = Site.find_by(id: params[:id])
-  authorize unless has_perrmission?(site)
+  authorize unless has_permission?(site)
   if site
     site.destroy
     get_collection_by_permission("sites")

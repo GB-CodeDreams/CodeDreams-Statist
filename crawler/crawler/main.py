@@ -44,6 +44,7 @@ class CrawlerThread(threading.Thread):
         while True:
             print("\n{text:*^80}".format(text='Start crawling at %s' %
                                          datetime.now()))
+            start_time_sec = time.time()
 
             # создаем сессию БД с настройками DB
             session = create_db_session(DB)
@@ -56,7 +57,10 @@ class CrawlerThread(threading.Thread):
 
             print("End crawling at %s" % datetime.now())
             # засыпаем на self.interval часов
-            time.sleep(self.interval)
+            iter_duration_sec = time.time() - start_time_sec
+            print("Next crawling after %s seconds" %
+                  self.interval - iter_duration_sec)
+            time.sleep(self.interval - iter_duration_sec)
 
     def stop(self):
         self._stop.set()
@@ -69,7 +73,7 @@ def main():
     # создаем краулер в отдельном потоке 
     # первый вргумент - задержка в секундах (по умолчанию - до 23:30 по местному времени)
     # второй вргумент - периодичность в секундах автоматического запуска краулера (по умолчанию - сутки)
-    crawler = CrawlerThread(5, 3600)
+    crawler = CrawlerThread(5)
     crawler.start()
 
 if __name__ == '__main__':

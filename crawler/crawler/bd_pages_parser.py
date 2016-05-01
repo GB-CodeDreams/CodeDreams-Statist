@@ -107,9 +107,10 @@ def parse_pages_from_db(session):
             person_new_common_rank = count_page_person_rank(person,
                                                             word_indexes_dict)
             if new_url:
-                new_ranks.append(models.PersonPageRanks(person.id,
-                                                        page.id,
-                                                        person_new_common_rank))
+                if person_new_common_rank:
+                    new_ranks.append(models.PersonPageRanks(person.id,
+                                                            page.id,
+                                                            person_new_common_rank))
             else:
                 # считаем текущий обий ранк персоны в базе
                 person_old_common_rank = count_person_old_ranks_sum(session,
