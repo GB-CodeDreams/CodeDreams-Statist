@@ -56,7 +56,7 @@ def read_sitemap_xml(main_page_or_xml_url, robots=RobotsCache()):
 
 def today_urls_from_sitemap(sitemap_xml_root,
                             today_day=datetime.utcnow().date(),
-                            max_without_date=50):
+                            max_without_date=20):
     today_urls = []
     ns = {'ns': gen_ns(sitemap_xml_root.tag)}
     try:
