@@ -17,7 +17,7 @@ def get_url_site_links(url, robots_rules=None):
     try:
         html_page = urlopen(url)
     except Exception:
-        html_page = requests.get(url, stream=True).content
+        html_page = requests.get(url, stream=True).text
     soup = BeautifulSoup(html_page, 'lxml')
     a_tags = soup.findAll('a', href=re.compile("^(%s|/[^/])" % host))
     if a_tags is not None:
